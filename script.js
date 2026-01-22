@@ -7,7 +7,7 @@ document.getElementById('newsletter-form').addEventListener('submit', function(e
     
     // In production, this would connect to an email service like Mailchimp
     // For now, just show a success message
-    alert('Thanks for subscribing! (In production, this would connect to your email service)');
+    alert('Thanks for subscribing!');
     this.reset();
 });
 
