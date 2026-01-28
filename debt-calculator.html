@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Debt Payoff Calculator | Debt Snowball vs Avalanche Calculator 2025</title>
+    <meta name="description" content="Free debt payoff calculator with snowball and avalanche methods. Calculate when you'll be debt-free, compare strategies, and create your debt elimination plan. Credit card debt calculator included.">
+    <meta name="keywords" content="debt payoff calculator, debt snowball calculator, debt avalanche calculator, credit card payoff calculator, debt free calculator, debt elimination calculator, pay off debt calculator, debt repayment calculator, how to pay off debt, debt reduction calculator, loan payoff calculator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fireplanner.org/debt-calculator.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Debt Payoff Calculator - Snowball vs Avalanche Method">
+    <meta property="og:description" content="Free debt payoff calculator. Compare debt snowball vs avalanche methods and plan your path to debt freedom.">
+    <meta property="og:url" content="https://fireplanner.org/debt-calculator.html">
+    <meta property="og:image" content="https://fireplanner.org/android-chrome-512x512.png">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B0FS8F3KDN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B0FS8F3KDN');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2955475775322391"
+     crossorigin="anonymous"></script>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <title>Debt Payoff Calculator - Avalanche vs Snowball | FIRE Planner</title>
+    <meta name="description" content="Calculate when you'll be debt-free with our free debt payoff calculator. Compare avalanche vs snowball methods to pay off debt faster.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="calculator-page">
+    
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><a href="index.html" style="color: inherit; text-decoration: none;">FIRE Planner</a></h1>
+                    <p class="tagline">Your Path to Financial Independence</p>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#calculators">All Calculators</a>
+                    <a href="index.html">Home</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-header">
+        <div class="container">
+            <h1>💳 Debt Payoff Calculator</h1>
+            <p>Create a strategic plan to become debt-free faster</p>
+        </div>
+    </div>
+
+    <section class="calculator-container">
+        <div class="container">
+            <div class="calculator-layout">
+                
+                <div class="input-panel">
+                    <h2>Your Debt Information</h2>
+                    <form id="debt-form">
+                        <div class="form-group">
+                            <label for="total-debt">Total Debt Amount ($)</label>
+                            <input type="number" id="total-debt" value="25000" min="0" step="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="avg-interest">Average Interest Rate (%)</label>
+                            <input type="number" id="avg-interest" value="18" min="0" max="30" step="0.1">
+                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Weighted average of all debts</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="monthly-payment">Monthly Payment ($)</label>
+                            <input type="number" id="monthly-payment" value="750" min="0" step="50">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payoff-method">Payoff Strategy</label>
+                            <select id="payoff-method">
+                                <option value="avalanche">Avalanche (Highest Interest First)</option>
+                                <option value="snowball">Snowball (Smallest Balance First)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="extra-payment">Extra Monthly Payment ($)</label>
+                            <input type="number" id="extra-payment" value="0" min="0" step="25">
+                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Optional additional payment</small>
+                        </div>
+
+                        <button type="submit" class="calculate-btn">Calculate Payoff Plan</button>
+                    </form>
+
+                    <div style="margin-top: 32px; padding: 20px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #2563eb;">
+                        <h4 style="font-size: 15px; margin-bottom: 8px; color: #1a2332;">💡 Pro Tip</h4>
+                        <p style="font-size: 14px; color: #475569; line-height: 1.6;">The avalanche method saves more on interest, but snowball provides psychological wins by eliminating small debts first.</p>
+                    </div>
+                </div>
+
+                <div class="results-panel">
+                    <h2>Your Payoff Timeline</h2>
+                    
+                    <div class="result-card" style="border-left-color: #059669;">
+                        <div class="result-label">🎯 Debt-Free Date</div>
+                        <div class="result-value" id="payoff-date" style="font-size: 24px;">-</div>
+                        <div class="result-subtext" id="months-to-payoff">-- months from now</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Total Interest Paid</div>
+                        <div class="result-value" id="total-interest">$0</div>
+                        <div class="result-subtext">Cost of borrowing</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Total Amount Paid</div>
+                        <div class="result-value" id="total-paid">$0</div>
+                        <div class="result-subtext" id="principal-breakdown">Principal + Interest</div>
+                    </div>
+
+                    <div class="result-card" style="border-left-color: #d97706;">
+                        <div class="result-label">Interest Saved with Extra Payments</div>
+                        <div class="result-value" id="interest-saved">$0</div>
+                        <div class="result-subtext" id="time-saved">Time saved: -- months</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Monthly Debt Payment</div>
+                        <div class="result-value" id="total-monthly">$0</div>
+                        <div class="result-subtext">Base + extra payments</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="max-width: 800px; margin: 60px auto; text-align: center; background: #f8fafc; padding: 48px; border-radius: 16px;">
+                <h3 style="font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 16px;">Consider Debt Consolidation</h3>
+                <p style="color: #64748b; margin-bottom: 28px;">Lower your interest rate and simplify payments with these options</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" style="display: inline-block; background: #059669; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Check Loan Rates →</a>
+                    <a href="#" style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Balance Transfer Cards →</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FIRE Planner</h4>
+                    <p>Free tools to help you achieve Financial Independence and Retire Early.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>More Calculators</h4>
+                    <ul>
+                        <li><a href="compound-interest.html">Compound Interest</a></li>
+                        <li><a href="fire-calculator.html">FIRE Calculator</a></li>
+                        <li><a href="roth-vs-traditional.html">Roth vs Traditional</a></li>
+                        <li><a href="fee-calculator.html">Investment Fees</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="/cdn-cgi/l/email-protection#8ceae5fee9fce0ede2e2e9fea2efe3e2f8edeff8ccebe1ede5e0a2efe3e1">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FIRE Planner. For educational purposes only. Consult a financial advisor for personalized advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        document.getElementById('debt-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateDebtPayoff();
+        });
+
+        const inputs = document.querySelectorAll('#debt-form input, #debt-form select');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateDebtPayoff);
+        });
+
+        calculateDebtPayoff();
+
+        function calculateDebtPayoff() {
+            const totalDebt = parseFloat(document.getElementById('total-debt').value) || 0;
+            const avgInterest = parseFloat(document.getElementById('avg-interest').value) / 100 || 0.18;
+            const monthlyPayment = parseFloat(document.getElementById('monthly-payment').value) || 0;
+            const extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
+            const totalMonthlyPayment = monthlyPayment + extraPayment;
+
+            if (totalDebt <= 0 || totalMonthlyPayment <= 0) {
+                displayResults(0, 0, 0, 0, 0, 0);
+                return;
+            }
+
+            // Calculate payoff with current payment
+            const result = calculatePayoffSchedule(totalDebt, avgInterest, totalMonthlyPayment);
+            
+            // Calculate baseline (without extra payment) for comparison
+            const baseline = extraPayment > 0 ? 
+                calculatePayoffSchedule(totalDebt, avgInterest, monthlyPayment) : result;
+
+            const interestSaved = baseline.totalInterest - result.totalInterest;
+            const timeSaved = baseline.months - result.months;
+
+            displayResults(
+                result.months,
+                result.totalInterest,
+                result.totalPaid,
+                totalMonthlyPayment,
+                interestSaved,
+                timeSaved
+            );
+        }
+
+        function calculatePayoffSchedule(principal, annualRate, monthlyPayment) {
+            const monthlyRate = annualRate / 12;
+            let balance = principal;
+            let totalInterest = 0;
+            let months = 0;
+            const maxMonths = 600; // 50 years max
+
+            // Check if payment is sufficient
+            const minimumPayment = balance * monthlyRate;
+            if (monthlyPayment <= minimumPayment) {
+                // Payment too low, debt will never be paid off
+                return {
+                    months: 999,
+                    totalInterest: 999999,
+                    totalPaid: 999999
+                };
+            }
+
+            while (balance > 0 && months < maxMonths) {
+                const interestCharge = balance * monthlyRate;
+                const principalPayment = Math.min(monthlyPayment - interestCharge, balance);
+                
+                totalInterest += interestCharge;
+                balance -= principalPayment;
+                months++;
+
+                if (balance < 0.01) balance = 0; // Handle rounding
+            }
+
+            return {
+                months: months,
+                totalInterest: totalInterest,
+                totalPaid: principal + totalInterest
+            };
+        }
+
+        function displayResults(months, totalInterest, totalPaid, monthlyPayment, interestSaved, timeSaved) {
+            if (months >= 999) {
+                document.getElementById('payoff-date').textContent = "Never";
+                document.getElementById('months-to-payoff').textContent = "Payment too low to eliminate debt";
+                document.getElementById('total-interest').textContent = "N/A";
+                document.getElementById('total-paid').textContent = "N/A";
+                document.getElementById('principal-breakdown').textContent = "Increase your payment amount";
+                document.getElementById('interest-saved').textContent = "N/A";
+                document.getElementById('time-saved').textContent = "";
+                document.getElementById('total-monthly').textContent = formatCurrency(monthlyPayment);
+                return;
+            }
+
+            // Calculate payoff date
+            const today = new Date();
+            const payoffDate = new Date(today);
+            payoffDate.setMonth(payoffDate.getMonth() + months);
+            
+            const dateString = payoffDate.toLocaleDateString('en-US', { 
+                month: 'long', 
+                year: 'numeric' 
+            });
+
+            const years = Math.floor(months / 12);
+            const remainingMonths = months % 12;
+            let timeString = '';
+            if (years > 0) timeString += `${years} year${years > 1 ? 's' : ''}`;
+            if (remainingMonths > 0) {
+                if (timeString) timeString += ' ';
+                timeString += `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
+            }
+
+            document.getElementById('payoff-date').textContent = dateString;
+            document.getElementById('months-to-payoff').textContent = `${months} months (${timeString})`;
+            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+            document.getElementById('total-paid').textContent = formatCurrency(totalPaid);
+            
+            const principal = totalPaid - totalInterest;
+            document.getElementById('principal-breakdown').textContent = 
+                `${formatCurrency(principal)} principal + ${formatCurrency(totalInterest)} interest`;
+
+            document.getElementById('interest-saved').textContent = 
+                interestSaved > 0 ? formatCurrency(interestSaved) : "$0";
+            
+            if (timeSaved > 0) {
+                const savedYears = Math.floor(timeSaved / 12);
+                const savedMonths = timeSaved % 12;
+                let savedString = '';
+                if (savedYears > 0) savedString += `${savedYears} year${savedYears > 1 ? 's' : ''}`;
+                if (savedMonths > 0) {
+                    if (savedString) savedString += ' ';
+                    savedString += `${savedMonths} month${savedMonths > 1 ? 's' : ''}`;
+                }
+                document.getElementById('time-saved').textContent = `Time saved: ${savedString}`;
+            } else {
+                document.getElementById('time-saved').textContent = '';
+            }
+
+            document.getElementById('total-monthly').textContent = formatCurrency(monthlyPayment);
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 

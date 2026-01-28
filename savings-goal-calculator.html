@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Savings Goal Calculator | Calculate How to Reach Your Savings Goals 2025</title>
+    <meta name="description" content="Free savings goal calculator. Calculate how much to save monthly to reach your goals. Plan for house down payment, emergency fund, vacation, or any savings target.">
+    <meta name="keywords" content="savings goal calculator, savings calculator, how much to save calculator, monthly savings calculator, savings plan calculator, emergency fund calculator, down payment calculator, vacation savings calculator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fireplanner.org/savings-goal-calculator.html">
+    
+    <meta property="og:title" content="Savings Goal Calculator - Plan How to Reach Your Goals">
+    <meta property="og:url" content="https://fireplanner.org/savings-goal-calculator.html">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B0FS8F3KDN"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-B0FS8F3KDN');</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2955475775322391" crossorigin="anonymous"></script>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="calculator-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><a href="index.html" style="color:inherit;text-decoration:none;">FIRE Planner</a></h1>
+                    <p class="tagline">Your Path to Financial Independence</p>
+                </div>
+                <nav class="main-nav"><a href="index.html">Home</a></nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-header">
+        <div class="container">
+            <h1>🎯 Savings Goal Calculator</h1>
+            <p>Calculate how much to save monthly to reach your financial goals</p>
+        </div>
+    </div>
+
+    <section class="calculator-container">
+        <div class="container">
+            <div class="calculator-layout">
+                <div class="input-panel">
+                    <h2>Your Savings Goal</h2>
+                    <form id="savings-form">
+                        <div class="form-group">
+                            <label for="goal-amount">Savings Goal Amount ($)</label>
+                            <input type="number" id="goal-amount" value="50000" min="0" step="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="current-savings">Current Savings ($)</label>
+                            <input type="number" id="current-savings" value="5000" min="0" step="500">
+                        </div>
+                        <div class="form-group">
+                            <label for="time-frame">Time Frame (Months)</label>
+                            <input type="number" id="time-frame" value="36" min="1" max="600">
+                        </div>
+                        <div class="form-group">
+                            <label for="interest-rate">Expected Return (%/year)</label>
+                            <input type="number" id="interest-rate" value="4" min="0" max="20" step="0.1">
+                        </div>
+                        <button type="submit" class="calculate-btn">Calculate Savings Plan</button>
+                    </form>
+                </div>
+
+                <div class="results-panel">
+                    <h2>Your Savings Plan</h2>
+                    <div class="result-card">
+                        <div class="result-label">Monthly Savings Needed</div>
+                        <div class="result-value" id="monthly-needed">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Total You'll Save</div>
+                        <div class="result-value" id="total-savings">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Interest Earned</div>
+                        <div class="result-value" id="interest-earned">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Goal Completion Date</div>
+                        <div class="result-value" id="completion-date" style="font-size:20px;">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FIRE Planner</h4>
+                    <p>Free tools to help you achieve Financial Independence and Retire Early.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FIRE Planner. For educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('savings-form').addEventListener('submit', e => {e.preventDefault();calc();});
+        document.querySelectorAll('#savings-form input').forEach(i => i.addEventListener('input', calc));
+        calc();
+
+        function calc() {
+            const goal = parseFloat(document.getElementById('goal-amount').value) || 0;
+            const current = parseFloat(document.getElementById('current-savings').value) || 0;
+            const months = parseInt(document.getElementById('time-frame').value) || 1;
+            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
+
+            const stillNeeded = goal - current;
+            let monthly = 0;
+
+            if (rate > 0) {
+                const futureValue = current * Math.pow(1 + rate, months);
+                const remaining = goal - futureValue;
+                if (remaining > 0) {
+                    monthly = remaining / ((Math.pow(1 + rate, months) - 1) / rate);
+                }
+            } else {
+                monthly = stillNeeded / months;
+            }
+
+            const totalSaved = monthly * months;
+            const interestEarned = goal - current - totalSaved;
+
+            const today = new Date();
+            const completion = new Date(today.setMonth(today.getMonth() + months));
+
+            document.getElementById('monthly-needed').textContent = formatCurrency(monthly);
+            document.getElementById('total-savings').textContent = formatCurrency(totalSaved);
+            document.getElementById('interest-earned').textContent = formatCurrency(Math.max(0, interestEarned));
+            document.getElementById('completion-date').textContent = completion.toLocaleDateString('en-US', {month:'long',year:'numeric'});
+        }
+
+        function formatCurrency(v) {
+            return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0}).format(v);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Retirement Age Calculator | Calculate When You Can Retire 2025</title>
+    <meta name="description" content="Free retirement age calculator. Calculate what age you can retire based on savings, expenses, and Social Security. Plan your retirement timeline today.">
+    <meta name="keywords" content="retirement age calculator, when can I retire calculator, retirement calculator by age, what age can I retire, retirement planning calculator, early retirement age calculator, Social Security retirement age">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fireplanner.org/retirement-age-calculator.html">
+    
+    <meta property="og:title" content="Retirement Age Calculator - Calculate When You Can Retire">
+    <meta property="og:url" content="https://fireplanner.org/retirement-age-calculator.html">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B0FS8F3KDN"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-B0FS8F3KDN');</script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2955475775322391" crossorigin="anonymous"></script>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body class="calculator-page">
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><a href="index.html" style="color:inherit;text-decoration:none;">FIRE Planner</a></h1>
+                    <p class="tagline">Your Path to Financial Independence</p>
+                </div>
+                <nav class="main-nav"><a href="index.html">Home</a></nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-header">
+        <div class="container">
+            <h1>📅 Retirement Age Calculator</h1>
+            <p>Calculate what age you can retire based on your savings and goals</p>
+        </div>
+    </div>
+
+    <section class="calculator-container">
+        <div class="container">
+            <div class="calculator-layout">
+                <div class="input-panel">
+                    <h2>Your Information</h2>
+                    <form id="retire-form">
+                        <div class="form-group">
+                            <label for="current-age">Current Age</label>
+                            <input type="number" id="current-age" value="35" min="18" max="80">
+                        </div>
+                        <div class="form-group">
+                            <label for="current-savings">Current Retirement Savings ($)</label>
+                            <input type="number" id="current-savings" value="100000" min="0" step="10000">
+                        </div>
+                        <div class="form-group">
+                            <label for="monthly-contribution">Monthly Contribution ($)</label>
+                            <input type="number" id="monthly-contribution" value="1500" min="0" step="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="retirement-goal">Retirement Savings Goal ($)</label>
+                            <input type="number" id="retirement-goal" value="1000000" min="0" step="50000">
+                        </div>
+                        <div class="form-group">
+                            <label for="return-rate">Expected Return (%/year)</label>
+                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.5">
+                        </div>
+                        <button type="submit" class="calculate-btn">Calculate Retirement Age</button>
+                    </form>
+                </div>
+
+                <div class="results-panel">
+                    <h2>Your Retirement Timeline</h2>
+                    <div class="result-card" style="border-left-color:#059669;">
+                        <div class="result-label">You Can Retire At Age</div>
+                        <div class="result-value" id="retirement-age">--</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Years Until Retirement</div>
+                        <div class="result-value" id="years-left">--</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Total Contributions</div>
+                        <div class="result-value" id="total-contributions">$0</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-label">Investment Growth</div>
+                        <div class="result-value" id="growth">$0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FIRE Planner</h4>
+                    <p>Free tools to help you achieve Financial Independence and Retire Early.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FIRE Planner. For educational purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('retire-form').addEventListener('submit', e => {e.preventDefault();calc();});
+        document.querySelectorAll('#retire-form input').forEach(i => i.addEventListener('input', calc));
+        calc();
+
+        function calc() {
+            const age = parseInt(document.getElementById('current-age').value) || 35;
+            const current = parseFloat(document.getElementById('current-savings').value) || 0;
+            const monthly = parseFloat(document.getElementById('monthly-contribution').value) || 0;
+            const goal = parseFloat(document.getElementById('retirement-goal').value) || 0;
+            const rate = parseFloat(document.getElementById('return-rate').value) / 100 / 12 || 0;
+
+            let balance = current;
+            let months = 0;
+            const maxMonths = 600;
+
+            while (balance < goal && months < maxMonths) {
+                balance = balance * (1 + rate) + monthly;
+                months++;
+            }
+
+            const years = Math.ceil(months / 12);
+            const retirementAge = age + years;
+            const totalContributions = monthly * months;
+            const growth = goal - current - totalContributions;
+
+            document.getElementById('retirement-age').textContent = retirementAge >= 100 ? "100+" : retirementAge;
+            document.getElementById('years-left').textContent = years >= 50 ? "50+" : years + " years";
+            document.getElementById('total-contributions').textContent = formatCurrency(totalContributions);
+            document.getElementById('growth').textContent = formatCurrency(Math.max(0, growth));
+        }
+
+        function formatCurrency(v) {
+            return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0}).format(v);
+        }
+    </script>
+</body>
+</html>
