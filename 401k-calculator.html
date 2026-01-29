@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>401k Calculator with Employer Match | Free Retirement 401k Calculator 2025</title>
+    <meta name="description" content="Free 401k calculator with employer match. Calculate 401k growth, contributions, and retirement savings. See how employer matching boosts your retirement account balance.">
+    <meta name="keywords" content="401k calculator, 401k calculator with match, employer match calculator, 401k growth calculator, retirement 401k calculator, 401k contribution calculator, how much should I contribute to 401k, 401k savings calculator, 401k retirement calculator">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fireplanner.org/401k-calculator.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="401k Calculator with Employer Match - Calculate Retirement Savings">
+    <meta property="og:description" content="Free 401k calculator. See how employer matching and contributions grow your retirement savings.">
+    <meta property="og:url" content="https://fireplanner.org/401k-calculator.html">
+    <meta property="og:image" content="https://fireplanner.org/android-chrome-512x512.png">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B0FS8F3KDN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B0FS8F3KDN');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2955475775322391"
+     crossorigin="anonymous"></script>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="shortcut icon" href="/favicon.ico">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="calculator-page">
+    
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1><a href="index.html" style="color: inherit; text-decoration: none;">FIRE Planner</a></h1>
+                    <p class="tagline">Your Path to Financial Independence</p>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#calculators">All Calculators</a>
+                    <a href="index.html">Home</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-header">
+        <div class="container">
+            <h1>🏢 401k Calculator</h1>
+            <p>Calculate 401k growth with employer match and maximize your retirement savings</p>
+        </div>
+    </div>
+
+    <section class="calculator-container">
+        <div class="container">
+            <div class="calculator-layout">
+                
+                <div class="input-panel">
+                    <h2>Your 401k Details</h2>
+                    <form id="four01k-form">
+                        <div class="form-group">
+                            <label for="current-balance">Current 401k Balance ($)</label>
+                            <input type="number" id="current-balance" value="25000" min="0" step="1000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="annual-salary">Annual Salary ($)</label>
+                            <input type="number" id="annual-salary" value="75000" min="0" step="1000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contribution-rate">Your Contribution Rate (%)</label>
+                            <input type="number" id="contribution-rate" value="6" min="0" max="100" step="0.5">
+                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">2025 limit: $23,500/year ($31,000 if 50+)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="employer-match">Employer Match (%)</label>
+                            <input type="number" id="employer-match" value="3" min="0" max="20" step="0.5">
+                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Typical: 3-6% of salary</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="match-limit">Employer Match Limit (%)</label>
+                            <input type="number" id="match-limit" value="6" min="0" max="100" step="0.5">
+                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Match up to this % of salary</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="return-rate">Expected Annual Return (%)</label>
+                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="years">Years Until Retirement</label>
+                            <input type="number" id="years" value="30" min="1" max="50" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="salary-increase">Annual Salary Increase (%)</label>
+                            <input type="number" id="salary-increase" value="2" min="0" max="10" step="0.5">
+                        </div>
+
+                        <button type="submit" class="calculate-btn">Calculate 401k Growth</button>
+                    </form>
+                </div>
+
+                <div class="results-panel">
+                    <h2>Your 401k Projection</h2>
+                    
+                    <div class="result-card" style="border-left-color: #059669;">
+                        <div class="result-label">Final 401k Balance</div>
+                        <div class="result-value" id="final-balance">$0</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Your Contributions</div>
+                        <div class="result-value" id="your-contributions">$0</div>
+                        <div class="result-subtext">Money you contributed</div>
+                    </div>
+
+                    <div class="result-card" style="border-left-color: #d97706;">
+                        <div class="result-label">💰 Employer Match (Free Money!)</div>
+                        <div class="result-value" id="employer-contributions">$0</div>
+                        <div class="result-subtext">Employer matching contributions</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Investment Growth</div>
+                        <div class="result-value" id="investment-growth">$0</div>
+                        <div class="result-subtext">Returns on your investments</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">First Year Contribution</div>
+                        <div class="result-value" id="first-year">$0</div>
+                        <div class="result-subtext" id="breakdown">You + Employer match</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="max-width: 800px; margin: 60px auto; text-align: center; background: #f8fafc; padding: 48px; border-radius: 16px;">
+                <h3 style="font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 16px;">Maximize Your 401k Growth</h3>
+                <p style="color: #64748b; margin-bottom: 32px;">Open an IRA to supercharge your retirement savings beyond 401k limits</p>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" style="display: inline-block; background: #059669; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Open Webull IRA →</a>
+                    <a href="#" style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Try Wealthfront →</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FIRE Planner</h4>
+                    <p>Free tools to help you achieve Financial Independence and Retire Early.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>More Calculators</h4>
+                    <ul>
+                        <li><a href="fire-calculator.html">FIRE Calculator</a></li>
+                        <li><a href="compound-interest.html">Compound Interest</a></li>
+                        <li><a href="roth-vs-traditional.html">Roth vs Traditional</a></li>
+                        <li><a href="index.html#calculators">All Calculators</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="/cdn-cgi/l/email-protection#76101f0413061a1718181304581519180217150236111b171f1a5815191b">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FIRE Planner. For educational purposes only. Consult a financial advisor for personalized advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('four01k-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculate401k();
+        });
+
+        const inputs = document.querySelectorAll('#four01k-form input');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculate401k);
+        });
+
+        calculate401k();
+
+        function calculate401k() {
+            const currentBalance = parseFloat(document.getElementById('current-balance').value) || 0;
+            const annualSalary = parseFloat(document.getElementById('annual-salary').value) || 0;
+            const contributionRate = parseFloat(document.getElementById('contribution-rate').value) / 100 || 0;
+            const employerMatch = parseFloat(document.getElementById('employer-match').value) / 100 || 0;
+            const matchLimit = parseFloat(document.getElementById('match-limit').value) / 100 || 0;
+            const returnRate = parseFloat(document.getElementById('return-rate').value) / 100 || 0;
+            const years = parseInt(document.getElementById('years').value) || 0;
+            const salaryIncrease = parseFloat(document.getElementById('salary-increase').value) / 100 || 0;
+
+            let balance = currentBalance;
+            let totalYourContributions = 0;
+            let totalEmployerContributions = 0;
+            let salary = annualSalary;
+
+            const contributionLimit2025 = 23500;
+            const catchUpLimit = 31000;
+
+            for (let year = 0; year < years; year++) {
+                const yourContribution = Math.min(salary * contributionRate, contributionLimit2025);
+                const matchableAmount = Math.min(yourContribution, salary * matchLimit);
+                const employerContribution = matchableAmount * (employerMatch / Math.max(matchLimit, employerMatch));
+                
+                totalYourContributions += yourContribution;
+                totalEmployerContributions += employerContribution;
+                
+                balance = (balance + yourContribution + employerContribution) * (1 + returnRate);
+                salary = salary * (1 + salaryIncrease);
+            }
+
+            const investmentGrowth = balance - currentBalance - totalYourContributions - totalEmployerContributions;
+
+            const firstYearYourContribution = Math.min(annualSalary * contributionRate, contributionLimit2025);
+            const firstYearMatchable = Math.min(firstYearYourContribution, annualSalary * matchLimit);
+            const firstYearEmployerMatch = firstYearMatchable * (employerMatch / Math.max(matchLimit, employerMatch));
+            const firstYearTotal = firstYearYourContribution + firstYearEmployerMatch;
+
+            document.getElementById('final-balance').textContent = formatCurrency(balance);
+            document.getElementById('your-contributions').textContent = formatCurrency(totalYourContributions);
+            document.getElementById('employer-contributions').textContent = formatCurrency(totalEmployerContributions);
+            document.getElementById('investment-growth').textContent = formatCurrency(investmentGrowth);
+            document.getElementById('first-year').textContent = formatCurrency(firstYearTotal);
+            document.getElementById('breakdown').textContent = `${formatCurrency(firstYearYourContribution)} (you) + ${formatCurrency(firstYearEmployerMatch)} (employer)`;
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 
