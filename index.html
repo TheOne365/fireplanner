@@ -66,6 +66,23 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Logo styling for header */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        @media (max-width: 768px) {
+            .logo img {
+                height: 80px !important;
+            }
+            .logo h1 {
+                font-size: 24px !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -73,7 +90,11 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="fire-logo.png" alt="FIRE Planner" style="height: 60px; width: auto; display: block;">
+                    <img src="fire-logo.png" alt="FIRE Planner" style="height: 120px; width: auto; margin-right: 20px;">
+                    <div style="display: flex; flex-direction: column; justify-content: center;">
+                        <h1 style="margin: 0; font-size: 32px; color: #1a2332;">FIRE Planner</h1>
+                        <p class="tagline" style="margin: 4px 0 0 0;">Your Path to Financial Independence</p>
+                    </div>
                 </div>
                 <nav class="main-nav">
                     <a href="#calculators">Calculators</a>
