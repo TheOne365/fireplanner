@@ -39,109 +39,207 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <style>
-        .content-page {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 40px 20px;
-            line-height: 1.8;
+        .about-hero {
+            text-align: center;
+            padding: 60px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .content-page h1 {
+        .about-hero h1 {
+            font-family: 'DM Serif Display', serif;
             font-size: 2.8em;
-            margin-bottom: 20px;
             color: var(--text-primary);
-            text-align: center;
+            margin-bottom: 16px;
         }
-        .content-page h2 {
-            font-size: 2em;
-            margin-top: 50px;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-        .content-page h3 {
-            font-size: 1.5em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            color: var(--text-primary);
-        }
-        .content-page p {
-            margin-bottom: 20px;
+        .about-hero .subtitle {
+            font-size: 1.2em;
             color: var(--text-secondary);
-            font-size: 1.1em;
+            line-height: 1.7;
+            max-width: 640px;
+            margin: 0 auto;
         }
-        .intro-text {
-            font-size: 1.3em;
+
+        .about-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+        }
+
+        .about-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg, 16px);
+            padding: 36px 32px;
+            margin-bottom: 24px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .about-card:hover {
+            border-color: var(--accent-blue, #2563eb);
+            box-shadow: 0 4px 20px rgba(37, 99, 235, 0.06);
+        }
+        .about-card h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.6em;
+            color: var(--text-primary);
+            margin: 0 0 16px 0;
+        }
+        .about-card p {
             color: var(--text-secondary);
-            text-align: center;
-            margin-bottom: 40px;
-            line-height: 1.6;
+            line-height: 1.75;
+            margin: 0 0 14px 0;
+            font-size: 1.02em;
         }
-        .stats-grid {
+        .about-card p:last-child { margin-bottom: 0; }
+
+        .stats-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
         }
-        .stat-box {
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg, 16px);
+            padding: 32px 20px;
             text-align: center;
-            padding: 30px 20px;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
-            border: 2px solid var(--border);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .stat-card:hover {
+            border-color: #ff6b35;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.08);
         }
         .stat-number {
-            font-size: 3em;
-            font-weight: bold;
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.8em;
             color: #ff6b35;
             display: block;
-            margin-bottom: 10px;
+            line-height: 1.1;
+            margin-bottom: 8px;
         }
         .stat-label {
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: var(--text-muted);
+            font-weight: 500;
         }
+
         .values-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
         }
-        .value-card {
-            padding: 25px;
-            background: var(--bg-secondary);
-            border-left: 4px solid #ff6b35;
-            box-shadow: var(--shadow-sm);
+        .value-item {
+            background: var(--bg-tertiary, var(--bg-primary));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md, 12px);
+            padding: 24px;
+            transition: border-color 0.2s;
         }
-        .value-card h4 {
+        .value-item:hover { border-color: var(--accent-blue, #2563eb); }
+        .value-item h3 {
+            font-size: 1.15em;
             color: var(--text-primary);
-            margin-bottom: 10px;
-            font-size: 1.3em;
+            margin: 0 0 8px 0;
         }
-        .value-card p {
-            margin-bottom: 0;
-            font-size: 1em;
+        .value-item p {
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            line-height: 1.65;
+            margin: 0;
         }
-        .logo {
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .calc-item {
             display: flex;
             align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            background: var(--bg-tertiary, var(--bg-primary));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md, 12px);
+            text-decoration: none;
+            transition: border-color 0.2s, transform 0.15s;
         }
+        .calc-item:hover {
+            border-color: var(--accent-blue, #2563eb);
+            transform: translateY(-1px);
+        }
+        .calc-item .calc-emoji { font-size: 1.5em; flex-shrink: 0; }
+        .calc-item .calc-info h3 {
+            font-size: 1em;
+            color: var(--text-primary);
+            margin: 0 0 3px 0;
+        }
+        .calc-item .calc-info p {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .contact-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: var(--bg-tertiary, var(--bg-primary));
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md, 12px);
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .plans-list {
+            list-style: none;
+            padding: 0;
+            margin: 16px 0 0 0;
+        }
+        .plans-list li {
+            position: relative;
+            padding: 10px 0 10px 28px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 0.98em;
+            border-bottom: 1px solid var(--border);
+        }
+        .plans-list li:last-child { border-bottom: none; }
+        .plans-list li::before {
+            content: '\2192';
+            position: absolute;
+            left: 4px;
+            color: #ff6b35;
+            font-weight: 600;
+        }
+
+        .logo { display: flex; align-items: center; }
+
         @media (max-width: 768px) {
-            .logo img {
-                height: 80px !important;
-            }
-            .logo h1 {
-                font-size: 24px !important;
-            }
-            .content-page h1 {
-                font-size: 2em;
-            }
-            .intro-text {
-                font-size: 1.1em;
-            }
+            .about-hero h1 { font-size: 2em; }
+            .about-hero .subtitle { font-size: 1.05em; }
+            .stats-row { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: 1fr; }
+            .calc-grid { grid-template-columns: 1fr; }
+            .about-card { padding: 28px 22px; }
+            .stat-number { font-size: 2.2em; }
+            .logo img { height: 80px !important; }
+            .logo h1 { font-size: 24px !important; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="site-header">
         <div class="container">
             <div class="header-content">
@@ -158,161 +256,171 @@
                     <a href="index.html#calculators">Calculators</a>
                     <a href="resources.html">Resources</a>
                     <a href="glossary.html">Glossary</a>
-                    <a href="about.html">About</a>
-                <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode"><span class="toggle-icon sun">☀</span><span class="toggle-icon moon">☾</span></button>
+                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <span class="toggle-icon sun">&#9728;</span>
+                        <span class="toggle-icon moon">&#9790;</span>
+                    </button>
                 </nav>
             </div>
         </div>
     </header>
 
-    <div class="content-page">
+    <div class="about-hero">
         <h1>About FIRE Planner</h1>
-        <p class="intro-text">We're on a mission to make financial independence accessible to everyone through free, accurate calculators and educational resources.</p>
+        <p class="subtitle">We build free, no-nonsense financial tools to help you plan your path to Financial Independence. No sign-ups, no data collection&mdash;just calculators that work.</p>
+    </div>
 
-        <h2>Our Story</h2>
-        
-        <p>FIRE Planner was founded in 2024 with a simple goal: to provide accessible, professional-grade financial planning tools to anyone pursuing Financial Independence and early retirement. We believe that everyone deserves access to the same quality of financial planning tools that are typically reserved for those who can afford expensive financial advisors.</p>
+    <div class="about-content">
 
-        <p>The FIRE (Financial Independence, Retire Early) movement has transformed the lives of thousands of people worldwide, but many struggle to find reliable, free tools to plan their journey. That's where we come in. We've built a comprehensive suite of calculators that help you understand compound interest, plan your retirement savings, compare investment strategies, and chart your path to financial freedom.</p>
-
-        <h2>What Makes Us Different</h2>
-
-        <div class="values-grid">
-            <div class="value-card">
-                <h4>🎯 100% Free Forever</h4>
-                <p>No paywalls, no premium tiers, no hidden fees. All our calculators are completely free to use, forever. We believe financial planning tools should be accessible to everyone, regardless of income level.</p>
-            </div>
-            
-            <div class="value-card">
-                <h4>🔒 Privacy-Focused</h4>
-                <p>Your financial data never leaves your device. All calculations happen directly in your browser. We don't collect, store, or transmit any of your personal financial information.</p>
-            </div>
-            
-            <div class="value-card">
-                <h4>📊 Professional-Grade Accuracy</h4>
-                <p>Our calculators use the same formulas employed by financial advisors and certified public accountants. We've tested and refined each calculator to ensure accurate, reliable results.</p>
-            </div>
-            
-            <div class="value-card">
-                <h4>📱 Mobile-Optimized</h4>
-                <p>Plan your financial future from anywhere. Our calculators work seamlessly on desktop computers, tablets, and smartphones, giving you access to your financial planning tools wherever you are.</p>
-            </div>
-            
-            <div class="value-card">
-                <h4>🎓 Educational Focus</h4>
-                <p>We don't just give you numbers—we help you understand them. Each calculator includes clear explanations, definitions, and educational resources to help you make informed financial decisions.</p>
-            </div>
-            
-            <div class="value-card">
-                <h4>🔄 Constantly Improving</h4>
-                <p>We regularly update our calculators based on user feedback and changes in financial regulations. Your input helps us build better tools for the entire FIRE community.</p>
-            </div>
-        </div>
-
-        <h2>Our Impact</h2>
-
-        <div class="stats-grid">
-            <div class="stat-box">
+        <div class="stats-row">
+            <div class="stat-card">
                 <span class="stat-number">10</span>
                 <span class="stat-label">Free Calculators</span>
             </div>
-            <div class="stat-box">
+            <div class="stat-card">
                 <span class="stat-number">45+</span>
                 <span class="stat-label">Glossary Terms</span>
             </div>
-            <div class="stat-box">
+            <div class="stat-card">
                 <span class="stat-number">100%</span>
-                <span class="stat-label">Free to Use</span>
+                <span class="stat-label">Free &amp; Private</span>
             </div>
         </div>
 
-        <h2>Our Calculators</h2>
+        <div class="about-card">
+            <h2>&#128293; Our Mission</h2>
+            <p>FIRE Planner exists because financial tools shouldn't cost money or require handing over your personal data. Every calculator on this site runs entirely in your browser&mdash;we never see, store, or transmit your financial information.</p>
+            <p>Whether you're just discovering the FIRE movement or years into your journey, our goal is the same: give you accurate, easy-to-use tools that help you make better financial decisions.</p>
+        </div>
 
-        <p>We offer a comprehensive suite of financial calculators designed specifically for FIRE enthusiasts:</p>
+        <div class="about-card">
+            <h2>&#128161; What is FIRE?</h2>
+            <p>Financial Independence, Retire Early (FIRE) is about gaining control of your time and building enough wealth to live on your own terms. It's not about deprivation&mdash;it's about being intentional with spending, maximizing savings, and investing wisely so every dollar buys you future freedom.</p>
+            <p>There are many paths&mdash;Lean FIRE, Fat FIRE, Barista FIRE, Coast FIRE&mdash;and our calculators are designed to help you plan whichever one fits your life. There's no single "right" way to reach financial independence.</p>
+        </div>
 
-        <h3>🔥 FIRE Calculator</h3>
-        <p>Our flagship tool helps you calculate when you can achieve Financial Independence based on your current savings, annual expenses, expected returns, and savings rate. It uses the widely-accepted 4% rule to determine your FIRE number and timeline.</p>
+        <div class="about-card">
+            <h2>&#129518; Our Calculators</h2>
+            <p>A comprehensive suite of tools designed for the FIRE community:</p>
+            <div class="calc-grid">
+                <a href="fire-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#128293;</span>
+                    <div class="calc-info">
+                        <h3>FIRE Calculator</h3>
+                        <p>Your FIRE number &amp; timeline</p>
+                    </div>
+                </a>
+                <a href="compound-interest.html" class="calc-item">
+                    <span class="calc-emoji">&#128200;</span>
+                    <div class="calc-info">
+                        <h3>Compound Interest</h3>
+                        <p>Visualize investment growth</p>
+                    </div>
+                </a>
+                <a href="401k-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#127970;</span>
+                    <div class="calc-info">
+                        <h3>401k Calculator</h3>
+                        <p>Maximize employer matching</p>
+                    </div>
+                </a>
+                <a href="roth-vs-traditional.html" class="calc-item">
+                    <span class="calc-emoji">&#9878;&#65039;</span>
+                    <div class="calc-info">
+                        <h3>Roth vs Traditional</h3>
+                        <p>Compare IRA tax advantages</p>
+                    </div>
+                </a>
+                <a href="fee-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#128176;</span>
+                    <div class="calc-info">
+                        <h3>Fee Impact Calculator</h3>
+                        <p>See how fees erode returns</p>
+                    </div>
+                </a>
+                <a href="debt-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#128179;</span>
+                    <div class="calc-info">
+                        <h3>Debt Payoff</h3>
+                        <p>Snowball &amp; avalanche methods</p>
+                    </div>
+                </a>
+                <a href="savings-goal-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#127919;</span>
+                    <div class="calc-info">
+                        <h3>Savings Goal</h3>
+                        <p>Plan for any financial target</p>
+                    </div>
+                </a>
+                <a href="retirement-age-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#128197;</span>
+                    <div class="calc-info">
+                        <h3>Retirement Age</h3>
+                        <p>When can you retire?</p>
+                    </div>
+                </a>
+                <a href="coast-fire-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#127958;&#65039;</span>
+                    <div class="calc-info">
+                        <h3>Coast FIRE</h3>
+                        <p>Stop saving, let compounding work</p>
+                    </div>
+                </a>
+                <a href="net-worth-calculator.html" class="calc-item">
+                    <span class="calc-emoji">&#128202;</span>
+                    <div class="calc-info">
+                        <h3>Net Worth</h3>
+                        <p>Track your total wealth</p>
+                    </div>
+                </a>
+            </div>
+        </div>
 
-        <h3>📈 Compound Interest Calculator</h3>
-        <p>Visualize how your investments can grow over time through the power of compound interest. See how regular contributions and reinvested earnings can accelerate your wealth building.</p>
+        <div class="about-card">
+            <h2>&#127963;&#65039; Our Values</h2>
+            <div class="values-grid">
+                <div class="value-item">
+                    <h3>&#128274; Privacy First</h3>
+                    <p>All calculations happen in your browser. We never see, store, or transmit your financial data. Use our tools with complete confidence.</p>
+                </div>
+                <div class="value-item">
+                    <h3>&#9989; Accuracy</h3>
+                    <p>Every formula is tested and based on established financial principles. We regularly review and update calculators to reflect current best practices.</p>
+                </div>
+                <div class="value-item">
+                    <h3>&#127891; Education</h3>
+                    <p>We don't just give you numbers&mdash;each tool includes explanations and resources to help you understand the concepts behind the math.</p>
+                </div>
+                <div class="value-item">
+                    <h3>&#128226; Transparency</h3>
+                    <p>This site is supported by advertising and may include affiliate links. We never let ads influence our calculator results or recommendations.</p>
+                </div>
+            </div>
+        </div>
 
-        <h3>🏢 401k Calculator</h3>
-        <p>Optimize your 401k contributions to maximize employer matching and calculate your retirement account growth over time. Understand how different contribution rates affect your long-term wealth.</p>
+        <div class="about-card">
+            <h2>&#128640; What's Next</h2>
+            <p>We're constantly improving FIRE Planner. Here's what's on the roadmap:</p>
+            <ul class="plans-list">
+                <li>Specialized calculators for Barista FIRE and geographic arbitrage</li>
+                <li>Interactive financial planning scenarios and case studies</li>
+                <li>Expanded educational content and FIRE strategy guides</li>
+                <li>Community features to connect with other FIRE enthusiasts</li>
+                <li>Mobile app for on-the-go financial planning</li>
+            </ul>
+        </div>
 
-        <h3>⚖️ Roth vs Traditional IRA Calculator</h3>
-        <p>Compare the tax advantages of Roth and Traditional IRA accounts based on your current tax bracket and expected retirement tax bracket. Make informed decisions about which retirement account is best for your situation.</p>
-
-        <h3>💰 Investment Fee Impact Calculator</h3>
-        <p>Discover how seemingly small investment fees can erode your returns over decades. Compare different fee structures and see why low-cost index funds are often the best choice for long-term investors.</p>
-
-        <h3>💳 Debt Payoff Calculator</h3>
-        <p>Create a strategic plan to become debt-free faster. Compare the debt snowball and debt avalanche methods to find the approach that works best for your situation.</p>
-
-        <h3>🎯 Savings Goal Calculator</h3>
-        <p>Plan how to reach specific financial goals like a house down payment, emergency fund, or dream vacation. Calculate exactly how much you need to save each month to reach your target.</p>
-
-        <h3>📅 Retirement Age Calculator</h3>
-        <p>Determine what age you can retire based on your current savings, expected returns, and desired retirement lifestyle. See how different variables affect your retirement timeline.</p>
-
-        <h2>Our Commitment to Education</h2>
-
-        <p>Financial literacy is the foundation of financial independence. That's why we go beyond just providing calculators. Our <a href="resources.html">Resources page</a> offers comprehensive guides on FIRE strategies, investment principles, and wealth-building techniques. Our <a href="glossary.html">Financial Glossary</a> defines over 45 key financial terms in plain English, helping you navigate the sometimes confusing world of personal finance.</p>
-
-        <p>We believe that understanding financial concepts is just as important as having access to calculation tools. When you understand how compound interest works, why fees matter, and how tax-advantaged accounts can accelerate your wealth building, you're empowered to make better financial decisions.</p>
-
-        <h2>Our Values</h2>
-
-        <h3>Transparency</h3>
-        <p>We're upfront about our monetization strategy. This website is supported by advertising and may include affiliate links to financial products we believe in. We never let advertising influence our recommendations or calculator results. If we think a product or service could benefit you, we'll tell you—but we'll always be honest about any affiliate relationships.</p>
-
-        <h3>Accuracy</h3>
-        <p>We take calculator accuracy seriously. Every formula is tested, verified, and based on established financial principles. We regularly review and update our calculators to ensure they reflect current best practices and regulations.</p>
-
-        <h3>Privacy</h3>
-        <p>Your financial information is sensitive, and we treat it with the respect it deserves. All calculator inputs are processed entirely in your browser—we never see, store, or transmit your financial data. You can use our tools with complete confidence that your privacy is protected.</p>
-
-        <h3>Community</h3>
-        <p>The FIRE community is built on sharing knowledge and supporting each other's financial journeys. We're proud to contribute to this community by providing free tools and resources that help everyone move closer to financial independence.</p>
-
-        <h2>The FIRE Movement</h2>
-
-        <p>The Financial Independence, Retire Early (FIRE) movement is about more than just early retirement—it's about gaining control of your time and having the freedom to live life on your terms. Whether you want to retire at 40, switch to a less stressful career, travel the world, or simply have the security of knowing you could walk away from your job if you wanted to, FIRE is about building enough wealth to make those choices possible.</p>
-
-        <p>FIRE isn't about deprivation or living in poverty. It's about being intentional with your spending, maximizing your savings rate, investing wisely, and building passive income streams. It's about understanding that every dollar you save and invest is buying you future freedom.</p>
-
-        <p>There are many paths to FIRE—Lean FIRE, Fat FIRE, Barista FIRE, Coast FIRE—and our calculators are designed to help you plan whichever path resonates with you. We don't believe there's one "right" way to achieve financial independence. Your path is unique to your circumstances, values, and goals.</p>
-
-        <h2>Looking Forward</h2>
-
-        <p>We're constantly working to improve FIRE Planner and add new features. Future plans include:</p>
-
-        <ul>
-            <li>Additional specialized calculators for Coast FIRE, Barista FIRE, and geographic arbitrage</li>
-            <li>Interactive financial planning scenarios and case studies</li>
-            <li>Expanded educational content and FIRE strategy guides</li>
-            <li>Community features to connect with other FIRE enthusiasts</li>
-            <li>Mobile app for on-the-go financial planning</li>
-        </ul>
-
-        <p>We're excited about the future of FIRE Planner and our role in the FIRE community. Whether you're just starting to learn about financial independence or you're years into your FIRE journey, we're here to provide the tools and resources you need to succeed.</p>
-
-        <h2>Get in Touch</h2>
-
-        <p>We love hearing from our users! Whether you have feedback on our calculators, suggestions for new features, questions about FIRE strategies, or just want to share your FIRE journey with us, we're here to listen.</p>
-
-        <p>Contact us at: <strong>fireplanner.contact@gmail.com</strong></p>
-
-        <p>Follow our Instagram for daily FIRE tips and motivation: <strong>@fireplanner_org</strong></p>
-
-        <h2>Thank You</h2>
-
-        <p>Thank you for trusting FIRE Planner to be part of your financial independence journey. Your support and feedback help us build better tools for the entire FIRE community. Together, we're making financial independence accessible to everyone.</p>
-
-        <p>Here's to your financial freedom! 🔥</p>
+        <div class="about-card">
+            <h2>&#128236; Get in Touch</h2>
+            <p>Have feedback, feature requests, or just want to share your FIRE journey? We'd love to hear from you.</p>
+            <div class="contact-row">
+                <span class="contact-badge">&#9993;&#65039; fireplanner.contact@gmail.com</span>
+                <span class="contact-badge">&#128248; @fireplanner_org</span>
+            </div>
+        </div>
 
     </div>
 
-    <!-- Footer -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-content">
