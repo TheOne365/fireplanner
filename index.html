@@ -65,8 +65,11 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
+        var m = localStorage.getItem('fireplanner-theme-manual');
         var t = localStorage.getItem('fireplanner-theme');
-        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        if (!(m === '1' && (t === 'dark' || t === 'light'))) {
+          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
