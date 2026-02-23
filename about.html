@@ -28,11 +28,8 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
-        var m = localStorage.getItem('fireplanner-theme-manual');
         var t = localStorage.getItem('fireplanner-theme');
-        if (!(m === '1' && (t === 'dark' || t === 'light'))) {
-          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        if (t !== 'dark' && t !== 'light') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
@@ -396,7 +393,7 @@
                 </div>
                 <div class="value-item">
                     <h3>&#128226; Transparency</h3>
-                    <p>This site is supported by advertising and may include affiliate links. We never let ads influence our calculator results or recommendations.</p>
+                    <p>This site is supported by advertising. We never let ads influence our calculator results or recommendations.</p>
                 </div>
             </div>
         </div>

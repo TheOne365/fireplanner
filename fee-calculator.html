@@ -38,11 +38,8 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
-        var m = localStorage.getItem('fireplanner-theme-manual');
         var t = localStorage.getItem('fireplanner-theme');
-        if (!(m === '1' && (t === 'dark' || t === 'light'))) {
-          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        if (t !== 'dark' && t !== 'light') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
@@ -160,17 +157,6 @@
                 </div>
 
             </div>
-
-            <div style="max-width: 800px; margin: 60px auto; text-align: center; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; padding: 48px; border-radius: 16px;">
-                <h3 style="font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 16px;">Stop Overpaying in Fees</h3>
-                <p style="margin-bottom: 28px; opacity: 0.95;">Switch to these low-cost index funds and keep more of your returns</p>
-                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                    <a href="#" style="display: inline-block; background: white; color: #dc2626; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Webull 0% Fees →</a>
-                    <a href="#" style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600; border: 2px solid white;">Wealthfront Zero Fees →</a>
-                </div>
-            </div>
-
-        </div>
     </section>
 
     <footer class="site-footer">

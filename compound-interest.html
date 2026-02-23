@@ -38,11 +38,8 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
-        var m = localStorage.getItem('fireplanner-theme-manual');
         var t = localStorage.getItem('fireplanner-theme');
-        if (!(m === '1' && (t === 'dark' || t === 'light'))) {
-          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        if (t !== 'dark' && t !== 'light') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
@@ -157,14 +154,6 @@
             </div>
 
             <!-- Affiliate CTA -->
-            <div style="max-width: 800px; margin: 60px auto; text-align: center; background: var(--bg-tertiary); padding: 48px; border-radius: 16px;">
-                <h3 style="font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 16px;">Ready to Start Investing?</h3>
-                <p style="color: #64748b; margin-bottom: 32px;">Put your compound interest plan into action with these top-rated brokers</p>
-                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                    <a href="#" style="display: inline-block; background: #059669; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Open Webull Account →</a>
-                    <a href="#" style="display: inline-block; background: #2563eb; color: white; padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: 600;">Try Wealthfront Free →</a>
-                </div>
-            </div>
 
         </div>
     </section>

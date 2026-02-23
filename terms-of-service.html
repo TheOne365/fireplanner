@@ -28,11 +28,8 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
-        var m = localStorage.getItem('fireplanner-theme-manual');
         var t = localStorage.getItem('fireplanner-theme');
-        if (!(m === '1' && (t === 'dark' || t === 'light'))) {
-          t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        }
+        if (t !== 'dark' && t !== 'light') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       })();
     </script>
@@ -199,7 +196,7 @@
 
         <h2>9. Advertising</h2>
         
-        <p>We display advertisements through Google AdSense and may include affiliate links to financial products and services. We may earn compensation if you click on these links or make purchases through them. All advertising relationships are disclosed, and we only recommend products we believe may be valuable to our users.</p>
+        <p>We display advertisements through Google AdSense. All advertising relationships are disclosed.</p>
 
         <h2>10. Disclaimer of Warranties</h2>
         
