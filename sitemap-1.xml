@@ -120,4 +120,14 @@
     <priority>0.3</priority>
   </url>
   
+  <url>
+    <loc>https://fireplanner.org/coast-fire-calculator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fireplanner.org/net-worth-calculator.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

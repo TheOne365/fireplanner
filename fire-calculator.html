@@ -35,6 +35,14 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <title>FIRE Calculator - When Can You Retire Early? | FIRE Planner</title>
     <meta name="description" content="Calculate when you can achieve Financial Independence and Retire Early (FIRE). Free FIRE calculator with detailed retirement timeline.">
+    <!-- Prevent flash of wrong theme -->
+    <script>
+      (function(){
+        var t = localStorage.getItem('fireplanner-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -52,6 +60,7 @@
                 <nav class="main-nav">
                     <a href="index.html#calculators">All Calculators</a>
                     <a href="index.html">Home</a>
+                <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode"><span class="toggle-icon sun">☀</span><span class="toggle-icon moon">☾</span></button>
                 </nav>
             </div>
         </div>
@@ -264,5 +273,6 @@
             }).format(value);
         }
     </script>
+    <script src="script.js"></script>
 </body>
 </html>

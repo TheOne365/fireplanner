@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Coast FIRE Calculator - When Can You Stop Saving for Retirement? | FIRE Planner</title>
+    <meta name="description" content="Free Coast FIRE calculator. Find out when your current savings will grow enough through compound interest alone to fund your retirement — so you can stop saving and just cover expenses.">
+    <meta name="keywords" content="coast FIRE calculator, coast FI calculator, coast financial independence, stop saving retirement, compound growth retirement, coast FIRE number, when to stop saving">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://fireplanner.org/coast-fire-calculator.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Coast FIRE Calculator - When Can You Stop Saving?">
+    <meta property="og:description" content="Find out if your investments can coast to your retirement goal without additional contributions.">
+    <meta property="og:url" content="https://fireplanner.org/coast-fire-calculator.html">
+    <meta property="og:image" content="https://fireplanner.org/android-chrome-512x512.png">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B0FS8F3KDN"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B0FS8F3KDN');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2955475775322391"
+     crossorigin="anonymous"></script>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <!-- Prevent flash of wrong theme -->
+    <script>
+      (function(){
+        var t = localStorage.getItem('fireplanner-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="calculator-page">
+    
+    <header class="site-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="fire-logo.png" alt="FIRE Planner" style="height: 52px; width: auto;">
+                    <div>
+                        <h1><a href="index.html">FIRE Planner</a></h1>
+                        <p class="tagline">Your Path to Financial Independence</p>
+                    </div>
+                </div>
+                <nav class="main-nav">
+                    <a href="index.html#calculators">All Calculators</a>
+                    <a href="index.html">Home</a>
+                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <span class="toggle-icon sun">☀</span>
+                        <span class="toggle-icon moon">☾</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="calculator-header">
+        <div class="container">
+            <h1>⛵ Coast FIRE Calculator</h1>
+            <p>Find out when your savings can coast to retirement through compound growth alone</p>
+        </div>
+    </div>
+
+    <section class="calculator-container">
+        <div class="container">
+            <div class="calculator-layout">
+                
+                <div class="input-panel">
+                    <h2>Your Details</h2>
+                    <form id="coast-fire-form">
+                        <div class="form-group">
+                            <label for="current-age">Current Age</label>
+                            <input type="number" id="current-age" value="25" min="18" max="80" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="target-retirement-age">Target Retirement Age</label>
+                            <input type="number" id="target-retirement-age" value="65" min="30" max="90" step="1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="current-savings">Current Invested Savings ($)</label>
+                            <input type="number" id="current-savings" value="50000" min="0" step="1000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="annual-expenses">Expected Annual Expenses in Retirement ($)</label>
+                            <input type="number" id="annual-expenses" value="40000" min="0" step="1000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="return-rate">Expected Annual Return (%)</label>
+                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1">
+                            <small>Historically ~7% for stocks after inflation</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="withdrawal-rate">Safe Withdrawal Rate (%)</label>
+                            <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1">
+                            <small>The 4% rule is commonly used</small>
+                        </div>
+
+                        <button type="submit" class="calculate-btn">Calculate Coast FIRE</button>
+                    </form>
+                </div>
+
+                <div class="results-panel">
+                    <h2>Your Coast FIRE Results</h2>
+                    
+                    <div class="result-card" style="border-left-color: var(--accent-gold);">
+                        <div class="result-label">Retirement FIRE Number</div>
+                        <div class="result-value" id="fire-number">$0</div>
+                        <div class="result-subtext">Amount needed at retirement age</div>
+                    </div>
+
+                    <div class="result-card" style="border-left-color: var(--accent-orange);">
+                        <div class="result-label">Coast FIRE Number (Today)</div>
+                        <div class="result-value" id="coast-number">$0</div>
+                        <div class="result-subtext">If you have this much now, you can stop saving for retirement</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="result-label">Coast FIRE Status</div>
+                        <div class="result-value" id="coast-status" style="font-size: 24px;">—</div>
+                        <div class="result-subtext" id="coast-detail"></div>
+                    </div>
+
+                    <div class="result-card" style="border-left-color: var(--accent-blue);">
+                        <div class="result-label">Your Savings Will Grow To</div>
+                        <div class="result-value" id="projected-value">$0</div>
+                        <div class="result-subtext" id="projected-detail">By retirement, without additional contributions</div>
+                    </div>
+
+                    <div style="background: var(--bg-tertiary); padding: 20px; border-radius: var(--radius-md); margin-top: 20px;">
+                        <p style="color: var(--text-secondary); font-size: 13.5px; line-height: 1.7; margin: 0;">
+                            <strong style="color: var(--text-primary);">What is Coast FIRE?</strong> Coast FIRE means you've saved enough that compound growth alone will get you to your retirement goal — you no longer need to contribute more. You still work to cover living expenses, but the retirement pressure is off.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>FIRE Planner</h4>
+                    <p>Free tools to help you achieve Financial Independence and Retire Early.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>More Calculators</h4>
+                    <ul>
+                        <li><a href="fire-calculator.html">FIRE Calculator</a></li>
+                        <li><a href="compound-interest.html">Compound Interest</a></li>
+                        <li><a href="net-worth-calculator.html">Net Worth</a></li>
+                        <li><a href="roth-vs-traditional.html">Roth vs Traditional</a></li>
+                        <li><a href="401k-calculator.html">401k Calculator</a></li>
+                        <li><a href="debt-calculator.html">Debt Payoff</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="resources.html">FIRE Resources</a></li>
+                        <li><a href="glossary.html">Glossary</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FIRE Planner. For educational purposes only. Consult a financial advisor for personalized advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('coast-fire-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateCoastFIRE();
+        });
+
+        const inputs = document.querySelectorAll('#coast-fire-form input');
+        inputs.forEach(input => {
+            input.addEventListener('input', calculateCoastFIRE);
+        });
+
+        calculateCoastFIRE();
+
+        function calculateCoastFIRE() {
+            const currentAge = parseInt(document.getElementById('current-age').value) || 25;
+            const retirementAge = parseInt(document.getElementById('target-retirement-age').value) || 65;
+            const currentSavings = parseFloat(document.getElementById('current-savings').value) || 0;
+            const annualExpenses = parseFloat(document.getElementById('annual-expenses').value) || 40000;
+            const returnRate = parseFloat(document.getElementById('return-rate').value) / 100 || 0.07;
+            const withdrawalRate = parseFloat(document.getElementById('withdrawal-rate').value) / 100 || 0.04;
+
+            const yearsToRetirement = Math.max(retirementAge - currentAge, 0);
+
+            // FIRE number at retirement
+            const fireNumber = annualExpenses / withdrawalRate;
+
+            // Coast FIRE number = how much you need TODAY so that it grows to fireNumber
+            // FV = PV * (1 + r)^n  =>  PV = FV / (1 + r)^n
+            const coastNumber = fireNumber / Math.pow(1 + returnRate, yearsToRetirement);
+
+            // What current savings will grow to
+            const projectedValue = currentSavings * Math.pow(1 + returnRate, yearsToRetirement);
+
+            // Status
+            const surplus = currentSavings - coastNumber;
+            const surplusPercent = coastNumber > 0 ? (currentSavings / coastNumber * 100) : 0;
+
+            // Display
+            document.getElementById('fire-number').textContent = formatCurrency(fireNumber);
+            document.getElementById('coast-number').textContent = formatCurrency(coastNumber);
+            document.getElementById('projected-value').textContent = formatCurrency(projectedValue);
+            document.getElementById('projected-detail').textContent = 
+                `By age ${retirementAge}, without additional contributions`;
+
+            const statusEl = document.getElementById('coast-status');
+            const detailEl = document.getElementById('coast-detail');
+
+            if (yearsToRetirement <= 0) {
+                statusEl.textContent = '🎉 Already Retirement Age!';
+                statusEl.style.color = 'var(--accent-green)';
+                detailEl.textContent = 'You\'ve reached your target retirement age.';
+            } else if (currentSavings >= coastNumber) {
+                statusEl.textContent = '⛵ You\'ve Reached Coast FIRE!';
+                statusEl.style.color = 'var(--accent-green)';
+                detailEl.textContent = `You're ${surplusPercent.toFixed(0)}% of the way — ${formatCurrency(surplus)} above your Coast FIRE number. You can stop contributing to retirement savings!`;
+            } else {
+                const gap = coastNumber - currentSavings;
+                statusEl.textContent = `${formatCurrency(gap)} to go`;
+                statusEl.style.color = 'var(--accent-orange)';
+                detailEl.textContent = `You're at ${surplusPercent.toFixed(0)}% of your Coast FIRE number. Keep saving!`;
+            }
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+    </script>
+</body>
+</html>

@@ -7,7 +7,7 @@
     <!-- SEO Meta Tags -->
     <title>FIRE Calculator & Financial Independence Planning Tools | Free FIRE Planner</title>
     <meta name="description" content="Free FIRE calculator and financial independence tools. Calculate retirement savings, compound interest, IRA comparisons, investment fees, and debt payoff. Plan your early retirement today with our free calculators.">
-    <meta name="keywords" content="FIRE calculator, financial independence calculator, retire early calculator, FIRE planning, early retirement calculator, compound interest calculator, retirement planning tools, financial freedom calculator, passive income calculator, investment calculator, savings calculator, retirement age calculator, financial independence retire early, FIRE movement, wealth calculator">
+    <meta name="keywords" content="FIRE calculator, financial independence calculator, retire early calculator, FIRE planning, early retirement calculator, compound interest calculator, retirement planning tools, financial freedom calculator, passive income calculator, investment calculator, savings calculator, retirement age calculator, financial independence retire early, FIRE movement, wealth calculator, coast FIRE calculator, net worth calculator">
     <meta name="author" content="FIRE Planner">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://fireplanner.org/">
@@ -58,42 +58,23 @@
         "price": "0",
         "priceCurrency": "USD"
       },
-      "featureList": "FIRE Calculator, Compound Interest Calculator, IRA Comparison, Investment Fee Calculator, Debt Payoff Calculator, 401k Calculator, Savings Goal Calculator, Retirement Age Calculator"
+      "featureList": "FIRE Calculator, Compound Interest Calculator, IRA Comparison, Investment Fee Calculator, Debt Payoff Calculator, 401k Calculator, Savings Goal Calculator, Retirement Age Calculator, Coast FIRE Calculator, Net Worth Calculator"
     }
     </script>
     
+    <!-- Prevent flash of wrong theme -->
+    <script>
+      (function(){
+        var t = localStorage.getItem('fireplanner-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Logo styling for header */
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        @media (max-width: 768px) {
-            .logo img {
-                height: 80px !important;
-            }
-            .logo h1 {
-                font-size: 24px !important;
-            }
-        }
-
-        /* Instagram nav icon */
-        .nav-instagram {
-            display: inline-flex;
-            align-items: center;
-            opacity: 0.75;
-            transition: opacity 0.2s;
-        }
-        .nav-instagram:hover {
-            opacity: 1;
-        }
-    </style>
 </head>
 <body>
     <!-- Header -->
@@ -101,10 +82,10 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <img src="fire-logo.png" alt="FIRE Planner" style="height: 120px; width: auto; margin-right: 20px;">
-                    <div style="display: flex; flex-direction: column; justify-content: center;">
-                        <h1 style="margin: 0; font-size: 32px; color: #1a2332;">FIRE Planner</h1>
-                        <p class="tagline" style="margin: 4px 0 0 0;">Your Path to Financial Independence</p>
+                    <img src="fire-logo.png" alt="FIRE Planner" style="height: 52px; width: auto;">
+                    <div>
+                        <h1>FIRE Planner</h1>
+                        <p class="tagline">Your Path to Financial Independence</p>
                     </div>
                 </div>
                 <nav class="main-nav">
@@ -113,8 +94,12 @@
                     <a href="glossary.html">Glossary</a>
                     <a href="about.html">About</a>
                     <a href="https://www.instagram.com/fireplanner_org/" target="_blank" rel="noopener" class="nav-instagram" aria-label="Follow us on Instagram">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
+                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                        <span class="toggle-icon sun">☀</span>
+                        <span class="toggle-icon moon">☾</span>
+                    </button>
                 </nav>
             </div>
         </div>
@@ -136,104 +121,119 @@
     <section id="calculators" class="calculators-section">
         <div class="container">
             <h2 class="section-title">Choose Your Calculator</h2>
+            <p class="section-subtitle-text">10 free tools to help you plan every aspect of your financial independence journey.</p>
             <div class="calculator-grid">
                 
-                <!-- Compound Interest Calculator -->
-                <div class="calculator-card">
-                    <div class="card-icon">📈</div>
-                    <h3>Compound Interest Calculator</h3>
-                    <p>See how your investments can grow over time with the power of compound interest.</p>
-                    <a href="compound-interest.html" class="card-link">Calculate Now →</a>
-                </div>
-
                 <!-- FIRE Calculator -->
-                <div class="calculator-card featured">
+                <div class="calculator-card featured fade-up">
                     <div class="featured-badge">Most Popular</div>
                     <div class="card-icon">🔥</div>
                     <h3>FIRE Calculator</h3>
                     <p>Calculate when you can achieve Financial Independence and Retire Early.</p>
-                    <a href="fire-calculator.html" class="card-link">Calculate Now →</a>
+                    <a href="fire-calculator.html" class="card-link">Calculate Now</a>
+                </div>
+
+                <!-- Compound Interest Calculator -->
+                <div class="calculator-card fade-up">
+                    <div class="card-icon">📈</div>
+                    <h3>Compound Interest Calculator</h3>
+                    <p>See how your investments can grow over time with the power of compound interest.</p>
+                    <a href="compound-interest.html" class="card-link">Calculate Now</a>
+                </div>
+
+                <!-- Coast FIRE Calculator (NEW) -->
+                <div class="calculator-card fade-up">
+                    <div class="card-icon">⛵</div>
+                    <h3>Coast FIRE Calculator</h3>
+                    <p>Find out if your savings can coast to your retirement goal without new contributions.</p>
+                    <a href="coast-fire-calculator.html" class="card-link">Calculate Now</a>
                 </div>
 
                 <!-- Roth vs Traditional -->
-                <div class="calculator-card">
+                <div class="calculator-card fade-up">
                     <div class="card-icon">⚖️</div>
                     <h3>Roth vs Traditional IRA</h3>
                     <p>Compare tax advantages and find the best retirement account for your situation.</p>
-                    <a href="roth-vs-traditional.html" class="card-link">Calculate Now →</a>
-                </div>
-
-                <!-- Investment Fee Calculator -->
-                <div class="calculator-card">
-                    <div class="card-icon">💰</div>
-                    <h3>Investment Fee Impact</h3>
-                    <p>Discover how fees can erode your investment returns over decades.</p>
-                    <a href="fee-calculator.html" class="card-link">Calculate Now →</a>
-                </div>
-
-                <!-- Debt Payoff Calculator -->
-                <div class="calculator-card">
-                    <div class="card-icon">💳</div>
-                    <h3>Debt Payoff Calculator</h3>
-                    <p>Create a plan to become debt-free faster with our strategic payoff calculator.</p>
-                    <a href="debt-calculator.html" class="card-link">Calculate Now →</a>
+                    <a href="roth-vs-traditional.html" class="card-link">Calculate Now</a>
                 </div>
 
                 <!-- 401k Calculator -->
-                <div class="calculator-card">
+                <div class="calculator-card fade-up">
                     <div class="card-icon">🏢</div>
                     <h3>401k Calculator</h3>
                     <p>Calculate 401k growth with employer match and see your retirement savings potential.</p>
-                    <a href="401k-calculator.html" class="card-link">Calculate Now →</a>
+                    <a href="401k-calculator.html" class="card-link">Calculate Now</a>
+                </div>
+
+                <!-- Net Worth Calculator (NEW) -->
+                <div class="calculator-card fade-up">
+                    <div class="card-icon">💎</div>
+                    <h3>Net Worth Calculator</h3>
+                    <p>Track your total assets minus liabilities to measure your true financial position.</p>
+                    <a href="net-worth-calculator.html" class="card-link">Calculate Now</a>
+                </div>
+
+                <!-- Investment Fee Calculator -->
+                <div class="calculator-card fade-up">
+                    <div class="card-icon">💰</div>
+                    <h3>Investment Fee Impact</h3>
+                    <p>Discover how fees can erode your investment returns over decades.</p>
+                    <a href="fee-calculator.html" class="card-link">Calculate Now</a>
+                </div>
+
+                <!-- Debt Payoff Calculator -->
+                <div class="calculator-card fade-up">
+                    <div class="card-icon">💳</div>
+                    <h3>Debt Payoff Calculator</h3>
+                    <p>Create a plan to become debt-free faster with our strategic payoff calculator.</p>
+                    <a href="debt-calculator.html" class="card-link">Calculate Now</a>
                 </div>
 
                 <!-- Savings Goal Calculator -->
-                <div class="calculator-card">
+                <div class="calculator-card fade-up">
                     <div class="card-icon">🎯</div>
                     <h3>Savings Goal Calculator</h3>
                     <p>Plan how to reach your savings goals and see how much to save each month.</p>
-                    <a href="savings-goal-calculator.html" class="card-link">Calculate Now →</a>
+                    <a href="savings-goal-calculator.html" class="card-link">Calculate Now</a>
                 </div>
 
                 <!-- Retirement Age Calculator -->
-                <div class="calculator-card">
+                <div class="calculator-card fade-up">
                     <div class="card-icon">📅</div>
                     <h3>Retirement Age Calculator</h3>
                     <p>Calculate what age you can retire based on your current savings and goals.</p>
-                    <a href="retirement-age-calculator.html" class="card-link">Calculate Now →</a>
+                    <a href="retirement-age-calculator.html" class="card-link">Calculate Now</a>
                 </div>
 
             </div>
         </div>
     </section>
 
-
-    
     <!-- About Section -->
     <section id="about" class="about-section">
         <div class="container">
             <div class="about-content">
                 <h2>Why FIRE Planner?</h2>
                 <div class="features-grid">
-                    <div class="feature">
+                    <div class="feature fade-up">
                         <div class="feature-icon">✓</div>
                         <h4>100% Free</h4>
                         <p>No hidden fees, no signup required. All calculators are completely free to use.</p>
                     </div>
-                    <div class="feature">
+                    <div class="feature fade-up">
                         <div class="feature-icon">✓</div>
                         <h4>Privacy First</h4>
                         <p>All calculations happen in your browser. We never store your financial data.</p>
                     </div>
-                    <div class="feature">
+                    <div class="feature fade-up">
                         <div class="feature-icon">✓</div>
                         <h4>Accurate Results</h4>
                         <p>Professional-grade formulas used by financial advisors and CPAs.</p>
                     </div>
-                    <div class="feature">
+                    <div class="feature fade-up">
                         <div class="feature-icon">✓</div>
                         <h4>Mobile Friendly</h4>
-                        <p>Calculate on any device - desktop, tablet, or smartphone.</p>
+                        <p>Calculate on any device — desktop, tablet, or smartphone.</p>
                     </div>
                 </div>
             </div>
@@ -241,82 +241,82 @@
     </section>
 
     <!-- FIRE Education Section -->
-    <section class="education-section" style="background: #fff; padding: 80px 0;">
+    <section class="education-section">
         <div class="container">
             <h2 class="section-title">Understanding Financial Independence</h2>
             <div style="max-width: 900px; margin: 0 auto;">
-                <p style="font-size: 1.2em; line-height: 1.8; color: #555; margin-bottom: 30px;">
+                <p style="font-size: 1.15em; line-height: 1.8; color: var(--text-secondary); margin-bottom: 30px;">
                     Financial Independence, Retire Early (FIRE) is a movement focused on extreme savings and investment that allows people to retire far earlier than traditional retirement planning and budgets would permit. The core principle is simple: by living below your means and investing the difference, you can build enough wealth to cover your living expenses without needing to work.
                 </p>
                 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin: 40px 0;">
-                    <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border-left: 4px solid #ff6b35;">
-                        <h3 style="color: #1a2332; margin-bottom: 15px; font-size: 1.5em;">The 4% Rule</h3>
-                        <p style="color: #555; line-height: 1.7;">
-                            The foundation of FIRE planning. This rule suggests you can safely withdraw 4% of your investment portfolio annually in retirement without running out of money. To calculate your FIRE number, multiply your annual expenses by 25 (which is the inverse of 4%). For example, if you spend $40,000 per year, you'd need $1 million saved ($40,000 × 25).
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin: 40px 0;">
+                    <div class="fade-up" style="background: var(--bg-tertiary); padding: 28px; border-radius: 14px; border-left: 4px solid var(--accent-orange);">
+                        <h3 style="color: var(--text-primary); margin-bottom: 14px; font-size: 1.4em; font-family: 'DM Serif Display', serif;">The 4% Rule</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.7;">
+                            The foundation of FIRE planning. This rule suggests you can safely withdraw 4% of your investment portfolio annually in retirement without running out of money. To calculate your FIRE number, multiply your annual expenses by 25. For example, if you spend $40,000 per year, you'd need $1 million saved.
                         </p>
                     </div>
                     
-                    <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border-left: 4px solid #ff6b35;">
-                        <h3 style="color: #1a2332; margin-bottom: 15px; font-size: 1.5em;">Savings Rate Matters</h3>
-                        <p style="color: #555; line-height: 1.7;">
-                            Your savings rate is the most important factor in reaching FIRE. The percentage of your income you save and invest determines how quickly you can achieve financial independence. A 50% savings rate could get you to FIRE in about 17 years, while a 75% savings rate could cut that to around 7 years.
+                    <div class="fade-up" style="background: var(--bg-tertiary); padding: 28px; border-radius: 14px; border-left: 4px solid var(--accent-orange);">
+                        <h3 style="color: var(--text-primary); margin-bottom: 14px; font-size: 1.4em; font-family: 'DM Serif Display', serif;">Savings Rate Matters</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.7;">
+                            Your savings rate is the most important factor in reaching FIRE. A 50% savings rate could get you to FIRE in about 17 years, while a 75% savings rate could cut that to around 7 years.
                         </p>
                     </div>
                     
-                    <div style="background: #f8f9fa; padding: 30px; border-radius: 12px; border-left: 4px solid #ff6b35;">
-                        <h3 style="color: #1a2332; margin-bottom: 15px; font-size: 1.5em;">Compound Growth</h3>
-                        <p style="color: #555; line-height: 1.7;">
-                            Time and compound returns are your greatest allies. When you invest consistently and reinvest dividends, your money grows exponentially over time. Starting early makes an enormous difference—even small amounts invested in your 20s can grow substantially by the time you reach traditional retirement age.
+                    <div class="fade-up" style="background: var(--bg-tertiary); padding: 28px; border-radius: 14px; border-left: 4px solid var(--accent-orange);">
+                        <h3 style="color: var(--text-primary); margin-bottom: 14px; font-size: 1.4em; font-family: 'DM Serif Display', serif;">Compound Growth</h3>
+                        <p style="color: var(--text-secondary); line-height: 1.7;">
+                            Time and compound returns are your greatest allies. Starting early makes an enormous difference — even small amounts invested in your 20s can grow substantially by the time you reach traditional retirement age.
                         </p>
                     </div>
                 </div>
 
-                <h3 style="color: #1a2332; margin: 50px 0 25px 0; font-size: 1.8em;">Different Paths to FIRE</h3>
+                <h3 style="color: var(--text-primary); margin: 50px 0 25px 0; font-size: 1.7em; font-family: 'DM Serif Display', serif;">Different Paths to FIRE</h3>
                 
-                <div style="background: #fff; padding: 0;">
-                    <div style="border-bottom: 2px solid #e9ecef; padding: 25px 0;">
-                        <h4 style="color: #ff6b35; margin-bottom: 10px; font-size: 1.3em;">Lean FIRE</h4>
-                        <p style="color: #555; line-height: 1.7; margin: 0;">
-                            Living on a minimal budget in retirement, typically $25,000-$40,000 per year. This approach requires aggressive saving and frugal living but allows you to reach FIRE fastest. Best for those who value simplicity and minimalism.
+                <div>
+                    <div class="fade-up" style="border-bottom: 1px solid var(--border); padding: 24px 0;">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 8px; font-size: 1.2em;">Lean FIRE</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">
+                            Living on a minimal budget in retirement, typically $25,000–$40,000 per year. Best for those who value simplicity and minimalism.
                         </p>
                     </div>
                     
-                    <div style="border-bottom: 2px solid #e9ecef; padding: 25px 0;">
-                        <h4 style="color: #ff6b35; margin-bottom: 10px; font-size: 1.3em;">Fat FIRE</h4>
-                        <p style="color: #555; line-height: 1.7; margin: 0;">
-                            Maintaining a more comfortable or luxurious lifestyle in retirement, typically $100,000+ per year. This requires saving a larger nest egg but provides more financial cushion and lifestyle flexibility. Takes longer to achieve but allows for a more comfortable retirement.
+                    <div class="fade-up" style="border-bottom: 1px solid var(--border); padding: 24px 0;">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 8px; font-size: 1.2em;">Fat FIRE</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">
+                            Maintaining a comfortable or luxurious lifestyle in retirement, typically $100,000+ per year. Takes longer to achieve but provides more financial cushion.
                         </p>
                     </div>
                     
-                    <div style="border-bottom: 2px solid #e9ecef; padding: 25px 0;">
-                        <h4 style="color: #ff6b35; margin-bottom: 10px; font-size: 1.3em;">Barista FIRE</h4>
-                        <p style="color: #555; line-height: 1.7; margin: 0;">
-                            Saving enough to cover most expenses, then working part-time or in a low-stress job to cover the gap and provide health insurance. This approach offers more flexibility than traditional retirement while still providing financial security and purpose.
+                    <div class="fade-up" style="border-bottom: 1px solid var(--border); padding: 24px 0;">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 8px; font-size: 1.2em;">Barista FIRE</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">
+                            Saving enough to cover most expenses, then working part-time to cover the gap and provide health insurance.
                         </p>
                     </div>
                     
-                    <div style="padding: 25px 0;">
-                        <h4 style="color: #ff6b35; margin-bottom: 10px; font-size: 1.3em;">Coast FIRE</h4>
-                        <p style="color: #555; line-height: 1.7; margin: 0;">
-                            Saving aggressively early on, then letting compound growth do the work while you just cover current expenses. You stop adding to retirement accounts but continue working to pay bills. Your existing savings compound to a full FIRE number by traditional retirement age.
+                    <div class="fade-up" style="padding: 24px 0;">
+                        <h4 style="color: var(--accent-orange); margin-bottom: 8px; font-size: 1.2em;">Coast FIRE</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">
+                            Saving aggressively early on, then letting compound growth do the work while you just cover current expenses. <a href="coast-fire-calculator.html">Try our Coast FIRE calculator →</a>
                         </p>
                     </div>
                 </div>
 
-                <div style="background: #e8f5e9; padding: 30px; border-radius: 12px; margin: 40px 0; border-left: 4px solid #4caf50;">
-                    <h3 style="color: #1a2332; margin-bottom: 15px; font-size: 1.5em;">Key Principles for Success</h3>
-                    <ul style="color: #555; line-height: 1.9; font-size: 1.05em; padding-left: 20px;">
-                        <li style="margin-bottom: 10px;"><strong>Start Early:</strong> The earlier you begin, the more time compound interest has to work in your favor.</li>
-                        <li style="margin-bottom: 10px;"><strong>Live Below Your Means:</strong> The gap between your income and expenses determines how fast you reach FIRE.</li>
-                        <li style="margin-bottom: 10px;"><strong>Invest Consistently:</strong> Regular contributions, regardless of market conditions, build wealth over time.</li>
-                        <li style="margin-bottom: 10px;"><strong>Minimize Fees:</strong> Every 1% in fees can cost you hundreds of thousands over a lifetime. Choose low-cost index funds.</li>
-                        <li style="margin-bottom: 10px;"><strong>Optimize Taxes:</strong> Use tax-advantaged accounts like 401(k)s and IRAs to reduce your tax burden and accelerate wealth building.</li>
-                        <li style="margin-bottom: 10px;"><strong>Stay the Course:</strong> Market volatility is normal. Stick to your plan and don't panic sell during downturns.</li>
+                <div class="fade-up" style="background: var(--accent-green-soft); padding: 28px; border-radius: 14px; margin: 40px 0; border-left: 4px solid var(--accent-green);">
+                    <h3 style="color: var(--text-primary); margin-bottom: 14px; font-size: 1.4em; font-family: 'DM Serif Display', serif;">Key Principles for Success</h3>
+                    <ul style="color: var(--text-secondary); line-height: 1.9; font-size: 1.02em; padding-left: 20px;">
+                        <li style="margin-bottom: 8px;"><strong>Start Early:</strong> The earlier you begin, the more time compound interest has to work in your favor.</li>
+                        <li style="margin-bottom: 8px;"><strong>Live Below Your Means:</strong> The gap between your income and expenses determines how fast you reach FIRE.</li>
+                        <li style="margin-bottom: 8px;"><strong>Invest Consistently:</strong> Regular contributions, regardless of market conditions, build wealth over time.</li>
+                        <li style="margin-bottom: 8px;"><strong>Minimize Fees:</strong> Every 1% in fees can cost you hundreds of thousands over a lifetime.</li>
+                        <li style="margin-bottom: 8px;"><strong>Optimize Taxes:</strong> Use tax-advantaged accounts like 401(k)s and IRAs to accelerate wealth building.</li>
+                        <li style="margin-bottom: 8px;"><strong>Stay the Course:</strong> Market volatility is normal. Stick to your plan and don't panic sell.</li>
                     </ul>
                 </div>
 
-                <p style="font-size: 1.1em; line-height: 1.8; color: #555; margin-top: 30px; text-align: center; font-style: italic;">
+                <p style="font-size: 1.1em; line-height: 1.8; color: var(--text-muted); margin-top: 30px; text-align: center; font-style: italic;">
                     "The goal isn't to retire from work, but to retire to a life where you can choose how you spend your time."
                 </p>
             </div>
@@ -349,8 +349,10 @@
                     <h4>Calculators</h4>
                     <ul>
                         <li><a href="fire-calculator.html">FIRE Calculator</a></li>
-                        <li><a href="401k-calculator.html">401k Calculator</a></li>
                         <li><a href="compound-interest.html">Compound Interest</a></li>
+                        <li><a href="coast-fire-calculator.html">Coast FIRE</a></li>
+                        <li><a href="401k-calculator.html">401k Calculator</a></li>
+                        <li><a href="net-worth-calculator.html">Net Worth</a></li>
                         <li><a href="roth-vs-traditional.html">Roth vs Traditional</a></li>
                         <li><a href="debt-calculator.html">Debt Payoff</a></li>
                         <li><a href="fee-calculator.html">Investment Fees</a></li>
@@ -362,6 +364,7 @@
                     <h4>Resources</h4>
                     <ul>
                         <li><a href="resources.html">FIRE Resources</a></li>
+                        <li><a href="fire-guide.html">FIRE Guide</a></li>
                         <li><a href="glossary.html">Glossary</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
@@ -388,4 +391,11 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 FIRE Planner. All calculators are for educational purposes. Consu
+                <p>&copy; 2025 FIRE Planner. All calculators are for educational purposes. Consult a financial advisor for personalized advice.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
