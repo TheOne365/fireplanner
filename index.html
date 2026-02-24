@@ -65,9 +65,15 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
-        var t = localStorage.getItem('fireplanner-theme');
-        if (t !== 'dark' && t !== 'light') t = 'light';
-        document.documentElement.setAttribute('data-theme', t);
+        var K='fireplanner-theme',D=document.documentElement;
+        var t;try{t=localStorage.getItem(K)}catch(e){}
+        if(t!=='dark'&&t!=='light')t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+        D.setAttribute('data-theme',t);
+        window.toggleFPTheme=function(){
+          var c=D.getAttribute('data-theme')==='dark'?'light':'dark';
+          D.setAttribute('data-theme',c);
+          try{localStorage.setItem(K,c)}catch(e){}
+        };
       })();
     </script>
 
@@ -96,10 +102,7 @@
                     <a href="https://www.instagram.com/fireplanner_org/" target="_blank" rel="noopener" class="nav-instagram" aria-label="Follow us on Instagram">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                     </a>
-                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-                        <span class="toggle-icon sun">☀</span>
-                        <span class="toggle-icon moon">☾</span>
-                    </button>
+                    <button type="button" class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleFPTheme()"><span class="toggle-icon sun">☀</span><span class="toggle-icon moon">☾</span></button>
                 </nav>
             </div>
         </div>

@@ -37,9 +37,15 @@
     <!-- Prevent flash of wrong theme -->
     <script>
       (function(){
-        var t = localStorage.getItem('fireplanner-theme');
-        if (t !== 'dark' && t !== 'light') t = 'light';
-        document.documentElement.setAttribute('data-theme', t);
+        var K='fireplanner-theme',D=document.documentElement;
+        var t;try{t=localStorage.getItem(K)}catch(e){}
+        if(t!=='dark'&&t!=='light')t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+        D.setAttribute('data-theme',t);
+        window.toggleFPTheme=function(){
+          var c=D.getAttribute('data-theme')==='dark'?'light':'dark';
+          D.setAttribute('data-theme',c);
+          try{localStorage.setItem(K,c)}catch(e){}
+        };
       })();
     </script>
 
@@ -63,10 +69,7 @@
                 <nav class="main-nav">
                     <a href="index.html#calculators">All Calculators</a>
                     <a href="index.html">Home</a>
-                    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-                        <span class="toggle-icon sun">☀</span>
-                        <span class="toggle-icon moon">☾</span>
-                    </button>
+                    <button type="button" class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleFPTheme()"><span class="toggle-icon sun">☀</span><span class="toggle-icon moon">☾</span></button>
                 </nav>
             </div>
         </div>
