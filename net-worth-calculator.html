@@ -683,13 +683,12 @@ window.fpZeroEmpty = function(selector) {
                     <div class="nw-bar"><div class="nw-bar-fill positive" id="nw-bar-fill" style="width: 50%"></div></div>
                     <div class="subtext" id="nw-context"></div>
                 </div>
-
-            <div class="fp-share-section" style="max-width:600px; margin: 16px auto 0;">
-                <button class="fp-share-btn" onclick="fpNWShare()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                    Share My Net Worth
-                </button>
-            </div>
+                    <div class="fp-share-section" style="margin-top:24px;">
+                        <button class="fp-share-btn" onclick="fpNWShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
+                    </div>
 
                 <div style="background: var(--bg-secondary); padding: 24px 28px; border-radius: var(--radius-lg); margin-top: 24px; border: 1px solid var(--border-light);">
                     <h3 style="font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text-primary); margin-bottom: 12px;">Understanding Net Worth</h3>
@@ -762,19 +761,6 @@ window.fpZeroEmpty = function(selector) {
             </div>
         </div>
     </footer>
-
-
-        function fpNWShare() {
-            var assets = document.getElementById('total-assets');
-            var liabilities = document.getElementById('total-liabilities');
-            var nw = document.getElementById('net-worth');
-            var results = [
-                { label: 'Net Worth', value: nw ? nw.textContent : '-' },
-                { label: 'Total Assets', value: assets ? assets.textContent : '-' },
-                { label: 'Total Liabilities', value: liabilities ? liabilities.textContent : '-' },
-            ];
-            FPShare.open('My Net Worth Snapshot', results);
-        }
 
     <script src="script.js"></script>
     <script>
@@ -852,6 +838,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }).format(value);
         }
     
+
+    window.fpNWShare = function() {
+        var nw   = document.getElementById('net-worth');
+        var ast  = document.getElementById('total-assets');
+        var liab = document.getElementById('total-liabilities');
+        FPShare.open('My Net Worth Snapshot', [
+            { label: 'Net Worth',         value: nw   ? nw.textContent   : '$0' },
+            { label: 'Total Assets',      value: ast  ? ast.textContent  : '$0' },
+            { label: 'Total Liabilities', value: liab ? liab.textContent : '$0' },
+        ]);
+    };
 });
 </script>
 </body>
