@@ -217,7 +217,22 @@
     <section class="calculator-container">
         <div class="container">
             <div class="nw-layout">
-                
+                <div style="display:flex; align-items:center; gap:0; margin-bottom:28px; position:relative;">
+                    <div style="position:absolute;top:14px;left:14px;right:14px;height:2px;background:var(--border);z-index:0;"></div>
+                    <div style="position:absolute;top:14px;left:14px;height:2px;background:var(--accent-green);z-index:1;width:100%;transition:width 0.4s ease;" id="nw-progress-track"></div>
+                    <div class="fp-step done" style="flex:1;z-index:2;text-align:center;cursor:default;">
+                        <div class="fp-step-dot" style="margin:0 auto 6px;">✓</div>
+                        <div class="fp-step-label">Assets</div>
+                    </div>
+                    <div class="fp-step done" style="flex:1;z-index:2;text-align:center;cursor:default;">
+                        <div class="fp-step-dot" style="margin:0 auto 6px;">✓</div>
+                        <div class="fp-step-label">Liabilities</div>
+                    </div>
+                    <div class="fp-step active" style="flex:1;z-index:2;text-align:center;cursor:default;">
+                        <div class="fp-step-dot" style="margin:0 auto 6px;">3</div>
+                        <div class="fp-step-label">Net Worth</div>
+                    </div>
+                </div>
                 <div class="nw-columns">
                     <!-- ASSETS -->
                     <div class="nw-col">
@@ -265,6 +280,13 @@
                     <div class="nw-bar"><div class="nw-bar-fill positive" id="nw-bar-fill" style="width: 50%"></div></div>
                     <div class="subtext" id="nw-context"></div>
                 </div>
+
+            <div class="fp-share-section" style="max-width:600px; margin: 16px auto 0;">
+                <button class="fp-share-btn" onclick="fpNWShare()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    Share My Net Worth
+                </button>
+            </div>
 
                 <div style="background: var(--bg-secondary); padding: 24px 28px; border-radius: var(--radius-lg); margin-top: 24px; border: 1px solid var(--border-light);">
                     <h3 style="font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text-primary); margin-bottom: 12px;">Understanding Net Worth</h3>
@@ -338,6 +360,19 @@
         </div>
     </footer>
 
+
+        function fpNWShare() {
+            var assets = document.getElementById('total-assets');
+            var liabilities = document.getElementById('total-liabilities');
+            var nw = document.getElementById('net-worth');
+            var results = [
+                { label: 'Net Worth', value: nw ? nw.textContent : '-' },
+                { label: 'Total Assets', value: assets ? assets.textContent : '-' },
+                { label: 'Total Liabilities', value: liabilities ? liabilities.textContent : '-' },
+            ];
+            FPShare.open('My Net Worth Snapshot', results);
+        }
+
     <script src="script.js"></script>
     <script>
         function calculateNetWorth() {
@@ -354,11 +389,11 @@
 
             const netWorth = totalAssets - totalLiabilities;
 
-            document.getElementById('total-assets').textContent = formatCurrency(totalAssets);
-            document.getElementById('total-liabilities').textContent = formatCurrency(totalLiabilities);
+            animateValue(document.getElementById('total-assets'), formatCurrency(totalAssets));
+            animateValue(document.getElementById('total-liabilities'), formatCurrency(totalLiabilities));
 
             const nwEl = document.getElementById('net-worth');
-            nwEl.textContent = formatCurrency(netWorth);
+            animateValue(nwEl, formatCurrency(netWorth));
             nwEl.className = 'value ' + (netWorth >= 0 ? 'positive' : 'negative');
 
             // Bar

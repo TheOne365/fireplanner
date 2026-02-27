@@ -96,50 +96,68 @@
                 <div class="input-panel">
                     <h2>Your 401k Details</h2>
                     <form id="four01k-form">
-                        <div class="form-group">
-                            <label for="current-balance">Current 401k Balance ($)</label>
-                            <input type="number" id="current-balance" value="25000" min="0" step="1000">
+                        <!-- STEP PROGRESS BAR -->
+                        <div id="fp-steps-bar" class="fp-progress-bar" style="margin-bottom:28px;"></div>
+
+                        <!-- Step 0: Your Savings -->
+                        <div class="fp-step-panel active" id="fp-panel-0">
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="current-balance">Current 401k Balance ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">Your current 401k/403b balance today. If starting fresh, enter 0.</span></span></div>
+                                <input type="number" id="current-balance" value="25000" min="0" step="1000">
+                            </div>
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="annual-salary">Annual Salary ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">Your gross annual salary before taxes.</span></span></div>
+                                <input type="number" id="annual-salary" value="75000" min="0" step="1000">
+                            </div>
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="contribution-rate">Your Contribution Rate (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">% of salary you contribute. Always contribute at least enough to get the full employer match.</span></span></div>
+                                <input type="number" id="contribution-rate" value="6" min="0" max="100" step="0.5">
+                                <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">2025 limit: $23,500/year ($31,000 if 50+)</small>
+                            </div>
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="employer-match">Employer Match (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">The % your employer matches. This is free money — always maximize it.</span></span></div>
+                                <input type="number" id="employer-match" value="3" min="0" max="20" step="0.5">
+                                <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Typical: 3-6% of salary</small>
+                            </div>
+                            <div class="fp-step-nav">
+                                <button type="button" class="fp-btn-next" onclick="FPSteps.next()">Next: Growth Settings →</button>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="annual-salary">Annual Salary ($)</label>
-                            <input type="number" id="annual-salary" value="75000" min="0" step="1000">
+                        <!-- Step 1: Growth Settings -->
+                        <div class="fp-step-panel" id="fp-panel-1">
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="match-limit">Employer Match Limit (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">Max salary % your employer will match. Enter 6 if they match up to 6% of salary.</span></span></div>
+                                <input type="number" id="match-limit" value="6" min="0" max="100" step="0.5">
+                            </div>
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="return-rate">Expected Annual Return (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">A diversified stock index fund historically returns ~7% real.</span></span></div>
+                                <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="years">Years Until Retirement</label><span class="fp-tip">i<span class="fp-tip-bubble">More time = dramatically more growth due to compounding.</span></span></div>
+                                <input type="number" id="years" value="30" min="1" max="50" step="1">
+                            </div>
+                            <div class="form-group">
+                                <div class="fp-label-wrap"><label for="salary-increase">Annual Salary Increase (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">Expected yearly raises. 2–3% is typical (roughly inflation).</span></span></div>
+                                <input type="number" id="salary-increase" value="2" min="0" max="10" step="0.5">
+                            </div>
+                            <div class="fp-step-nav">
+                                <button type="button" class="fp-btn-prev" onclick="FPSteps.prev()">← Back</button>
+                                <button type="button" class="fp-btn-next" onclick="FPSteps.goto(2)">See Results →</button>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="contribution-rate">Your Contribution Rate (%)</label>
-                            <input type="number" id="contribution-rate" value="6" min="0" max="100" step="0.5">
-                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">2025 limit: $23,500/year ($31,000 if 50+)</small>
+                        <!-- Step 2: Results summary hint -->
+                        <div class="fp-step-panel" id="fp-panel-2">
+                            <div style="text-align:center; padding: 32px 0 16px;">
+                                <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
+                                <p style="color: var(--text-secondary); font-size: 15px; margin-bottom: 0;">Your results are shown on the right.<br>Adjust any inputs to see how they change your outcome.</p>
+                            </div>
+                            <div class="fp-step-nav">
+                                <button type="button" class="fp-btn-prev" onclick="FPSteps.prev()">← Back to Settings</button>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="employer-match">Employer Match (%)</label>
-                            <input type="number" id="employer-match" value="3" min="0" max="20" step="0.5">
-                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Typical: 3-6% of salary</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="match-limit">Employer Match Limit (%)</label>
-                            <input type="number" id="match-limit" value="6" min="0" max="100" step="0.5">
-                            <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Match up to this % of salary</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="return-rate">Expected Annual Return (%)</label>
-                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="years">Years Until Retirement</label>
-                            <input type="number" id="years" value="30" min="1" max="50" step="1">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="salary-increase">Annual Salary Increase (%)</label>
-                            <input type="number" id="salary-increase" value="2" min="0" max="10" step="0.5">
-                        </div>
-
-                        <button type="submit" class="calculate-btn">Calculate 401k Growth</button>
                     </form>
                 </div>
 
@@ -173,6 +191,13 @@
                         <div class="result-label">First Year Contribution</div>
                         <div class="result-value" id="first-year">$0</div>
                         <div class="result-subtext" id="breakdown">You + Employer match</div>
+                    </div>
+
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fp401kShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
                     </div>
                 </div>
 
@@ -240,11 +265,6 @@
     </footer>
 
     <script>
-        document.getElementById('four01k-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculate401k();
-        });
-
         const inputs = document.querySelectorAll('#four01k-form input');
         inputs.forEach(input => {
             input.addEventListener('input', calculate401k);
@@ -289,9 +309,9 @@
             const firstYearEmployerMatch = firstYearMatchable * (employerMatch / Math.max(matchLimit, employerMatch));
             const firstYearTotal = firstYearYourContribution + firstYearEmployerMatch;
 
-            document.getElementById('final-balance').textContent = formatCurrency(balance);
-            document.getElementById('your-contributions').textContent = formatCurrency(totalYourContributions);
-            document.getElementById('employer-contributions').textContent = formatCurrency(totalEmployerContributions);
+            animateValue(document.getElementById('final-balance'), formatCurrency(balance));
+            animateValue(document.getElementById('your-contributions'), formatCurrency(totalYourContributions));
+            animateValue(document.getElementById('employer-contributions'), formatCurrency(totalEmployerContributions));
             document.getElementById('investment-growth').textContent = formatCurrency(investmentGrowth);
             document.getElementById('first-year').textContent = formatCurrency(firstYearTotal);
             document.getElementById('breakdown').textContent = `${formatCurrency(firstYearYourContribution)} (you) + ${formatCurrency(firstYearEmployerMatch)} (employer)`;
@@ -306,6 +326,32 @@
             }).format(value);
         }
     </script>
+
+        // Init multi-step
+        FPSteps.init(3, ['Your Savings', 'Growth Settings', 'Results']);
+
+        // Validation
+        FPValidate.init({
+            'current-balance':   { label: 'Current balance', min: 0 },
+            'annual-salary':     { label: 'Annual salary', min: 1 },
+            'contribution-rate': { label: 'Contribution rate', min: 0, max: 50, unit: '%' },
+            'employer-match':    { label: 'Employer match', min: 0, max: 20, unit: '%' },
+            'match-limit':       { label: 'Match limit', min: 0, max: 100, unit: '%' },
+            'return-rate':       { label: 'Return rate', min: 0, max: 20, unit: '%' },
+            'years':             { label: 'Years', min: 1, max: 60, unit: ' years' },
+            'salary-increase':   { label: 'Salary increase', min: 0, max: 15, unit: '%' },
+        });
+
+        function fp401kShare() {
+            var results = [
+                { label: 'Final Balance', value: document.getElementById('final-balance').textContent },
+                { label: 'Your Contributions', value: document.getElementById('your-contributions').textContent },
+                { label: 'Employer Match', value: document.getElementById('employer-contributions').textContent },
+                { label: 'Investment Growth', value: document.getElementById('investment-growth').textContent },
+            ];
+            FPShare.open('My 401k Projection', results);
+        }
+
     <script src="script.js"></script>
 </body>
 </html>

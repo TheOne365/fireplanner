@@ -129,8 +129,6 @@
                                 <option value="365">Daily</option>
                             </select>
                         </div>
-
-                        <button type="submit" class="calculate-btn">Calculate Growth</button>
                     </form>
                 </div>
 
@@ -159,6 +157,13 @@
                         <div class="result-label">Return on Investment</div>
                         <div class="result-value" id="roi">0%</div>
                         <div class="result-subtext">Percentage gain on your contributions</div>
+                    </div>
+
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fpCompoundShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
                     </div>
                 </div>
 
@@ -228,11 +233,6 @@
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Compound Interest Calculator Logic
-        document.getElementById('compound-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculateCompoundInterest();
-        });
-
         // Auto-calculate on input change
         const inputs = document.querySelectorAll('#compound-form input, #compound-form select');
         inputs.forEach(input => {
@@ -272,9 +272,9 @@
             const roi = totalContributed > 0 ? ((totalInterest / totalContributed) * 100) : 0;
 
             // Display results
-            document.getElementById('final-balance').textContent = formatCurrency(finalBalance);
-            document.getElementById('total-contributed').textContent = formatCurrency(totalContributed);
-            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+            animateValue(document.getElementById('final-balance'), formatCurrency(finalBalance));
+            animateValue(document.getElementById('total-contributed'), formatCurrency(totalContributed));
+            animateValue(document.getElementById('total-interest'), formatCurrency(totalInterest));
             document.getElementById('roi').textContent = roi.toFixed(1) + '%';
         }
 
@@ -288,6 +288,22 @@
             }).format(value);
         }
     </script>
+
+        FPValidate.init({
+            'principal':            { label: 'Initial investment', min: 0 },
+            'monthly-contribution': { label: 'Monthly contribution', min: 0 },
+            'annual-return':        { label: 'Return rate', min: 0, max: 30, unit: '%' },
+            'years':                { label: 'Years', min: 1, max: 60, unit: ' years' },
+        });
+        function fpCompoundShare() {
+            var results = [
+                { label: 'Final Balance', value: document.getElementById('final-balance').textContent },
+                { label: 'Total Contributed', value: document.getElementById('total-contributed').textContent },
+                { label: 'Interest Earned', value: document.getElementById('total-interest').textContent },
+            ];
+            FPShare.open('My Compound Interest Results', results);
+        }
+
     <script src="script.js"></script>
 </body>
 </html>

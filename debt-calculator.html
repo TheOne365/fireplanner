@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="avg-interest">Average Interest Rate (%)</label>
+                            <div class="fp-label-wrap"><label for="avg-interest">Average Interest Rate (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">Weighted average APR across your debts. Credit cards: 20–25%. Auto loans: 5–8%. Student loans: 4–7%.</span></span></div>
                             <input type="number" id="avg-interest" value="18" min="0" max="30" step="0.1">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Weighted average of all debts</small>
                         </div>
@@ -121,12 +121,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="extra-payment">Extra Monthly Payment ($)</label>
+                            <div class="fp-label-wrap"><label for="extra-payment">Extra Monthly Payment ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">Additional money you could throw at debt. Even $50/month extra dramatically cuts payoff time and interest paid.</span></span></div>
                             <input type="number" id="extra-payment" value="0" min="0" step="25">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Optional additional payment</small>
                         </div>
-
-                        <button type="submit" class="calculate-btn">Calculate Payoff Plan</button>
                     </form>
 
                     <div style="margin-top: 32px; padding: 20px; background: var(--bg-tertiary); border-radius: 8px; border-left: 4px solid #2563eb;">
@@ -166,6 +164,13 @@
                         <div class="result-label">Monthly Debt Payment</div>
                         <div class="result-value" id="total-monthly">$0</div>
                         <div class="result-subtext">Base + extra payments</div>
+                    </div>
+
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fpDebtShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
                     </div>
                 </div>
 
@@ -233,11 +238,6 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        document.getElementById('debt-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculateDebtPayoff();
-        });
-
         const inputs = document.querySelectorAll('#debt-form input, #debt-form select');
         inputs.forEach(input => {
             input.addEventListener('input', calculateDebtPayoff);
@@ -347,8 +347,8 @@
 
             document.getElementById('payoff-date').textContent = dateString;
             document.getElementById('months-to-payoff').textContent = `${months} months (${timeString})`;
-            document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
-            document.getElementById('total-paid').textContent = formatCurrency(totalPaid);
+            animateValue(document.getElementById('total-interest'), formatCurrency(totalInterest));
+            animateValue(document.getElementById('total-paid'), formatCurrency(totalPaid));
             
             const principal = totalPaid - totalInterest;
             document.getElementById('principal-breakdown').textContent = 
@@ -384,6 +384,29 @@
             }).format(value);
         }
     </script>
+
+        FPValidate.init({
+            'total-debt':      { label: 'Total debt', min: 1 },
+            'avg-interest':    { label: 'Interest rate', min: 0.1, max: 50, unit: '%' },
+            'monthly-payment': { label: 'Monthly payment', min: 1, custom: function(v) {
+                var debt = parseFloat(document.getElementById('total-debt').value) || 0;
+                var rate = (parseFloat(document.getElementById('avg-interest').value) || 18) / 100 / 12;
+                if (debt > 0 && rate > 0 && v <= debt * rate) return 'Payment too low to pay off debt — increase above $' + (debt * rate).toFixed(0) + '/mo.';
+            }},
+            'extra-payment':   { label: 'Extra payment', min: 0 },
+        });
+        function fpDebtShare() {
+            var m = document.getElementById('months-to-payoff');
+            var ti = document.getElementById('total-interest');
+            var tp = document.getElementById('total-paid');
+            var results = [
+                { label: 'Payoff Timeline', value: m ? m.textContent : '-' },
+                { label: 'Total Interest', value: ti ? ti.textContent : '-' },
+                { label: 'Total Paid', value: tp ? tp.textContent : '-' },
+            ];
+            FPShare.open('My Debt Payoff Plan', results);
+        }
+
     <script src="script.js"></script>
 </body>
 </html>

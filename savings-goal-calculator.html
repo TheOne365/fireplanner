@@ -84,7 +84,7 @@
                             <input type="number" id="goal-amount" value="50000" min="0" step="1000">
                         </div>
                         <div class="form-group">
-                            <label for="current-savings">Current Savings ($)</label>
+                            <div class="fp-label-wrap"><label for="current-savings">Current Savings ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">What you've already saved toward this goal today.</span></span></div>
                             <input type="number" id="current-savings" value="5000" min="0" step="500">
                         </div>
                         <div class="form-group">
@@ -95,7 +95,6 @@
                             <label for="interest-rate">Expected Return (%/year)</label>
                             <input type="number" id="interest-rate" value="4" min="0" max="20" step="0.1">
                         </div>
-                        <button type="submit" class="calculate-btn">Calculate Savings Plan</button>
                     </form>
                 </div>
 
@@ -116,7 +115,14 @@
                     <div class="result-card">
                         <div class="result-label">Goal Completion Date</div>
                         <div class="result-value" id="completion-date" style="font-size:20px;">--</div>
+                    
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fpSavingsShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
                     </div>
+</div>
                 </div>
             </div>
         </div>
@@ -181,7 +187,6 @@
     </footer>
 
     <script>
-        document.getElementById('savings-form').addEventListener('submit', e => {e.preventDefault();calc();});
         document.querySelectorAll('#savings-form input').forEach(i => i.addEventListener('input', calc));
         calc();
 
@@ -210,8 +215,8 @@
             const today = new Date();
             const completion = new Date(today.setMonth(today.getMonth() + months));
 
-            document.getElementById('monthly-needed').textContent = formatCurrency(monthly);
-            document.getElementById('total-savings').textContent = formatCurrency(totalSaved);
+            animateValue(document.getElementById('monthly-needed'), formatCurrency(monthly));
+            animateValue(document.getElementById('total-savings'), formatCurrency(totalSaved));
             document.getElementById('interest-earned').textContent = formatCurrency(Math.max(0, interestEarned));
             document.getElementById('completion-date').textContent = completion.toLocaleDateString('en-US', {month:'long',year:'numeric'});
         }
@@ -220,6 +225,21 @@
             return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0}).format(v);
         }
     </script>
+
+        FPValidate.init({
+            'goal-amount':     { label: 'Savings goal', min: 1 },
+            'current-savings': { label: 'Current savings', min: 0 },
+            'annual-return':   { label: 'Return rate', min: 0, max: 30, unit: '%' },
+            'years':           { label: 'Years', min: 0.5, max: 60, unit: ' years' },
+        });
+        function fpSavingsShare() {
+            var results = [
+                { label: 'Monthly Needed', value: document.getElementById('monthly-needed').textContent },
+                { label: 'Total Saved', value: document.getElementById('total-savings').textContent },
+            ];
+            FPShare.open('My Savings Goal Plan', results);
+        }
+
     <script src="script.js"></script>
 </body>
 </html>

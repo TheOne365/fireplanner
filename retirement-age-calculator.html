@@ -99,7 +99,6 @@
                             <label for="return-rate">Expected Return (%/year)</label>
                             <input type="number" id="return-rate" value="7" min="0" max="20" step="0.5">
                         </div>
-                        <button type="submit" class="calculate-btn">Calculate Retirement Age</button>
                     </form>
                 </div>
 
@@ -120,7 +119,14 @@
                     <div class="result-card">
                         <div class="result-label">Investment Growth</div>
                         <div class="result-value" id="growth">$0</div>
+                    
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fpRetireShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
                     </div>
+</div>
                 </div>
             </div>
         </div>
@@ -185,7 +191,6 @@
     </footer>
 
     <script>
-        document.getElementById('retire-form').addEventListener('submit', e => {e.preventDefault();calc();});
         document.querySelectorAll('#retire-form input').forEach(i => i.addEventListener('input', calc));
         calc();
 
@@ -212,7 +217,7 @@
 
             document.getElementById('retirement-age').textContent = retirementAge >= 100 ? "100+" : retirementAge;
             document.getElementById('years-left').textContent = years >= 50 ? "50+" : years + " years";
-            document.getElementById('total-contributions').textContent = formatCurrency(totalContributions);
+            animateValue(document.getElementById('total-contributions'), formatCurrency(totalContributions));
             document.getElementById('growth').textContent = formatCurrency(Math.max(0, growth));
         }
 
@@ -220,6 +225,23 @@
             return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0}).format(v);
         }
     </script>
+
+        FPValidate.init({
+            'current-savings':  { label: 'Current savings', min: 0 },
+            'annual-savings':   { label: 'Annual savings', min: 0 },
+            'annual-expenses':  { label: 'Annual expenses', min: 1 },
+            'return-rate':      { label: 'Return rate', min: 0, max: 20, unit: '%' },
+            'current-age':      { label: 'Current age', min: 10, max: 80, unit: ' years' },
+        });
+        function fpRetireShare() {
+            var results = [
+                { label: 'Retirement Age', value: document.getElementById('retirement-age').textContent },
+                { label: 'Years Left', value: document.getElementById('years-left').textContent },
+                { label: 'Total Contributions', value: document.getElementById('total-contributions').textContent },
+            ];
+            FPShare.open('My Retirement Age Results', results);
+        }
+
     <script src="script.js"></script>
 </body>
 </html>

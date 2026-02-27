@@ -97,7 +97,7 @@
                     <h2>Your Details</h2>
                     <form id="coast-fire-form">
                         <div class="form-group">
-                            <label for="current-age">Current Age</label>
+                            <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip">i<span class="fp-tip-bubble">Your age today, used to calculate compounding time.</span></span></div>
                             <input type="number" id="current-age" value="25" min="18" max="80" step="1">
                         </div>
 
@@ -123,12 +123,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="withdrawal-rate">Safe Withdrawal Rate (%)</label>
+                            <div class="fp-label-wrap"><label for="withdrawal-rate">Safe Withdrawal Rate (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">The 4% rule: withdraw 4% of your portfolio in year 1, adjust for inflation. Historically survived 30+ year retirements.</span></span></div>
                             <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1">
                             <small>The 4% rule is commonly used</small>
                         </div>
-
-                        <button type="submit" class="calculate-btn">Calculate Coast FIRE</button>
                     </form>
                 </div>
 
@@ -136,7 +134,14 @@
                     <h2>Your Coast FIRE Results</h2>
                     
                     <div class="result-card" style="border-left-color: var(--accent-gold);">
-                        <div class="result-label">Retirement FIRE Number</div>
+                        <div class="result-label">Retirement FIRE Number
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fpCoastShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
+                    </div>
+</div>
                         <div class="result-value" id="fire-number">$0</div>
                         <div class="result-subtext">Amount needed at retirement age</div>
                     </div>
@@ -228,13 +233,28 @@
         </div>
     </footer>
 
+
+        FPValidate.init({
+            'current-age':      { label: 'Current age', min: 10, max: 80, unit: ' years', custom: function(v) {
+                var r = parseFloat(document.getElementById('retirement-age').value);
+                if (!isNaN(r) && v >= r) return 'Current age must be less than retirement age.';
+            }},
+            'retirement-age':   { label: 'Retirement age', min: 30, max: 90, unit: ' years' },
+            'annual-expenses':  { label: 'Annual expenses', min: 1 },
+            'return-rate':      { label: 'Return rate', min: 0, max: 20, unit: '%' },
+            'withdrawal-rate':  { label: 'Withdrawal rate', min: 1, max: 10, unit: '%' },
+        });
+        function fpCoastShare() {
+            var results = [
+                { label: 'FIRE Number', value: document.getElementById('fire-number').textContent },
+                { label: 'Coast FIRE #', value: document.getElementById('coast-number').textContent },
+                { label: 'Projected Value', value: document.getElementById('projected-value').textContent },
+            ];
+            FPShare.open('My Coast FIRE Results', results);
+        }
+
     <script src="script.js"></script>
     <script>
-        document.getElementById('coast-fire-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculateCoastFIRE();
-        });
-
         const inputs = document.querySelectorAll('#coast-fire-form input');
         inputs.forEach(input => {
             input.addEventListener('input', calculateCoastFIRE);
@@ -267,9 +287,9 @@
             const surplusPercent = coastNumber > 0 ? (currentSavings / coastNumber * 100) : 0;
 
             // Display
-            document.getElementById('fire-number').textContent = formatCurrency(fireNumber);
-            document.getElementById('coast-number').textContent = formatCurrency(coastNumber);
-            document.getElementById('projected-value').textContent = formatCurrency(projectedValue);
+            animateValue(document.getElementById('fire-number'), formatCurrency(fireNumber));
+            animateValue(document.getElementById('coast-number'), formatCurrency(coastNumber));
+            animateValue(document.getElementById('projected-value'), formatCurrency(projectedValue));
             document.getElementById('projected-detail').textContent = 
                 `By age ${retirementAge}, without additional contributions`;
 

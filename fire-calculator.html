@@ -97,37 +97,35 @@
                     <h2>Your Financial Details</h2>
                     <form id="fire-form">
                         <div class="form-group">
-                            <label for="current-savings">Current Savings ($)</label>
+                            <div class="fp-label-wrap"><label for="current-savings">Current Savings ($)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">The total amount you have saved and invested today — retirement accounts, brokerage, savings, etc.</span></span></div>
                             <input type="number" id="current-savings" value="50000" min="0" step="1000">
                         </div>
 
                         <div class="form-group">
-                            <label for="annual-income">Annual Income ($)</label>
+                            <div class="fp-label-wrap"><label for="annual-income">Annual Income ($)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Your gross (pre-tax) annual income from all sources.</span></span></div>
                             <input type="number" id="annual-income" value="75000" min="0" step="1000">
                         </div>
 
                         <div class="form-group">
-                            <label for="annual-expenses">Annual Expenses ($)</label>
+                            <div class="fp-label-wrap"><label for="annual-expenses">Annual Expenses ($)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Your total yearly spending. In FIRE, lowering expenses is just as powerful as earning more — it reduces your FIRE number AND increases savings.</span></span></div>
                             <input type="number" id="annual-expenses" value="45000" min="0" step="1000">
                         </div>
 
                         <div class="form-group">
-                            <label for="return-rate">Expected Return Rate (%)</label>
+                            <div class="fp-label-wrap"><label for="return-rate">Expected Return Rate (%)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Historical US stock market returns average ~10% nominal, ~7% inflation-adjusted. Most FIRE planners use 6–8% to be conservative.</span></span></div>
                             <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1">
                         </div>
 
                         <div class="form-group">
-                            <label for="withdrawal-rate">Safe Withdrawal Rate (%)</label>
+                            <div class="fp-label-wrap"><label for="withdrawal-rate">Safe Withdrawal Rate (%)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">The Trinity Study found 4% historically survived 30 years. Early retirees with 40–50 year horizons often use 3–3.5% to be safer.</span></span></div>
                             <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">The 4% rule is commonly used</small>
                         </div>
 
                         <div class="form-group">
-                            <label for="current-age">Your Current Age</label>
+                            <div class="fp-label-wrap"><label for="current-age">Your Current Age</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Used to calculate your FIRE age and how many years of investment growth you have ahead.</span></span></div>
                             <input type="number" id="current-age" value="30" min="18" max="80" step="1">
                         </div>
-
-                        <button type="submit" class="calculate-btn">Calculate My FIRE Number</button>
                     </form>
                 </div>
 
@@ -156,6 +154,13 @@
                         <div class="result-label">Monthly Savings Needed</div>
                         <div class="result-value" id="monthly-savings">$0</div>
                         <div class="result-subtext">To reach FIRE on schedule</div>
+                    </div>
+
+                    <div class="fp-share-section">
+                        <button class="fp-share-btn" onclick="fpFireShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
                     </div>
                 </div>
 
@@ -223,11 +228,6 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        document.getElementById('fire-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            calculateFIRE();
-        });
-
         const inputs = document.querySelectorAll('#fire-form input');
         inputs.forEach(input => {
             input.addEventListener('input', calculateFIRE);
@@ -280,7 +280,7 @@
             const monthlySavings = annualSavings / 12;
 
             // Display results
-            document.getElementById('fire-number').textContent = formatCurrency(fireNumber);
+            animateValue(document.getElementById('fire-number'), formatCurrency(fireNumber));
             
             if (yearsToFIRE >= 999) {
                 document.getElementById('years-to-fire').textContent = "Not Possible";
@@ -289,13 +289,13 @@
                 document.getElementById('years-to-fire').textContent = "🎉 Already There!";
                 document.getElementById('fire-age-text').textContent = "Congratulations! You've reached FIRE";
             } else {
-                document.getElementById('years-to-fire').textContent = Math.ceil(yearsToFIRE) + " years";
+                animateValue(document.getElementById('years-to-fire'), Math.ceil(yearsToFIRE) + ' years');
                 document.getElementById('fire-age-text').textContent = `You'll reach FIRE at age ${fireAge}`;
             }
 
-            document.getElementById('annual-savings').textContent = formatCurrency(annualSavings);
+            animateValue(document.getElementById('annual-savings'), formatCurrency(annualSavings));
             document.getElementById('savings-rate').textContent = `Savings rate: ${savingsRate.toFixed(1)}%`;
-            document.getElementById('monthly-savings').textContent = formatCurrency(monthlySavings);
+            animateValue(document.getElementById('monthly-savings'), formatCurrency(monthlySavings));
         }
 
         function formatCurrency(value) {
@@ -308,6 +308,31 @@
             }).format(value);
         }
     </script>
+
+        // Validation
+        FPValidate.init({
+            'current-savings': { label: 'Current savings', min: 0 },
+            'annual-income':   { label: 'Annual income', min: 0, custom: function(v, el) {
+                var expenses = parseFloat(document.getElementById('annual-expenses').value);
+                if (!isNaN(expenses) && v < expenses) return 'Income is less than expenses — you cannot save toward FIRE.';
+            }},
+            'annual-expenses': { label: 'Annual expenses', min: 0 },
+            'return-rate':     { label: 'Return rate', min: 0, max: 20, unit: '%' },
+            'withdrawal-rate': { label: 'Withdrawal rate', min: 1, max: 10, unit: '%' },
+            'current-age':     { label: 'Age', min: 10, max: 100, unit: ' years' },
+        });
+
+        // Share results
+        function fpFireShare() {
+            var results = [
+                { label: 'FIRE Number', value: document.getElementById('fire-number').textContent },
+                { label: 'Years to FIRE', value: document.getElementById('years-to-fire').textContent },
+                { label: 'Annual Savings', value: document.getElementById('annual-savings').textContent },
+                { label: 'Monthly Needed', value: document.getElementById('monthly-savings').textContent },
+            ];
+            FPShare.open('My FIRE Calculator Results', results);
+        }
+
     <script src="script.js"></script>
 </body>
 </html>
