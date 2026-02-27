@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="fp-utils.js"></script>
 </head>
 <body class="calculator-page">
     <header class="site-header">
@@ -84,7 +85,7 @@
                             <input type="number" id="goal-amount" value="50000" min="0" step="1000">
                         </div>
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="current-savings">Current Savings ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">What you've already saved toward this goal today.</span></span></div>
+                            <div class="fp-label-wrap"><label for="current-savings">Current Savings ($)</label><span class="fp-tip"><span class="fp-tip-bubble">What you've already saved toward this goal today.</span></span></div>
                             <input type="number" id="current-savings" value="5000" min="0" step="500">
                         </div>
                         <div class="form-group">
@@ -187,59 +188,43 @@
     </footer>
 
     <script>
-        document.querySelectorAll('#savings-form input').forEach(i => i.addEventListener('input', calc));
-        calc();
-
-        function calc() {
-            const goal = parseFloat(document.getElementById('goal-amount').value) || 0;
-            const current = parseFloat(document.getElementById('current-savings').value) || 0;
-            const months = parseInt(document.getElementById('time-frame').value) || 1;
-            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12 || 0;
-
-            const stillNeeded = goal - current;
-            let monthly = 0;
-
-            if (rate > 0) {
-                const futureValue = current * Math.pow(1 + rate, months);
-                const remaining = goal - futureValue;
-                if (remaining > 0) {
-                    monthly = remaining / ((Math.pow(1 + rate, months) - 1) / rate);
+(function() {
+            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
+            function calc() {
+                var goal    = parseFloat(document.getElementById('goal-amount').value)     || 0;
+                var current = parseFloat(document.getElementById('current-savings').value) || 0;
+                var ret     = (parseFloat(document.getElementById('annual-return').value)  || 5) / 100;
+                var years   = parseFloat(document.getElementById('years').value)           || 5;
+                var mRate   = ret / 12;
+                var months  = years * 12;
+                var needed  = goal - current * Math.pow(1+mRate, months);
+                var monthly = 0;
+                if (mRate > 0) monthly = needed / ((Math.pow(1+mRate,months)-1) / mRate);
+                else monthly = needed / months;
+                monthly = Math.max(0, monthly);
+                animateValue(document.getElementById('monthly-needed'), fmt(monthly));
+                animateValue(document.getElementById('total-savings'),  fmt(current + monthly*months));
+                var dateEl = document.getElementById('completion-date');
+                if (dateEl) {
+                    var d = new Date(); d.setMonth(d.getMonth() + Math.ceil(months));
+                    dateEl.textContent = d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
                 }
-            } else {
-                monthly = stillNeeded / months;
             }
-
-            const totalSaved = monthly * months;
-            const interestEarned = goal - current - totalSaved;
-
-            const today = new Date();
-            const completion = new Date(today.setMonth(today.getMonth() + months));
-
-            animateValue(document.getElementById('monthly-needed'), formatCurrency(monthly));
-            animateValue(document.getElementById('total-savings'), formatCurrency(totalSaved));
-            document.getElementById('interest-earned').textContent = formatCurrency(Math.max(0, interestEarned));
-            document.getElementById('completion-date').textContent = completion.toLocaleDateString('en-US', {month:'long',year:'numeric'});
-        }
-
-        function formatCurrency(v) {
-            return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0}).format(v);
-        }
-    </script>
-
-        FPValidate.init({
-            'goal-amount':     { label: 'Savings goal', min: 1 },
-            'current-savings': { label: 'Current savings', min: 0 },
-            'annual-return':   { label: 'Return rate', min: 0, max: 30, unit: '%' },
-            'years':           { label: 'Years', min: 0.5, max: 60, unit: ' years' },
-        });
-        function fpSavingsShare() {
-            var results = [
-                { label: 'Monthly Needed', value: document.getElementById('monthly-needed').textContent },
-                { label: 'Total Saved', value: document.getElementById('total-savings').textContent },
-            ];
-            FPShare.open('My Savings Goal Plan', results);
-        }
-
-    <script src="script.js"></script>
+            document.querySelectorAll('#savings-form input').forEach(function(i){i.addEventListener('input',calc);});
+            calc();
+            FPValidate.init({
+                'goal-amount':     {label:'Savings goal',    min:1},
+                'current-savings': {label:'Current savings', min:0},
+                'annual-return':   {label:'Return rate',     min:0, max:30, unit:'%'},
+                'years':           {label:'Years',           min:0.5, max:60, unit:' years'},
+            });
+            window.fpSavingsShare = function() {
+                FPShare.open('My Savings Goal Plan', [
+                    {label:'Monthly Needed', value:document.getElementById('monthly-needed').textContent},
+                    {label:'Total Saved',    value:document.getElementById('total-savings').textContent},
+                ]);
+            };
+        })();
+        <script src="script.js"></script>
 </body>
 </html>

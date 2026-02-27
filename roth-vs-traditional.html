@@ -53,6 +53,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="fp-utils.js"></script>
 </head>
 <body class="calculator-page">
     
@@ -97,35 +98,35 @@
                     <h2>Your Information</h2>
                     <form id="ira-form">
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="annual-contribution">Annual Contribution ($)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">2025 IRA limit: $7,000/year ($8,000 if age 50+). Consistent maxing out is one of the most powerful FIRE moves.</span></span></div>
+                            <div class="fp-label-wrap"><label for="annual-contribution">Annual Contribution ($)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">2025 IRA limit: $7,000/year ($8,000 if age 50+). Consistent maxing out is one of the most powerful FIRE moves.</span></span></div>
                             <input type="number" id="annual-contribution" value="6500" min="0" step="500">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">2024 IRA limit: $7,000 ($8,000 if 50+)</small>
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Your age today — used to calculate how many years your money will compound before retirement.</span></span></div>
+                            <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Your age today — used to calculate how many years your money will compound before retirement.</span></span></div>
                             <input type="number" id="current-age" value="30" min="18" max="100" step="1">
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="retirement-age">Retirement Age</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Age 59½ is when you can withdraw from IRAs penalty-free. Early FIRE withdrawers often use a Roth conversion ladder to access funds earlier.</span></span></div>
+                            <div class="fp-label-wrap"><label for="retirement-age">Retirement Age</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Age 59½ is when you can withdraw from IRAs penalty-free. Early FIRE withdrawers often use a Roth conversion ladder to access funds earlier.</span></span></div>
                             <input type="number" id="retirement-age" value="65" min="50" max="80" step="1">
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="current-tax-rate">Current Tax Rate (%)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Your marginal tax bracket — the rate on your last dollar earned. 2024 brackets: 10%, 12%, 22%, 24%, 32%, 35%, 37%.</span></span></div>
+                            <div class="fp-label-wrap"><label for="current-tax-rate">Current Tax Rate (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Your marginal tax bracket — the rate on your last dollar earned. 2024 brackets: 10%, 12%, 22%, 24%, 32%, 35%, 37%.</span></span></div>
                             <input type="number" id="current-tax-rate" value="24" min="0" max="50" step="1">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Your marginal tax bracket today</small>
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="retirement-tax-rate">Expected Retirement Tax Rate (%)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Many FIRE retirees are in a lower bracket since they control their income. If you expect to be richer, you might stay high — that favors Roth now.</span></span></div>
+                            <div class="fp-label-wrap"><label for="retirement-tax-rate">Expected Retirement Tax Rate (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Many FIRE retirees are in a lower bracket since they control their income. If you expect to be richer, you might stay high — that favors Roth now.</span></span></div>
                             <input type="number" id="retirement-tax-rate" value="22" min="0" max="50" step="1">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Your expected tax bracket in retirement</small>
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="rate-of-return">Expected Annual Return (%)</label><span class="fp-tip" tabindex="0">i<span class="fp-tip-bubble">Historical S&P 500 real return (~7% inflation-adjusted). Both accounts grow identically — the difference is only tax treatment.</span></span></div>
+                            <div class="fp-label-wrap"><label for="rate-of-return">Expected Annual Return (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Historical S&P 500 real return (~7% inflation-adjusted). Both accounts grow identically — the difference is only tax treatment.</span></span></div>
                             <input type="number" id="rate-of-return" value="7" min="0" max="20" step="0.5">
                         </div>
                     </form>
@@ -294,105 +295,57 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        const inputs = document.querySelectorAll('#ira-form input');
-        inputs.forEach(input => {
-            input.addEventListener('input', compareIRAs);
-        });
-
-        compareIRAs();
-
-        function compareIRAs() {
-            const annualContribution = parseFloat(document.getElementById('annual-contribution').value) || 0;
-            const currentAge = parseInt(document.getElementById('current-age').value) || 30;
-            const retirementAge = parseInt(document.getElementById('retirement-age').value) || 65;
-            const currentTaxRate = parseFloat(document.getElementById('current-tax-rate').value) / 100 || 0.24;
-            const retirementTaxRate = parseFloat(document.getElementById('retirement-tax-rate').value) / 100 || 0.22;
-            const rateOfReturn = parseFloat(document.getElementById('rate-of-return').value) / 100 || 0.07;
-
-            const yearsContributing = Math.max(0, retirementAge - currentAge);
-
-            // Traditional IRA Calculation
-            // Pre-tax contributions grow, then taxed on withdrawal
-            let traditionalBalance = 0;
-            for (let year = 0; year < yearsContributing; year++) {
-                traditionalBalance = (traditionalBalance + annualContribution) * (1 + rateOfReturn);
+        (function() {
+            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
+            function calc() {
+                var contrib    = parseFloat(document.getElementById('annual-contribution').value) || 0;
+                var curAge     = parseInt(document.getElementById('current-age').value)           || 30;
+                var retAge     = parseInt(document.getElementById('retirement-age').value)        || 65;
+                var curTax     = (parseFloat(document.getElementById('current-tax-rate').value)   || 24) / 100;
+                var retTax     = (parseFloat(document.getElementById('retirement-tax-rate').value)|| 22) / 100;
+                var ret        = (parseFloat(document.getElementById('rate-of-return').value)     || 7)  / 100;
+                var yrs        = Math.max(0, retAge - curAge);
+                var tradBal    = 0, rothBal = 0;
+                var rothAnnual = contrib * (1 - curTax);
+                for (var y=0; y<yrs; y++) {
+                    tradBal = (tradBal + contrib) * (1 + ret);
+                    rothBal = (rothBal + rothAnnual) * (1 + ret);
+                }
+                var tradAfter = tradBal * (1 - retTax);
+                var diff      = Math.abs(rothBal - tradAfter);
+                var diffPct   = tradAfter > 0 ? (diff / Math.max(rothBal, tradAfter) * 100) : 0;
+                var winner, reason;
+                if (diff < 1000) { winner = "They're Equal!"; reason = "Both options provide similar value"; }
+                else if (rothBal > tradAfter) { winner = "Roth IRA"; reason = "Save " + fmt(diff) + " more by paying taxes now"; }
+                else { winner = "Traditional IRA"; reason = "Save " + fmt(diff) + " more by deferring taxes"; }
+                document.getElementById('winner').textContent        = winner;
+                document.getElementById('winner-reason').textContent = reason;
+                animateValue(document.getElementById('traditional-value'), fmt(tradAfter));
+                animateValue(document.getElementById('roth-value'),        fmt(rothBal));
+                document.getElementById('difference').textContent    = fmt(diff);
+                document.getElementById('difference-pct').textContent= diffPct.toFixed(1) + '% difference';
+                document.getElementById('years-contributing').textContent = yrs + ' years';
+                document.getElementById('total-contributed').textContent  = 'Total contributed: ' + fmt(contrib * yrs);
             }
-            const traditionalAfterTax = traditionalBalance * (1 - retirementTaxRate);
-
-            // Roth IRA Calculation
-            // After-tax contributions (so less to invest), but tax-free growth
-            const rothAnnualContribution = annualContribution * (1 - currentTaxRate);
-            let rothBalance = 0;
-            for (let year = 0; year < yearsContributing; year++) {
-                rothBalance = (rothBalance + rothAnnualContribution) * (1 + rateOfReturn);
-            }
-            // Roth is already after-tax, no taxes on withdrawal
-
-            const difference = Math.abs(rothBalance - traditionalAfterTax);
-            const differencePct = traditionalAfterTax > 0 ? 
-                (difference / Math.max(rothBalance, traditionalAfterTax) * 100) : 0;
-
-            // Determine winner
-            let winner, reason;
-            if (Math.abs(rothBalance - traditionalAfterTax) < 1000) {
-                winner = "They're Equal!";
-                reason = "Both options provide similar value";
-            } else if (rothBalance > traditionalAfterTax) {
-                winner = "Roth IRA";
-                reason = `Save ${formatCurrency(difference)} more by paying taxes now at a lower rate`;
-            } else {
-                winner = "Traditional IRA";
-                reason = `Save ${formatCurrency(difference)} more by deferring taxes to retirement`;
-            }
-
-            const totalContributed = annualContribution * yearsContributing;
-
-            // Display results
-            document.getElementById('winner').textContent = winner;
-            document.getElementById('winner-reason').textContent = reason;
-            animateValue(document.getElementById('traditional-value'), formatCurrency(traditionalAfterTax));
-            animateValue(document.getElementById('roth-value'), formatCurrency(rothBalance));
-            document.getElementById('difference').textContent = formatCurrency(difference);
-            document.getElementById('difference-pct').textContent = `${differencePct.toFixed(1)}% difference`;
-            document.getElementById('years-contributing').textContent = yearsContributing + " years";
-            document.getElementById('total-contributed').textContent = `Total contributed: ${formatCurrency(totalContributed)}`;
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 
-'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-    </script>
-
-        // Validation
-        FPValidate.init({
-            'annual-contribution': { label: 'Annual contribution', min: 1, max: 30000, unit: '' },
-            'current-age':         { label: 'Current age', min: 10, max: 80, unit: ' years', custom: function(v) {
-                var ret = parseFloat(document.getElementById('retirement-age').value);
-                if (!isNaN(ret) && v >= ret) return 'Current age must be less than retirement age.';
-            }},
-            'retirement-age':      { label: 'Retirement age', min: 20, max: 90, unit: ' years' },
-            'current-tax-rate':    { label: 'Current tax rate', min: 0, max: 60, unit: '%' },
-            'retirement-tax-rate': { label: 'Retirement tax rate', min: 0, max: 60, unit: '%' },
-            'rate-of-return':      { label: 'Return rate', min: 0, max: 20, unit: '%' },
-        });
-
-        function fpIRAShare() {
-            var winner = document.getElementById('winner').textContent;
-            var results = [
-                { label: 'Recommendation', value: winner },
-                { label: 'Traditional Value', value: document.getElementById('traditional-value').textContent },
-                { label: 'Roth Value', value: document.getElementById('roth-value').textContent },
-                { label: 'Difference', value: document.getElementById('difference').textContent },
-            ];
-            FPShare.open('Roth vs Traditional IRA Comparison', results);
-        }
-
-    <script src="script.js"></script>
+            document.querySelectorAll('#ira-form input').forEach(function(i){i.addEventListener('input',calc);});
+            calc();
+            FPValidate.init({
+                'annual-contribution':  {label:'Annual contribution', min:1, max:30000},
+                'current-age':         {label:'Current age',          min:10, max:80, unit:' years'},
+                'retirement-age':      {label:'Retirement age',       min:20, max:90, unit:' years'},
+                'current-tax-rate':    {label:'Current tax rate',     min:0,  max:60, unit:'%'},
+                'retirement-tax-rate': {label:'Retirement tax rate',  min:0,  max:60, unit:'%'},
+                'rate-of-return':      {label:'Return rate',          min:0,  max:20, unit:'%'},
+            });
+            window.fpIRAShare = function() {
+                FPShare.open('Roth vs Traditional IRA', [
+                    {label:'Recommendation',    value:document.getElementById('winner').textContent},
+                    {label:'Traditional Value', value:document.getElementById('traditional-value').textContent},
+                    {label:'Roth Value',        value:document.getElementById('roth-value').textContent},
+                    {label:'Difference',        value:document.getElementById('difference').textContent},
+                ]);
+            };
+        })();
+        <script src="script.js"></script>
 </body>
 </html>

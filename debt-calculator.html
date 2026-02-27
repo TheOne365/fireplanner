@@ -53,6 +53,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="fp-utils.js"></script>
 </head>
 <body class="calculator-page">
     
@@ -102,7 +103,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="avg-interest">Average Interest Rate (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">Weighted average APR across your debts. Credit cards: 20–25%. Auto loans: 5–8%. Student loans: 4–7%.</span></span></div>
+                            <div class="fp-label-wrap"><label for="avg-interest">Average Interest Rate (%)</label><span class="fp-tip"><span class="fp-tip-bubble">Weighted average APR across your debts. Credit cards: 20–25%. Auto loans: 5–8%. Student loans: 4–7%.</span></span></div>
                             <input type="number" id="avg-interest" value="18" min="0" max="30" step="0.1">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Weighted average of all debts</small>
                         </div>
@@ -121,7 +122,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="extra-payment">Extra Monthly Payment ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">Additional money you could throw at debt. Even $50/month extra dramatically cuts payoff time and interest paid.</span></span></div>
+                            <div class="fp-label-wrap"><label for="extra-payment">Extra Monthly Payment ($)</label><span class="fp-tip"><span class="fp-tip-bubble">Additional money you could throw at debt. Even $50/month extra dramatically cuts payoff time and interest paid.</span></span></div>
                             <input type="number" id="extra-payment" value="0" min="0" step="25">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Optional additional payment</small>
                         </div>
@@ -238,175 +239,63 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        const inputs = document.querySelectorAll('#debt-form input, #debt-form select');
-        inputs.forEach(input => {
-            input.addEventListener('input', calculateDebtPayoff);
-        });
-
-        calculateDebtPayoff();
-
-        function calculateDebtPayoff() {
-            const totalDebt = parseFloat(document.getElementById('total-debt').value) || 0;
-            const avgInterest = parseFloat(document.getElementById('avg-interest').value) / 100 || 0.18;
-            const monthlyPayment = parseFloat(document.getElementById('monthly-payment').value) || 0;
-            const extraPayment = parseFloat(document.getElementById('extra-payment').value) || 0;
-            const totalMonthlyPayment = monthlyPayment + extraPayment;
-
-            if (totalDebt <= 0 || totalMonthlyPayment <= 0) {
-                displayResults(0, 0, 0, 0, 0, 0);
-                return;
-            }
-
-            // Calculate payoff with current payment
-            const result = calculatePayoffSchedule(totalDebt, avgInterest, totalMonthlyPayment);
-            
-            // Calculate baseline (without extra payment) for comparison
-            const baseline = extraPayment > 0 ? 
-                calculatePayoffSchedule(totalDebt, avgInterest, monthlyPayment) : result;
-
-            const interestSaved = baseline.totalInterest - result.totalInterest;
-            const timeSaved = baseline.months - result.months;
-
-            displayResults(
-                result.months,
-                result.totalInterest,
-                result.totalPaid,
-                totalMonthlyPayment,
-                interestSaved,
-                timeSaved
-            );
-        }
-
-        function calculatePayoffSchedule(principal, annualRate, monthlyPayment) {
-            const monthlyRate = annualRate / 12;
-            let balance = principal;
-            let totalInterest = 0;
-            let months = 0;
-            const maxMonths = 600; // 50 years max
-
-            // Check if payment is sufficient
-            const minimumPayment = balance * monthlyRate;
-            if (monthlyPayment <= minimumPayment) {
-                // Payment too low, debt will never be paid off
-                return {
-                    months: 999,
-                    totalInterest: 999999,
-                    totalPaid: 999999
-                };
-            }
-
-            while (balance > 0 && months < maxMonths) {
-                const interestCharge = balance * monthlyRate;
-                const principalPayment = Math.min(monthlyPayment - interestCharge, balance);
-                
-                totalInterest += interestCharge;
-                balance -= principalPayment;
-                months++;
-
-                if (balance < 0.01) balance = 0; // Handle rounding
-            }
-
-            return {
-                months: months,
-                totalInterest: totalInterest,
-                totalPaid: principal + totalInterest
-            };
-        }
-
-        function displayResults(months, totalInterest, totalPaid, monthlyPayment, interestSaved, timeSaved) {
-            if (months >= 999) {
-                document.getElementById('payoff-date').textContent = "Never";
-                document.getElementById('months-to-payoff').textContent = "Payment too low to eliminate debt";
-                document.getElementById('total-interest').textContent = "N/A";
-                document.getElementById('total-paid').textContent = "N/A";
-                document.getElementById('principal-breakdown').textContent = "Increase your payment amount";
-                document.getElementById('interest-saved').textContent = "N/A";
-                document.getElementById('time-saved').textContent = "";
-                document.getElementById('total-monthly').textContent = formatCurrency(monthlyPayment);
-                return;
-            }
-
-            // Calculate payoff date
-            const today = new Date();
-            const payoffDate = new Date(today);
-            payoffDate.setMonth(payoffDate.getMonth() + months);
-            
-            const dateString = payoffDate.toLocaleDateString('en-US', { 
-                month: 'long', 
-                year: 'numeric' 
-            });
-
-            const years = Math.floor(months / 12);
-            const remainingMonths = months % 12;
-            let timeString = '';
-            if (years > 0) timeString += `${years} year${years > 1 ? 's' : ''}`;
-            if (remainingMonths > 0) {
-                if (timeString) timeString += ' ';
-                timeString += `${remainingMonths} month${remainingMonths > 1 ? 's' : ''}`;
-            }
-
-            document.getElementById('payoff-date').textContent = dateString;
-            document.getElementById('months-to-payoff').textContent = `${months} months (${timeString})`;
-            animateValue(document.getElementById('total-interest'), formatCurrency(totalInterest));
-            animateValue(document.getElementById('total-paid'), formatCurrency(totalPaid));
-            
-            const principal = totalPaid - totalInterest;
-            document.getElementById('principal-breakdown').textContent = 
-                `${formatCurrency(principal)} principal + ${formatCurrency(totalInterest)} interest`;
-
-            document.getElementById('interest-saved').textContent = 
-                interestSaved > 0 ? formatCurrency(interestSaved) : "$0";
-            
-            if (timeSaved > 0) {
-                const savedYears = Math.floor(timeSaved / 12);
-                const savedMonths = timeSaved % 12;
-                let savedString = '';
-                if (savedYears > 0) savedString += `${savedYears} year${savedYears > 1 ? 's' : ''}`;
-                if (savedMonths > 0) {
-                    if (savedString) savedString += ' ';
-                    savedString += `${savedMonths} month${savedMonths > 1 ? 's' : ''}`;
+        (function() {
+            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
+            function schedule(principal, annRate, mPay) {
+                var mRate=annRate/12, bal=principal, interest=0, months=0;
+                if (mPay <= bal*mRate) return {months:999,totalInterest:999999,totalPaid:999999};
+                while (bal>0.01 && months<600) {
+                    var int=bal*mRate; interest+=int;
+                    bal -= (mPay - int); months++;
+                    if (bal<0) bal=0;
                 }
-                document.getElementById('time-saved').textContent = `Time saved: ${savedString}`;
-            } else {
-                document.getElementById('time-saved').textContent = '';
+                return {months:months, totalInterest:interest, totalPaid:principal+interest};
             }
-
-            document.getElementById('total-monthly').textContent = formatCurrency(monthlyPayment);
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 
-'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-    </script>
-
-        FPValidate.init({
-            'total-debt':      { label: 'Total debt', min: 1 },
-            'avg-interest':    { label: 'Interest rate', min: 0.1, max: 50, unit: '%' },
-            'monthly-payment': { label: 'Monthly payment', min: 1, custom: function(v) {
-                var debt = parseFloat(document.getElementById('total-debt').value) || 0;
-                var rate = (parseFloat(document.getElementById('avg-interest').value) || 18) / 100 / 12;
-                if (debt > 0 && rate > 0 && v <= debt * rate) return 'Payment too low to pay off debt — increase above $' + (debt * rate).toFixed(0) + '/mo.';
-            }},
-            'extra-payment':   { label: 'Extra payment', min: 0 },
-        });
-        function fpDebtShare() {
-            var m = document.getElementById('months-to-payoff');
-            var ti = document.getElementById('total-interest');
-            var tp = document.getElementById('total-paid');
-            var results = [
-                { label: 'Payoff Timeline', value: m ? m.textContent : '-' },
-                { label: 'Total Interest', value: ti ? ti.textContent : '-' },
-                { label: 'Total Paid', value: tp ? tp.textContent : '-' },
-            ];
-            FPShare.open('My Debt Payoff Plan', results);
-        }
-
-    <script src="script.js"></script>
+            function calc() {
+                var debt     = parseFloat(document.getElementById('total-debt').value)      || 0;
+                var rate     = (parseFloat(document.getElementById('avg-interest').value)   || 0) / 100;
+                var mPay     = parseFloat(document.getElementById('monthly-payment').value) || 0;
+                var extra    = parseFloat(document.getElementById('extra-payment').value)   || 0;
+                var total    = mPay + extra;
+                if (debt <= 0 || total <= 0) return;
+                var res  = schedule(debt, rate, total);
+                var base = extra > 0 ? schedule(debt, rate, mPay) : res;
+                var saved = base.totalInterest - res.totalInterest;
+                var timeSaved = base.months - res.months;
+                if (res.months >= 999) {
+                    document.getElementById('months-to-payoff').textContent = 'Payment too low — increase it';
+                    document.getElementById('total-interest').textContent   = 'N/A';
+                    document.getElementById('total-paid').textContent       = 'N/A';
+                } else {
+                    var payoffDate = new Date();
+                    payoffDate.setMonth(payoffDate.getMonth() + res.months);
+                    document.getElementById('months-to-payoff').textContent = res.months + ' months (' + Math.floor(res.months/12) + 'y ' + (res.months%12) + 'm)';
+                    animateValue(document.getElementById('total-interest'), fmt(res.totalInterest));
+                    animateValue(document.getElementById('total-paid'),     fmt(res.totalPaid));
+                }
+                var tmEl = document.getElementById('total-monthly');
+                if (tmEl) animateValue(tmEl, fmt(total));
+                var isEl = document.getElementById('interest-saved');
+                if (isEl) isEl.textContent = saved > 0 ? fmt(saved) : '$0';
+                var tsEl = document.getElementById('time-saved');
+                if (tsEl) tsEl.textContent = timeSaved > 0 ? timeSaved + ' months' : '—';
+            }
+            document.querySelectorAll('#debt-form input, #debt-form select').forEach(function(i){i.addEventListener('input',calc);});
+            calc();
+            FPValidate.init({
+                'total-debt':      {label:'Total debt',     min:1},
+                'avg-interest':    {label:'Interest rate',  min:0, max:50, unit:'%'},
+                'monthly-payment': {label:'Monthly payment',min:1},
+                'extra-payment':   {label:'Extra payment',  min:0},
+            });
+            window.fpDebtShare = function() {
+                FPShare.open('My Debt Payoff Plan', [
+                    {label:'Payoff Timeline', value:document.getElementById('months-to-payoff').textContent},
+                    {label:'Total Interest',  value:document.getElementById('total-interest').textContent},
+                    {label:'Total Paid',      value:document.getElementById('total-paid').textContent},
+                ]);
+            };
+        })();
+        <script src="script.js"></script>
 </body>
 </html>

@@ -53,6 +53,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="fp-utils.js"></script>
 </head>
 <body class="calculator-page">
     
@@ -97,7 +98,7 @@
                     <h2>Your Details</h2>
                     <form id="coast-fire-form">
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip">i<span class="fp-tip-bubble">Your age today, used to calculate compounding time.</span></span></div>
+                            <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip"><span class="fp-tip-bubble">Your age today, used to calculate compounding time.</span></span></div>
                             <input type="number" id="current-age" value="25" min="18" max="80" step="1">
                         </div>
 
@@ -123,7 +124,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="withdrawal-rate">Safe Withdrawal Rate (%)</label><span class="fp-tip">i<span class="fp-tip-bubble">The 4% rule: withdraw 4% of your portfolio in year 1, adjust for inflation. Historically survived 30+ year retirements.</span></span></div>
+                            <div class="fp-label-wrap"><label for="withdrawal-rate">Safe Withdrawal Rate (%)</label><span class="fp-tip"><span class="fp-tip-bubble">The 4% rule: withdraw 4% of your portfolio in year 1, adjust for inflation. Historically survived 30+ year retirements.</span></span></div>
                             <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1">
                             <small>The 4% rule is commonly used</small>
                         </div>
@@ -255,71 +256,51 @@
 
     <script src="script.js"></script>
     <script>
-        const inputs = document.querySelectorAll('#coast-fire-form input');
-        inputs.forEach(input => {
-            input.addEventListener('input', calculateCoastFIRE);
-        });
-
-        calculateCoastFIRE();
-
-        function calculateCoastFIRE() {
-            const currentAge = parseInt(document.getElementById('current-age').value) || 25;
-            const retirementAge = parseInt(document.getElementById('target-retirement-age').value) || 65;
-            const currentSavings = parseFloat(document.getElementById('current-savings').value) || 0;
-            const annualExpenses = parseFloat(document.getElementById('annual-expenses').value) || 40000;
-            const returnRate = parseFloat(document.getElementById('return-rate').value) / 100 || 0.07;
-            const withdrawalRate = parseFloat(document.getElementById('withdrawal-rate').value) / 100 || 0.04;
-
-            const yearsToRetirement = Math.max(retirementAge - currentAge, 0);
-
-            // FIRE number at retirement
-            const fireNumber = annualExpenses / withdrawalRate;
-
-            // Coast FIRE number = how much you need TODAY so that it grows to fireNumber
-            // FV = PV * (1 + r)^n  =>  PV = FV / (1 + r)^n
-            const coastNumber = fireNumber / Math.pow(1 + returnRate, yearsToRetirement);
-
-            // What current savings will grow to
-            const projectedValue = currentSavings * Math.pow(1 + returnRate, yearsToRetirement);
-
-            // Status
-            const surplus = currentSavings - coastNumber;
-            const surplusPercent = coastNumber > 0 ? (currentSavings / coastNumber * 100) : 0;
-
-            // Display
-            animateValue(document.getElementById('fire-number'), formatCurrency(fireNumber));
-            animateValue(document.getElementById('coast-number'), formatCurrency(coastNumber));
-            animateValue(document.getElementById('projected-value'), formatCurrency(projectedValue));
-            document.getElementById('projected-detail').textContent = 
-                `By age ${retirementAge}, without additional contributions`;
-
-            const statusEl = document.getElementById('coast-status');
-            const detailEl = document.getElementById('coast-detail');
-
-            if (yearsToRetirement <= 0) {
-                statusEl.textContent = '🎉 Already Retirement Age!';
-                statusEl.style.color = 'var(--accent-green)';
-                detailEl.textContent = 'You\'ve reached your target retirement age.';
-            } else if (currentSavings >= coastNumber) {
-                statusEl.textContent = '⛵ You\'ve Reached Coast FIRE!';
-                statusEl.style.color = 'var(--accent-green)';
-                detailEl.textContent = `You're ${surplusPercent.toFixed(0)}% of the way — ${formatCurrency(surplus)} above your Coast FIRE number. You can stop contributing to retirement savings!`;
-            } else {
-                const gap = coastNumber - currentSavings;
-                statusEl.textContent = `${formatCurrency(gap)} to go`;
-                statusEl.style.color = 'var(--accent-orange)';
-                detailEl.textContent = `You're at ${surplusPercent.toFixed(0)}% of your Coast FIRE number. Keep saving!`;
+        (function() {
+            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
+            function calc() {
+                var curAge  = parseInt(document.getElementById('current-age').value)       || 25;
+                var retAge  = parseInt(document.getElementById('retirement-age').value)    || 65;
+                var curSav  = parseFloat(document.getElementById('current-savings').value) || 0;
+                var expenses= parseFloat(document.getElementById('annual-expenses').value) || 40000;
+                var ret     = (parseFloat(document.getElementById('return-rate').value)    || 7) / 100;
+                var wd      = (parseFloat(document.getElementById('withdrawal-rate').value)|| 4) / 100;
+                var years   = Math.max(0, retAge - curAge);
+                var fireNum = expenses / wd;
+                var coastNum= fireNum / Math.pow(1 + ret, years);
+                var proj    = curSav  * Math.pow(1 + ret, years);
+                animateValue(document.getElementById('fire-number'),  fmt(fireNum));
+                animateValue(document.getElementById('coast-number'), fmt(coastNum));
+                animateValue(document.getElementById('projected-value'), fmt(proj));
+                var statusEl = document.getElementById('coast-status');
+                if (statusEl) {
+                    if (curSav >= coastNum) {
+                        statusEl.textContent = "\uD83C\uDF89 You've hit Coast FIRE! Stop contributing and let it grow.";
+                        statusEl.style.color = 'var(--accent-green)';
+                    } else {
+                        var gap = coastNum - curSav;
+                        statusEl.textContent = 'You need ' + fmt(gap) + ' more to reach Coast FIRE.';
+                        statusEl.style.color = 'var(--accent-orange)';
+                    }
+                }
             }
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-    </script>
-</body>
+            document.querySelectorAll('#coast-fire-form input').forEach(function(i){i.addEventListener('input',calc);});
+            calc();
+            FPValidate.init({
+                'current-age':     {label:'Current age',    min:10, max:80,  unit:' years'},
+                'retirement-age':  {label:'Retirement age', min:30, max:90,  unit:' years'},
+                'current-savings': {label:'Current savings',min:0},
+                'annual-expenses': {label:'Annual expenses',min:1},
+                'return-rate':     {label:'Return rate',    min:0, max:20,   unit:'%'},
+                'withdrawal-rate': {label:'Withdrawal rate',min:1, max:10,   unit:'%'},
+            });
+            window.fpCoastShare = function() {
+                FPShare.open('My Coast FIRE Results', [
+                    {label:'FIRE Number',    value:document.getElementById('fire-number').textContent},
+                    {label:'Coast FIRE #',   value:document.getElementById('coast-number').textContent},
+                    {label:'Projected Value',value:document.getElementById('projected-value').textContent},
+                ]);
+            };
+        })();
+        </body>
 </html>

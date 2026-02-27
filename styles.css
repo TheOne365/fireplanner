@@ -723,14 +723,22 @@ input[type="range"]::-moz-range-thumb {
   width: 16px;
   height: 16px;
   background: var(--text-muted);
-  color: #fff;
+  color: transparent;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 0;
   font-weight: 700;
   cursor: pointer;
   flex-shrink: 0;
   user-select: none;
   transition: background var(--transition-fast);
+  line-height: 1;
+}
+.fp-tip::before {
+  content: 'i';
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
   line-height: 1;
 }
 .fp-tip:hover { background: var(--accent-blue); }

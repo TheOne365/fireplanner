@@ -53,6 +53,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="fp-utils.js"></script>
 </head>
 <body class="calculator-page">
     
@@ -97,7 +98,7 @@
                     <h2>Compare Fee Scenarios</h2>
                     <form id="fee-form">
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="initial-investment">Initial Investment ($)</label><span class="fp-tip">i<span class="fp-tip-bubble">Starting portfolio value. Fees compound against you just like returns compound for you.</span></span></div>
+                            <div class="fp-label-wrap"><label for="initial-investment">Initial Investment ($)</label><span class="fp-tip"><span class="fp-tip-bubble">Starting portfolio value. Fees compound against you just like returns compound for you.</span></span></div>
                             <input type="number" id="initial-investment" value="25000" min="0" step="1000">
                         </div>
 
@@ -107,7 +108,7 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="fp-label-wrap"><label for="years">Investment Period (Years)</label><span class="fp-tip">i<span class="fp-tip-bubble">Longer periods amplify the fee drag dramatically. A 0.97% fee difference on $10k for 40 years costs ~$200k+.</span></span></div>
+                            <div class="fp-label-wrap"><label for="years">Investment Period (Years)</label><span class="fp-tip"><span class="fp-tip-bubble">Longer periods amplify the fee drag dramatically. A 0.97% fee difference on $10k for 40 years costs ~$200k+.</span></span></div>
                             <input type="number" id="years" value="30" min="1" max="50" step="1">
                         </div>
 
@@ -236,95 +237,50 @@
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        const inputs = document.querySelectorAll('#fee-form input');
-        inputs.forEach(input => {
-            input.addEventListener('input', calculateFeeImpact);
-        });
-
-        calculateFeeImpact();
-
-        function calculateFeeImpact() {
-            const initialInvestment = parseFloat(document.getElementById('initial-investment').value) || 0;
-            const monthlyContribution = parseFloat(document.getElementById('monthly-contribution').value) || 0;
-            const years = parseInt(document.getElementById('years').value) || 0;
-            const grossReturn = parseFloat(document.getElementById('gross-return').value) / 100 || 0.08;
-            const lowFee = parseFloat(document.getElementById('low-fee').value) / 100 || 0.0004;
-            const highFee = parseFloat(document.getElementById('high-fee').value) / 100 || 0.01;
-
-            // Calculate net returns after fees
-            const lowNetReturn = grossReturn - lowFee;
-            const highNetReturn = grossReturn - highFee;
-
-            // Calculate final values
-            const lowFeeValue = calculateFutureValue(initialInvestment, monthlyContribution, lowNetReturn, years);
-            const highFeeValue = calculateFutureValue(initialInvestment, monthlyContribution, highNetReturn, years);
-
-            const feeCost = lowFeeValue - highFeeValue;
-            const totalContributed = initialInvestment + (monthlyContribution * 12 * years);
-            const feeDifference = highFee - lowFee;
-            const feeCostPct = lowFeeValue > 0 ? (feeCost / lowFeeValue * 100) : 0;
-
-            // Display results
-            animateValue(document.getElementById('low-fee-value'), formatCurrency(lowFeeValue));
-            document.getElementById('low-fee-rate').textContent = `Net return: ${(lowNetReturn * 100).toFixed(2)}%`;
-            
-            animateValue(document.getElementById('high-fee-value'), formatCurrency(highFeeValue));
-            document.getElementById('high-fee-rate').textContent = `Net return: ${(highNetReturn * 100).toFixed(2)}%`;
-            
-            document.getElementById('fee-cost').textContent = formatCurrency(feeCost);
-            document.getElementById('fee-cost-pct').textContent = `${feeCostPct.toFixed(1)}% of potential returns lost`;
-            
-            animateValue(document.getElementById('total-contributed'), formatCurrency(totalContributed));
-            document.getElementById('fee-difference').textContent = (feeDifference * 100).toFixed(2) + '%';
-        }
-
-        function calculateFutureValue(principal, monthlyPayment, annualRate, years) {
-            const monthlyRate = annualRate / 12;
-            const months = years * 12;
-
-            // Future value of initial investment
-            const principalFV = principal * Math.pow(1 + monthlyRate, months);
-
-            // Future value of monthly contributions
-            let contributionFV = 0;
-            if (monthlyPayment > 0 && monthlyRate > 0) {
-                contributionFV = monthlyPayment * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+        (function() {
+            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
+            function grow(principal, monthly, grossRet, feeRate, years) {
+                var net=grossRet-feeRate, mRate=net/12, months=years*12;
+                var bal=principal*Math.pow(1+mRate,months);
+                if (mRate>0) bal+=monthly*(Math.pow(1+mRate,months)-1)/mRate;
+                else bal+=monthly*months;
+                return bal;
             }
-
-            return principalFV + contributionFV;
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 
-'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-    </script>
-
-        FPValidate.init({
-            'initial-investment':  { label: 'Initial investment', min: 0 },
-            'monthly-addition':    { label: 'Monthly addition', min: 0 },
-            'annual-return':       { label: 'Annual return', min: 0, max: 30, unit: '%' },
-            'low-expense-ratio':   { label: 'Low-cost ratio', min: 0, max: 5, unit: '%' },
-            'high-expense-ratio':  { label: 'High-cost ratio', min: 0, max: 5, unit: '%', custom: function(v) {
-                var low = parseFloat(document.getElementById('low-expense-ratio').value) || 0;
-                if (v <= low) return 'High-cost ratio should be greater than low-cost ratio.';
-            }},
-            'years':               { label: 'Years', min: 1, max: 60, unit: ' years' },
-        });
-        function fpFeeShare() {
-            var results = [
-                { label: 'Low-Fee Value', value: document.getElementById('low-fee-value').textContent },
-                { label: 'High-Fee Value', value: document.getElementById('high-fee-value').textContent },
-                { label: 'Fees Cost You', value: document.getElementById('total-contributed').textContent },
-            ];
-            FPShare.open('Investment Fee Impact', results);
-        }
-
-    <script src="script.js"></script>
+            function calc() {
+                var init  = parseFloat(document.getElementById('initial-investment').value) || 0;
+                var mon   = parseFloat(document.getElementById('monthly-addition').value)   || 0;
+                var gross = (parseFloat(document.getElementById('annual-return').value)     || 7) / 100;
+                var low   = (parseFloat(document.getElementById('low-expense-ratio').value) || 0.05) / 100;
+                var high  = (parseFloat(document.getElementById('high-expense-ratio').value)|| 1.0)  / 100;
+                var years = parseInt(document.getElementById('years').value)                || 30;
+                var lowVal  = grow(init, mon, gross, low,  years);
+                var highVal = grow(init, mon, gross, high, years);
+                var contributed = init + mon*12*years;
+                var feeCost = lowVal - highVal;
+                animateValue(document.getElementById('low-fee-value'),  fmt(lowVal));
+                animateValue(document.getElementById('high-fee-value'), fmt(highVal));
+                animateValue(document.getElementById('total-contributed'), fmt(feeCost));
+                var fcEl = document.getElementById('fee-cost');
+                if (fcEl) animateValue(fcEl, fmt(feeCost));
+            }
+            document.querySelectorAll('#fee-form input').forEach(function(i){i.addEventListener('input',calc);});
+            calc();
+            FPValidate.init({
+                'initial-investment':  {label:'Initial investment', min:0},
+                'monthly-addition':    {label:'Monthly addition',   min:0},
+                'annual-return':       {label:'Annual return',      min:0, max:30, unit:'%'},
+                'low-expense-ratio':   {label:'Low-cost ratio',     min:0, max:5,  unit:'%'},
+                'high-expense-ratio':  {label:'High-cost ratio',    min:0, max:5,  unit:'%'},
+                'years':               {label:'Years',              min:1, max:60, unit:' years'},
+            });
+            window.fpFeeShare = function() {
+                FPShare.open('Investment Fee Impact', [
+                    {label:'Low-Fee Value',  value:document.getElementById('low-fee-value').textContent},
+                    {label:'High-Fee Value', value:document.getElementById('high-fee-value').textContent},
+                    {label:'Fees Cost You',  value:document.getElementById('total-contributed').textContent},
+                ]);
+            };
+        })();
+        <script src="script.js"></script>
 </body>
 </html>

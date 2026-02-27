@@ -53,6 +53,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="fp-utils.js"></script>
 </head>
 <body class="calculator-page">
     
@@ -233,77 +234,44 @@
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Compound Interest Calculator Logic
-        // Auto-calculate on input change
-        const inputs = document.querySelectorAll('#compound-form input, #compound-form select');
-        inputs.forEach(input => {
-            input.addEventListener('input', calculateCompoundInterest);
-        });
-
-        // Calculate on page load
-        calculateCompoundInterest();
-
-        function calculateCompoundInterest() {
-            // Get input values
-            const principal = parseFloat(document.getElementById('initial').value) || 0;
-            const monthlyContribution = parseFloat(document.getElementById('monthly').value) || 0;
-            const annualRate = parseFloat(document.getElementById('rate').value) / 100 || 0;
-            const years = parseInt(document.getElementById('years').value) || 0;
-            const compoundFreq = parseInt(document.getElementById('compound').value);
-
-            // Calculate compound interest with monthly contributions
-            const ratePerPeriod = annualRate / compoundFreq;
-            const totalPeriods = years * compoundFreq;
-            const periodsPerYear = compoundFreq;
-            const contributionPerPeriod = monthlyContribution * (12 / compoundFreq);
-
-            // Future value of initial principal
-            const principalFV = principal * Math.pow(1 + ratePerPeriod, totalPeriods);
-
-            // Future value of monthly contributions (annuity)
-            let contributionFV = 0;
-            if (monthlyContribution > 0) {
-                contributionFV = contributionPerPeriod * 
-                    ((Math.pow(1 + ratePerPeriod, totalPeriods) - 1) / ratePerPeriod);
+(function() {
+            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
+            function calc() {
+                var principal = parseFloat(document.getElementById('principal').value)            || 0;
+                var monthly   = parseFloat(document.getElementById('monthly-contribution').value) || 0;
+                var retRate   = (parseFloat(document.getElementById('annual-return').value)       || 7) / 100;
+                var years     = parseInt(document.getElementById('years').value)                  || 10;
+                var compound  = document.getElementById('compound-frequency') ? document.getElementById('compound-frequency').value : 'monthly';
+                var n = compound === 'daily' ? 365 : compound === 'quarterly' ? 4 : compound === 'annually' ? 1 : 12;
+                var months    = years * 12;
+                var mRate     = retRate / n;
+                var nPeriods  = years * n;
+                var bal       = principal * Math.pow(1 + mRate, nPeriods);
+                var mPerPeriod= monthly * 12 / n;
+                if (mRate > 0) bal += mPerPeriod * (Math.pow(1+mRate, nPeriods) - 1) / mRate;
+                else           bal += monthly * months;
+                var contributed = principal + monthly * months;
+                var interest    = Math.max(0, bal - contributed);
+                animateValue(document.getElementById('final-balance'),    fmt(bal));
+                animateValue(document.getElementById('total-contributed'), fmt(contributed));
+                animateValue(document.getElementById('total-interest'),    fmt(interest));
             }
-
-            const finalBalance = principalFV + contributionFV;
-            const totalContributed = principal + (monthlyContribution * 12 * years);
-            const totalInterest = finalBalance - totalContributed;
-            const roi = totalContributed > 0 ? ((totalInterest / totalContributed) * 100) : 0;
-
-            // Display results
-            animateValue(document.getElementById('final-balance'), formatCurrency(finalBalance));
-            animateValue(document.getElementById('total-contributed'), formatCurrency(totalContributed));
-            animateValue(document.getElementById('total-interest'), formatCurrency(totalInterest));
-            document.getElementById('roi').textContent = roi.toFixed(1) + '%';
-        }
-
-        function formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 
-'USD',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
-        }
-    </script>
-
-        FPValidate.init({
-            'principal':            { label: 'Initial investment', min: 0 },
-            'monthly-contribution': { label: 'Monthly contribution', min: 0 },
-            'annual-return':        { label: 'Return rate', min: 0, max: 30, unit: '%' },
-            'years':                { label: 'Years', min: 1, max: 60, unit: ' years' },
-        });
-        function fpCompoundShare() {
-            var results = [
-                { label: 'Final Balance', value: document.getElementById('final-balance').textContent },
-                { label: 'Total Contributed', value: document.getElementById('total-contributed').textContent },
-                { label: 'Interest Earned', value: document.getElementById('total-interest').textContent },
-            ];
-            FPShare.open('My Compound Interest Results', results);
-        }
-
-    <script src="script.js"></script>
+            document.querySelectorAll('#compound-form input, #compound-form select').forEach(function(i){i.addEventListener('input',calc);});
+            calc();
+            FPValidate.init({
+                'principal':            {label:'Initial investment', min:0},
+                'monthly-contribution': {label:'Monthly contribution', min:0},
+                'annual-return':        {label:'Return rate', min:0, max:30, unit:'%'},
+                'years':                {label:'Years', min:1, max:60, unit:' years'},
+            });
+            window.fpCompoundShare = function() {
+                FPShare.open('My Compound Interest Results', [
+                    {label:'Final Balance',    value:document.getElementById('final-balance').textContent},
+                    {label:'Total Contributed',value:document.getElementById('total-contributed').textContent},
+                    {label:'Interest Earned',  value:document.getElementById('total-interest').textContent},
+                ]);
+            };
+        })();
+        <script src="script.js"></script>
 </body>
 </html>
