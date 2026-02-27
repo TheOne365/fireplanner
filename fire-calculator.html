@@ -53,7 +53,173 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="fp-utils.js"></script>
+<script>
+/* ── FIRE Planner: Utilities (inline, no external deps) ── */
+
+/* Format currency */
+function fpFmt(v) {
+  return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(isNaN(v)?0:v);
+}
+
+/* Animated number counter */
+window.animateValue = function(el, newText) {
+  if (!el) return;
+  var numMatch = newText.match(/[\d,]+\.?\d*/);
+  if (!numMatch) { el.textContent = newText; return; }
+  var target = parseFloat(numMatch[0].replace(/,/g,''));
+  var prefix = newText.slice(0, newText.indexOf(numMatch[0]));
+  var suffix = newText.slice(newText.indexOf(numMatch[0]) + numMatch[0].length);
+  var curMatch = el.textContent.match(/[\d,]+\.?\d*/);
+  var start = curMatch ? parseFloat(curMatch[0].replace(/,/g,'')) : 0;
+  if (start === target) { el.textContent = newText; return; }
+  var t0 = performance.now();
+  var isCur = prefix.indexOf('$') !== -1 || newText.indexOf('$') === 0;
+  (function step(now) {
+    var p = Math.min((now-t0)/600, 1), e = 1-Math.pow(1-p,3);
+    var cur = start + (target-start)*e;
+    el.textContent = isCur
+      ? new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(Math.round(cur))+suffix
+      : prefix+Math.round(cur).toLocaleString('en-US')+suffix;
+    if (p < 1) requestAnimationFrame(step); else el.textContent = newText;
+  })(t0);
+};
+
+/* Input validation */
+window.FPValidate = {
+  rules:{},
+  init: function(rules) {
+    this.rules = rules; var self = this;
+    Object.keys(rules).forEach(function(id) {
+      var el = document.getElementById(id); if (!el) return;
+      var wrap = el.closest('.form-group'); if (!wrap) return;
+      if (!document.getElementById('err-'+id)) {
+        var err = document.createElement('div');
+        err.className='fp-error-msg'; err.id='err-'+id;
+        err.innerHTML='<span>&#9888;</span><span class="fp-err-text"></span>';
+        wrap.appendChild(err);
+      }
+      el.addEventListener('blur', function(){ self.check(id); });
+      el.addEventListener('input', function(){
+        if (el.classList.contains('fp-invalid')) self.check(id); else self.checkValid(id);
+      });
+    });
+  },
+  check: function(id) {
+    var el=document.getElementById(id), rule=this.rules[id];
+    if (!el||!rule) return true;
+    var val=parseFloat(el.value), err=document.getElementById('err-'+id), msg='';
+    if (el.value===''||isNaN(val)) msg=(rule.label||'This field')+' is required.';
+    else if (rule.min!==undefined&&val<rule.min) msg='Enter at least '+rule.min+(rule.unit||'.');
+    else if (rule.max!==undefined&&val>rule.max) msg='Maximum is '+rule.max+(rule.unit||'.');
+    else if (rule.custom) msg=rule.custom(val,el)||'';
+    if (msg) {
+      el.classList.add('fp-invalid'); el.classList.remove('fp-valid');
+      if (err){err.querySelector('.fp-err-text').textContent=msg;err.classList.add('visible');}
+      return false;
+    } else {
+      el.classList.remove('fp-invalid'); el.classList.add('fp-valid');
+      if (err) err.classList.remove('visible');
+      return true;
+    }
+  },
+  checkValid: function(id) {
+    var el=document.getElementById(id),rule=this.rules[id]; if(!el||!rule) return;
+    var val=parseFloat(el.value);
+    if(!isNaN(val)&&(rule.min===undefined||val>=rule.min)&&(rule.max===undefined||val<=rule.max)){
+      el.classList.remove('fp-invalid');el.classList.add('fp-valid');
+      var err=document.getElementById('err-'+id);if(err)err.classList.remove('visible');
+    }
+  }
+};
+
+/* Share card */
+window.FPShare = {
+  open: function(title, results) {
+    var modal=document.getElementById('fp-share-modal');
+    if (!modal) { this._make(); modal=document.getElementById('fp-share-modal'); }
+    this._draw(title, results);
+    modal.classList.add('open');
+  },
+  _make: function() {
+    var el=document.createElement('div');
+    el.className='fp-modal-overlay'; el.id='fp-share-modal';
+    el.innerHTML='<div class="fp-modal"><h3>&#128228; Share Your Results</h3><p>Download your results card to share with friends.</p><div class="fp-share-card-preview"><canvas id="fp-share-canvas" width="800" height="450"></canvas></div><div class="fp-modal-actions"><button class="fp-modal-download" onclick="FPShare.download()">&#8595; Download Image</button><button class="fp-modal-close" onclick="FPShare.close()">Close</button></div></div>';
+    document.body.appendChild(el);
+    el.addEventListener('click',function(e){if(e.target===el)FPShare.close();});
+  },
+  _draw: function(title, results) {
+    var c=document.getElementById('fp-share-canvas'),ctx=c.getContext('2d'),w=800,h=450;
+    var bg=ctx.createLinearGradient(0,0,w,h);
+    bg.addColorStop(0,'#1a2332');bg.addColorStop(1,'#2c3e5f');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,w,h);
+    var r1=ctx.createRadialGradient(w*.8,h*.2,0,w*.8,h*.2,280);
+    r1.addColorStop(0,'rgba(255,107,53,.20)');r1.addColorStop(1,'transparent');
+    ctx.fillStyle=r1;ctx.fillRect(0,0,w,h);
+    ctx.fillStyle='rgba(255,255,255,.88)';ctx.font='bold 17px sans-serif';
+    ctx.fillText('\uD83D\uDD25 FIRE Planner  \u00B7  fireplanner.org',48,50);
+    ctx.strokeStyle='rgba(255,255,255,.14)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(48,65);ctx.lineTo(w-48,65);ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 30px serif';ctx.fillText(title,48,105);
+    var cols=Math.min(results.length,4),cw=(w-96-(cols-1)*14)/cols,sy=130;
+    var colors=['#ff6b35','#2563eb','#059669','#d97706'];
+    results.slice(0,cols).forEach(function(r,i){
+      var x=48+i*(cw+14);
+      ctx.fillStyle='rgba(255,255,255,.07)';_rr(ctx,x,sy,cw,118,10);ctx.fill();
+      ctx.fillStyle=colors[i];_rr(ctx,x,sy,cw,4,2);ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,.52)';ctx.font='600 11px sans-serif';
+      ctx.fillText(r.label.toUpperCase().slice(0,22),x+14,sy+28);
+      ctx.fillStyle='#fff';ctx.font='bold '+(r.value.length>10?'20':'25')+'px serif';
+      ctx.fillText(r.value,x+14,sy+72);
+    });
+    ctx.fillStyle='rgba(255,255,255,.30)';ctx.font='12px sans-serif';
+    ctx.fillText('fireplanner.org \u00B7 For educational purposes only.',48,h-22);
+  },
+  download: function(){
+    var a=document.createElement('a');
+    a.download='fire-planner-results.png';
+    a.href=document.getElementById('fp-share-canvas').toDataURL('image/png');
+    a.click();
+  },
+  close: function(){var m=document.getElementById('fp-share-modal');if(m)m.classList.remove('open');}
+};
+function _rr(ctx,x,y,w,h,r){
+  ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();
+}
+
+/* Multi-step wizard */
+window.FPSteps = {
+  cur:0, total:0,
+  init:function(total,names){this.total=total;this.cur=0;this._bar(names);this._show(0);},
+  _bar:function(names){
+    var b=document.getElementById('fp-steps-bar');if(!b)return;
+    var h='<div class="fp-progress-track" id="fp-progress-track"></div>';
+    for(var i=0;i<this.total;i++)h+='<div class="fp-step'+(i===0?' active':'')+'\" data-step="'+i+'" onclick="FPSteps.goto('+i+')"><div class="fp-step-dot">'+(i+1)+'</div><div class="fp-step-label">'+(names[i]||'Step '+(i+1))+'</div></div>';
+    b.innerHTML=h;this._track();
+  },
+  goto:function(n){if(n<0||n>=this.total)return;this._hide(this.cur);this.cur=n;this._show(n);this._dots();this._track();},
+  next:function(){this.goto(this.cur+1);},prev:function(){this.goto(this.cur-1);},
+  _show:function(n){var p=document.getElementById('fp-panel-'+n);if(p)p.classList.add('active');},
+  _hide:function(n){var p=document.getElementById('fp-panel-'+n);if(p)p.classList.remove('active');},
+  _dots:function(){document.querySelectorAll('.fp-step').forEach(function(el){var s=parseInt(el.dataset.step);el.classList.remove('active','done');if(s===FPSteps.cur)el.classList.add('active');else if(s<FPSteps.cur)el.classList.add('done');});},
+  _track:function(){var t=document.getElementById('fp-progress-track');if(t)t.style.width=(this.total<=1?100:this.cur/(this.total-1)*100)+'%';}
+};
+
+/* Zero-on-empty: call after setting up inputs */
+window.fpZeroEmpty = function(selector) {
+  document.querySelectorAll(selector).forEach(function(inp) {
+    inp.addEventListener('blur', function() {
+      if (this.value === '' || this.value === null) this.value = '0';
+    });
+    inp.addEventListener('input', function() {
+      if (this.value === '') this.value = '0';
+    });
+  });
+};
+</script>
 </head>
 <body class="calculator-page">
     
@@ -99,33 +265,33 @@
                     <form id="fire-form">
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="current-savings">Current Savings ($)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">The total amount you have saved and invested today — retirement accounts, brokerage, savings, etc.</span></span></div>
-                            <input type="number" id="current-savings" value="50000" min="0" step="1000">
+                            <input type="number" id="current-savings" value="50000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="annual-income">Annual Income ($)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Your gross (pre-tax) annual income from all sources.</span></span></div>
-                            <input type="number" id="annual-income" value="75000" min="0" step="1000">
+                            <input type="number" id="annual-income" value="75000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="annual-expenses">Annual Expenses ($)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Your total yearly spending. In FIRE, lowering expenses is just as powerful as earning more — it reduces your FIRE number AND increases savings.</span></span></div>
-                            <input type="number" id="annual-expenses" value="45000" min="0" step="1000">
+                            <input type="number" id="annual-expenses" value="45000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="return-rate">Expected Return Rate (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Historical US stock market returns average ~10% nominal, ~7% inflation-adjusted. Most FIRE planners use 6–8% to be conservative.</span></span></div>
-                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1">
+                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="withdrawal-rate">Safe Withdrawal Rate (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">The Trinity Study found 4% historically survived 30 years. Early retirees with 40–50 year horizons often use 3–3.5% to be safer.</span></span></div>
-                            <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1">
+                            <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1" onblur="if(this.value==='')this.value='0'">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">The 4% rule is commonly used</small>
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="current-age">Your Current Age</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Used to calculate your FIRE age and how many years of investment growth you have ahead.</span></span></div>
-                            <input type="number" id="current-age" value="30" min="18" max="80" step="1">
+                            <input type="number" id="current-age" value="30" min="18" max="80" step="1" onblur="if(this.value==='')this.value='0'">
                         </div>
                     </form>
                 </div>
@@ -228,74 +394,90 @@
         </div>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-        (function() {
-            function fmt(v) {
-                return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);
-            }
-            function calc() {
-                var savings    = parseFloat(document.getElementById('current-savings').value)  || 0;
-                var income     = parseFloat(document.getElementById('annual-income').value)    || 0;
-                var expenses   = parseFloat(document.getElementById('annual-expenses').value)  || 0;
-                var retRate    = (parseFloat(document.getElementById('return-rate').value)     || 7)  / 100;
-                var wdRate     = (parseFloat(document.getElementById('withdrawal-rate').value) || 4)  / 100;
-                var age        = parseInt(document.getElementById('current-age').value)        || 30;
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
-                var fireNum    = expenses / wdRate;
-                var annSavings = income - expenses;
-                var savRate    = income > 0 ? (annSavings / income * 100) : 0;
-                var monthly    = annSavings / 12;
-                var years      = 0;
+        // Validation
+        FPValidate.init({
+            'current-savings': { label: 'Current savings', min: 0 },
+            'annual-income':   { label: 'Annual income', min: 0, custom: function(v, el) {
+                var expenses = parseFloat(document.getElementById('annual-expenses').value);
+                if (!isNaN(expenses) && v < expenses) return 'Income is less than expenses — you cannot save toward FIRE.';
+            }},
+            'annual-expenses': { label: 'Annual expenses', min: 0 },
+            'return-rate':     { label: 'Return rate', min: 0, max: 20, unit: '%' },
+            'withdrawal-rate': { label: 'Withdrawal rate', min: 1, max: 10, unit: '%' },
+            'current-age':     { label: 'Age', min: 10, max: 100, unit: ' years' },
+        });
 
-                if (annSavings > 0 && retRate > 0) {
-                    var mRate = retRate / 12;
-                    var mPay  = annSavings / 12;
-                    var bal   = savings;
-                    var mo    = 0;
-                    while (bal < fireNum && mo < 600) { bal = bal*(1+mRate) + mPay; mo++; }
-                    years = mo / 12;
-                } else if (annSavings <= 0) {
-                    years = 999;
-                }
+        // Share results
+        function fpFireShare() {
+            var results = [
+                { label: 'FIRE Number', value: document.getElementById('fire-number').textContent },
+                { label: 'Years to FIRE', value: document.getElementById('years-to-fire').textContent },
+                { label: 'Annual Savings', value: document.getElementById('annual-savings').textContent },
+                { label: 'Monthly Needed', value: document.getElementById('monthly-savings').textContent },
+            ];
+            FPShare.open('My FIRE Calculator Results', results);
+        }
 
-                animateValue(document.getElementById('fire-number'), fmt(fireNum));
-                if (years >= 999) {
-                    document.getElementById('years-to-fire').textContent = 'Not Possible';
-                    document.getElementById('fire-age-text').textContent  = 'Increase income or reduce expenses';
-                } else if (years <= 0) {
-                    document.getElementById('years-to-fire').textContent = '\uD83C\uDF89 Already There!';
-                    document.getElementById('fire-age-text').textContent  = "Congratulations! You've reached FIRE";
-                } else {
-                    animateValue(document.getElementById('years-to-fire'), Math.ceil(years) + ' years');
-                    document.getElementById('fire-age-text').textContent  = "You'll reach FIRE at age " + (age + Math.ceil(years));
-                }
-                animateValue(document.getElementById('annual-savings'), fmt(annSavings));
-                document.getElementById('savings-rate').textContent = 'Savings rate: ' + savRate.toFixed(1) + '%';
-                animateValue(document.getElementById('monthly-savings'), fmt(monthly));
-            }
-            document.querySelectorAll('#fire-form input').forEach(function(inp){
-                inp.addEventListener('input', calc);
-            });
-            calc();
-            // Validation
-            FPValidate.init({
-                'current-savings': {label:'Current savings', min:0},
-                'annual-income':   {label:'Annual income', min:0},
-                'annual-expenses': {label:'Annual expenses', min:0},
-                'return-rate':     {label:'Return rate', min:0, max:20, unit:'%'},
-                'withdrawal-rate': {label:'Withdrawal rate', min:1, max:10, unit:'%'},
-                'current-age':     {label:'Age', min:10, max:100, unit:' years'},
-            });
-            // Share
-            window.fpFireShare = function() {
-                FPShare.open('My FIRE Calculator Results', [
-                    {label:'FIRE Number',   value:document.getElementById('fire-number').textContent},
-                    {label:'Years to FIRE', value:document.getElementById('years-to-fire').textContent},
-                    {label:'Annual Savings',value:document.getElementById('annual-savings').textContent},
-                    {label:'Monthly Needed',value:document.getElementById('monthly-savings').textContent},
-                ]);
-            };
-        })();
-        <script src="script.js"></script>
+    <script src="script.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function calc() {
+        var savings  = parseFloat(document.getElementById('current-savings').value)  || 0;
+        var income   = parseFloat(document.getElementById('annual-income').value)    || 0;
+        var expenses = parseFloat(document.getElementById('annual-expenses').value)  || 0;
+        var retRate  = (parseFloat(document.getElementById('return-rate').value)     || 7)  / 100;
+        var wdRate   = (parseFloat(document.getElementById('withdrawal-rate').value) || 4)  / 100;
+        var age      = parseInt(document.getElementById('current-age').value)        || 30;
+        var fireNum    = expenses / wdRate;
+        var annSavings = income - expenses;
+        var savRate    = income > 0 ? (annSavings / income * 100) : 0;
+        var monthly    = annSavings / 12;
+        var years = 0;
+        if (annSavings > 0 && retRate > 0) {
+            var mRate=retRate/12, mPay=annSavings/12, bal=savings, mo=0;
+            while (bal < fireNum && mo < 600) { bal=bal*(1+mRate)+mPay; mo++; }
+            years = mo / 12;
+        } else if (annSavings <= 0) { years = 999; }
+        animateValue(document.getElementById('fire-number'), fpFmt(fireNum));
+        if (years >= 999) {
+            document.getElementById('years-to-fire').textContent = 'Not Possible';
+            document.getElementById('fire-age-text').textContent  = 'Increase income or reduce expenses';
+        } else if (years <= 0) {
+            document.getElementById('years-to-fire').textContent = '🎉 Already There!';
+            document.getElementById('fire-age-text').textContent  = "Congratulations! You've reached FIRE";
+        } else {
+            animateValue(document.getElementById('years-to-fire'), Math.ceil(years)+' years');
+            document.getElementById('fire-age-text').textContent = "You'll reach FIRE at age "+(age+Math.ceil(years));
+        }
+        animateValue(document.getElementById('annual-savings'), fpFmt(annSavings));
+        document.getElementById('savings-rate').textContent = 'Savings rate: '+savRate.toFixed(1)+'%';
+        animateValue(document.getElementById('monthly-savings'), fpFmt(monthly));
+    }
+    var form = document.getElementById('fire-form');
+    if (form) form.querySelectorAll('input,select').forEach(function(inp) {
+        inp.addEventListener('input', calc);
+        inp.addEventListener('blur', function(){ if(this.value===''){this.value='0';} calc(); });
+    });
+    FPValidate.init({
+        'current-savings': {label:'Current savings', min:0},
+        'annual-income':   {label:'Annual income',   min:0},
+        'annual-expenses': {label:'Annual expenses', min:0},
+        'return-rate':     {label:'Return rate',     min:0, max:20, unit:'%'},
+        'withdrawal-rate': {label:'Withdrawal rate', min:1, max:10, unit:'%'},
+        'current-age':     {label:'Age',             min:10, max:100, unit:' years'},
+    });
+    window.fpFireShare = function() {
+        FPShare.open('My FIRE Calculator Results', [
+            {label:'FIRE Number',   value:document.getElementById('fire-number').textContent},
+            {label:'Years to FIRE', value:document.getElementById('years-to-fire').textContent},
+            {label:'Annual Savings',value:document.getElementById('annual-savings').textContent},
+            {label:'Monthly Needed',value:document.getElementById('monthly-savings').textContent},
+        ]);
+    };
+    calc();
+});
+</script>
 </body>
 </html>
