@@ -591,57 +591,34 @@ window.fpZeroEmpty = function(selector) {
     </footer>
 
     
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    /* ── Calc ── */
     function calc() {
-        
         var goal    = parseFloat(document.getElementById('goal-amount').value)     || 0;
         var current = parseFloat(document.getElementById('current-savings').value) || 0;
-        var ret     = (parseFloat(document.getElementById('annual-return').value)  || 5) / 100;
-        var years   = parseFloat(document.getElementById('years').value)           || 5;
-        var mRate=ret/12, months=years*12;
-        var needed=goal - current*Math.pow(1+mRate,months);
-        var monthly=mRate>0 ? needed/((Math.pow(1+mRate,months)-1)/mRate) : needed/months;
+        var months  = parseFloat(document.getElementById('time-frame').value)      || 12;
+        var annRate = (parseFloat(document.getElementById('interest-rate').value)  || 4) / 100;
+        var mRate=annRate/12, fvNow=current*Math.pow(1+mRate,months), needed=goal-fvNow;
+        var monthly=0;
+        if(mRate>0&&months>0) monthly=needed/((Math.pow(1+mRate,months)-1)/mRate);
+        else if(months>0) monthly=needed/months;
         monthly=Math.max(0,monthly);
-        animateValue(document.getElementById('monthly-needed'), fpFmt(monthly));
-        animateValue(document.getElementById('total-savings'),  fpFmt(current+monthly*months));
-        var d=new Date();d.setMonth(d.getMonth()+Math.ceil(months));
-        var dateEl=document.getElementById('completion-date');
-        if(dateEl)dateEl.textContent=d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
-    
+        var totalPaid=current+monthly*months, interest=Math.max(0,goal-totalPaid);
+        animateValue(document.getElementById('monthly-needed'),fpFmt(monthly));
+        animateValue(document.getElementById('total-savings'), fpFmt(totalPaid));
+        var ie=document.getElementById('interest-earned'); if(ie) animateValue(ie,fpFmt(interest));
+        var d=new Date(); d.setMonth(d.getMonth()+Math.ceil(months));
+        var de=document.getElementById('completion-date'); if(de) de.textContent=d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
     }
-    /* Wire all inputs in this form */
-    var form = document.getElementById('savings-form');
-    if (form) {
-        form.querySelectorAll('input, select').forEach(function(inp) {
-            inp.addEventListener('input',  calc);
-            inp.addEventListener('change', calc);
-            /* Show 0 when field is cleared */
-            inp.addEventListener('blur', function() {
-                if (this.value === '' || this.value === null) { this.value = '0'; calc(); }
-            });
-        });
-    }
-    /* Zero-fill on any input across the page */
+    document.querySelectorAll('#savings-form input').forEach(function(i){i.addEventListener('input',calc);});
+
     document.querySelectorAll('input[type="number"]').forEach(function(inp) {
-        inp.addEventListener('blur', function() {
-            if (this.value === '') { this.value = '0'; calc(); }
-        });
+        inp.addEventListener('focus', function() { this.select(); });
+        inp.addEventListener('blur',  function() { if (this.value === '') { this.value = '0'; calc(); } });
     });
-    /* Validation */
-    FPValidate.init({
-        'goal-amount':     {label:'Savings goal',    min:1},
-        'current-savings': {label:'Current savings', min:0},
-        'annual-return':   {label:'Return rate',     min:0, max:30, unit:'%'},
-        'years':           {label:'Years',           min:0.5, max:60, unit:' years'},
-    });
-    
-    /* Share */
-    window.fpSavingsShare = function() {
-        FPShare.open('My Savings Goal Plan', [{label:'Monthly Needed',value:document.getElementById('monthly-needed').textContent},{label:'Total Saved',value:document.getElementById('total-savings').textContent}]);
-    };
-    /* Run immediately */
+    window.fpSavingsShare=function(){FPShare.open('My Savings Goal Plan',[{label:'Monthly Needed',value:document.getElementById('monthly-needed').textContent},{label:'Total Saved',value:document.getElementById('total-savings').textContent}]);};
     calc();
 });
 </script>

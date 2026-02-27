@@ -636,56 +636,31 @@ window.fpZeroEmpty = function(selector) {
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    /* ── Calc ── */
     function calc() {
-        
-        var principal = parseFloat(document.getElementById('principal').value)            || 0;
-        var monthly   = parseFloat(document.getElementById('monthly-contribution').value) || 0;
-        var retRate   = (parseFloat(document.getElementById('annual-return').value)       || 7) / 100;
-        var years     = parseInt(document.getElementById('years').value)                  || 10;
-        var mRate = retRate/12, months = years*12;
-        var bal = principal * Math.pow(1+mRate, months);
-        if (mRate > 0) bal += monthly * (Math.pow(1+mRate,months)-1) / mRate;
-        else           bal += monthly * months;
-        var contributed = principal + monthly*months;
+        var principal = parseFloat(document.getElementById('initial').value)  || 0;
+        var monthly   = parseFloat(document.getElementById('monthly').value)  || 0;
+        var retRate   = (parseFloat(document.getElementById('rate').value)    || 7) / 100;
+        var years     = parseInt(document.getElementById('years').value)      || 10;
+        var mRate=retRate/12, months=years*12;
+        var bal=principal*Math.pow(1+mRate,months);
+        if(mRate>0) bal+=monthly*(Math.pow(1+mRate,months)-1)/mRate; else bal+=monthly*months;
+        var contributed=principal+monthly*months, interest=Math.max(0,bal-contributed);
         animateValue(document.getElementById('final-balance'),    fpFmt(bal));
-        animateValue(document.getElementById('total-contributed'), fpFmt(contributed));
-        animateValue(document.getElementById('total-interest'),    fpFmt(Math.max(0,bal-contributed)));
-    
+        animateValue(document.getElementById('total-contributed'),fpFmt(contributed));
+        animateValue(document.getElementById('total-interest'),   fpFmt(interest));
+        var roi=document.getElementById('roi'); if(roi&&contributed>0) roi.textContent=((interest/contributed)*100).toFixed(1)+'% return on contributions';
     }
-    /* Wire all inputs in this form */
-    var form = document.getElementById('compound-form');
-    if (form) {
-        form.querySelectorAll('input, select').forEach(function(inp) {
-            inp.addEventListener('input',  calc);
-            inp.addEventListener('change', calc);
-            /* Show 0 when field is cleared */
-            inp.addEventListener('blur', function() {
-                if (this.value === '' || this.value === null) { this.value = '0'; calc(); }
-            });
-        });
-    }
-    /* Zero-fill on any input across the page */
+    document.querySelectorAll('#compound-form input,#compound-form select').forEach(function(i){i.addEventListener('input',calc);i.addEventListener('change',calc);});
+
     document.querySelectorAll('input[type="number"]').forEach(function(inp) {
-        inp.addEventListener('blur', function() {
-            if (this.value === '') { this.value = '0'; calc(); }
-        });
+        inp.addEventListener('focus', function() { this.select(); });
+        inp.addEventListener('blur',  function() { if (this.value === '') { this.value = '0'; calc(); } });
     });
-    /* Validation */
-    FPValidate.init({
-        'principal':            {label:'Initial investment', min:0},
-        'monthly-contribution': {label:'Monthly contribution', min:0},
-        'annual-return':        {label:'Return rate', min:0, max:30, unit:'%'},
-        'years':                {label:'Years', min:1, max:60, unit:' years'},
-    });
-    
-    /* Share */
-    window.fpCompoundShare = function() {
-        FPShare.open('My Compound Interest Results', [{label:'Final Balance',value:document.getElementById('final-balance').textContent},{label:'Total Contributed',value:document.getElementById('total-contributed').textContent},{label:'Interest Earned',value:document.getElementById('total-interest').textContent}]);
-    };
-    /* Run immediately */
+    window.fpCompoundShare=function(){FPShare.open('My Compound Interest Results',[{label:'Final Balance',value:document.getElementById('final-balance').textContent},{label:'Total Contributed',value:document.getElementById('total-contributed').textContent},{label:'Interest Earned',value:document.getElementById('total-interest').textContent}]);};
     calc();
 });
 </script>

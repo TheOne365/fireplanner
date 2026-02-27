@@ -595,58 +595,32 @@ window.fpZeroEmpty = function(selector) {
     </footer>
 
     
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    /* ── Calc ── */
     function calc() {
-        
-        var savings  = parseFloat(document.getElementById('current-savings').value) || 0;
-        var annual   = parseFloat(document.getElementById('annual-savings').value)  || 0;
-        var expenses = parseFloat(document.getElementById('annual-expenses').value) || 0;
-        var ret      = (parseFloat(document.getElementById('return-rate').value)    || 7) / 100;
-        var age      = parseInt(document.getElementById('current-age').value)       || 30;
-        var fireNum  = expenses>0 ? expenses/0.04 : 0;
-        var mRate=ret/12, mPay=annual/12, bal=savings, mo=0;
-        while(bal<fireNum&&mo<600){bal=bal*(1+mRate)+mPay;mo++;}
-        var yrs=mo/12, retAge=age+Math.ceil(yrs);
-        document.getElementById('retirement-age').textContent = retAge>=100?'100+':retAge;
-        document.getElementById('years-left').textContent     = Math.ceil(yrs)+' years';
-        animateValue(document.getElementById('total-contributions'), fpFmt(annual*yrs));
-        var gEl=document.getElementById('growth');if(gEl)animateValue(gEl,fpFmt(Math.max(0,bal-savings-annual*yrs)));
-    
+        var age     = parseInt(document.getElementById('current-age').value)              || 30;
+        var savings = parseFloat(document.getElementById('current-savings').value)        || 0;
+        var monthly = parseFloat(document.getElementById('monthly-contribution').value)   || 0;
+        var goal    = parseFloat(document.getElementById('retirement-goal').value)        || 0;
+        var ret     = (parseFloat(document.getElementById('return-rate').value)           || 7) / 100;
+        var mRate=ret/12, bal=savings, mo=0;
+        if(goal>0){while(bal<goal&&mo<720){bal=bal*(1+mRate)+monthly;mo++;}}
+        var years=mo/12, retAge=age+Math.ceil(years), contribs=monthly*mo;
+        document.getElementById('retirement-age').textContent   = retAge>=100?'100+':retAge;
+        document.getElementById('years-left').textContent       = Math.ceil(years)+' years';
+        animateValue(document.getElementById('total-contributions'),fpFmt(contribs));
+        var g=document.getElementById('growth'); if(g) animateValue(g,fpFmt(Math.max(0,bal-savings-contribs)));
     }
-    /* Wire all inputs in this form */
-    var form = document.getElementById('retire-form');
-    if (form) {
-        form.querySelectorAll('input, select').forEach(function(inp) {
-            inp.addEventListener('input',  calc);
-            inp.addEventListener('change', calc);
-            /* Show 0 when field is cleared */
-            inp.addEventListener('blur', function() {
-                if (this.value === '' || this.value === null) { this.value = '0'; calc(); }
-            });
-        });
-    }
-    /* Zero-fill on any input across the page */
+    document.querySelectorAll('#retire-form input').forEach(function(i){i.addEventListener('input',calc);});
+
     document.querySelectorAll('input[type="number"]').forEach(function(inp) {
-        inp.addEventListener('blur', function() {
-            if (this.value === '') { this.value = '0'; calc(); }
-        });
+        inp.addEventListener('focus', function() { this.select(); });
+        inp.addEventListener('blur',  function() { if (this.value === '') { this.value = '0'; calc(); } });
     });
-    /* Validation */
-    FPValidate.init({
-        'current-savings': {label:'Current savings', min:0},
-        'annual-savings':  {label:'Annual savings',  min:0},
-        'annual-expenses': {label:'Annual expenses', min:1},
-        'return-rate':     {label:'Return rate',     min:0, max:20, unit:'%'},
-        'current-age':     {label:'Current age',     min:10, max:80, unit:' years'},
-    });
-    
-    /* Share */
-    window.fpRetireShare = function() {
-        FPShare.open('My Retirement Age Results', [{label:'Retirement Age',value:document.getElementById('retirement-age').textContent},{label:'Years Left',value:document.getElementById('years-left').textContent},{label:'Total Contribs',value:document.getElementById('total-contributions').textContent}]);
-    };
-    /* Run immediately */
+    FPValidate.init({'current-age':{label:'Current age',min:10,max:80,unit:' years'},'current-savings':{label:'Current savings',min:0},'monthly-contribution':{label:'Monthly contribution',min:0},'retirement-goal':{label:'Retirement goal',min:1},'return-rate':{label:'Return rate',min:0,max:20,unit:'%'}});
+    window.fpRetireShare=function(){FPShare.open('My Retirement Age Results',[{label:'Retirement Age',value:document.getElementById('retirement-age').textContent},{label:'Years Left',value:document.getElementById('years-left').textContent},{label:'Total Contribs',value:document.getElementById('total-contributions').textContent}]);};
     calc();
 });
 </script>

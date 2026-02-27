@@ -640,57 +640,34 @@ window.fpZeroEmpty = function(selector) {
     </footer>
 
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    /* ── Calc ── */
     function calc() {
-        
-        var init  = parseFloat(document.getElementById('initial-investment').value) || 0;
-        var mon   = parseFloat(document.getElementById('monthly-addition').value)   || 0;
-        var gross = (parseFloat(document.getElementById('annual-return').value)     || 7)   / 100;
-        var low   = (parseFloat(document.getElementById('low-expense-ratio').value) || 0.05)/ 100;
-        var high  = (parseFloat(document.getElementById('high-expense-ratio').value)|| 1.0) / 100;
-        var years = parseInt(document.getElementById('years').value)                || 30;
-        function grow(p,m,r,f,y){var n=r-f,mr=n/12,mo=y*12,b=p*Math.pow(1+mr,mo);if(mr>0)b+=m*(Math.pow(1+mr,mo)-1)/mr;else b+=m*mo;return b;}
-        var lv=grow(init,mon,gross,low,years), hv=grow(init,mon,gross,high,years);
-        animateValue(document.getElementById('low-fee-value'),     fpFmt(lv));
-        animateValue(document.getElementById('high-fee-value'),    fpFmt(hv));
-        animateValue(document.getElementById('total-contributed'), fpFmt(Math.max(0,lv-hv)));
-    
+        var init  = parseFloat(document.getElementById('initial-investment').value)   || 0;
+        var mon   = parseFloat(document.getElementById('monthly-contribution').value) || 0;
+        var gross = (parseFloat(document.getElementById('gross-return').value)        || 7)    / 100;
+        var low   = (parseFloat(document.getElementById('low-fee').value)             || 0.04) / 100;
+        var high  = (parseFloat(document.getElementById('high-fee').value)            || 1.0)  / 100;
+        var years = parseInt(document.getElementById('years').value)                  || 30;
+        function grow(p,m,r,f,y){var n=r-f,mr=n/12,mo=y*12,b=p*Math.pow(1+mr,mo);if(mr>0)b+=m*(Math.pow(1+mr,mo)-1)/mr;else b+=m*mo;return Math.max(0,b);}
+        var lv=grow(init,mon,gross,low,years), hv=grow(init,mon,gross,high,years), cost=Math.max(0,lv-hv);
+        animateValue(document.getElementById('low-fee-value'),  fpFmt(lv));
+        animateValue(document.getElementById('high-fee-value'), fpFmt(hv));
+        var fc=document.getElementById('fee-cost');       if(fc) animateValue(fc,fpFmt(cost));
+        var tc=document.getElementById('total-contributed');if(tc) animateValue(tc,fpFmt(cost));
+        var fp=document.getElementById('fee-cost-pct');   if(fp) fp.textContent=lv>0?((cost/lv)*100).toFixed(1)+'% of final value lost to fees':'';
+        var lr=document.getElementById('low-fee-rate');   if(lr) lr.textContent=(low*100).toFixed(2)+'% expense ratio';
+        var hr=document.getElementById('high-fee-rate');  if(hr) hr.textContent=(high*100).toFixed(2)+'% expense ratio';
     }
-    /* Wire all inputs in this form */
-    var form = document.getElementById('fee-form');
-    if (form) {
-        form.querySelectorAll('input, select').forEach(function(inp) {
-            inp.addEventListener('input',  calc);
-            inp.addEventListener('change', calc);
-            /* Show 0 when field is cleared */
-            inp.addEventListener('blur', function() {
-                if (this.value === '' || this.value === null) { this.value = '0'; calc(); }
-            });
-        });
-    }
-    /* Zero-fill on any input across the page */
+    document.querySelectorAll('#fee-form input').forEach(function(i){i.addEventListener('input',calc);});
+
     document.querySelectorAll('input[type="number"]').forEach(function(inp) {
-        inp.addEventListener('blur', function() {
-            if (this.value === '') { this.value = '0'; calc(); }
-        });
+        inp.addEventListener('focus', function() { this.select(); });
+        inp.addEventListener('blur',  function() { if (this.value === '') { this.value = '0'; calc(); } });
     });
-    /* Validation */
-    FPValidate.init({
-        'initial-investment':  {label:'Initial investment', min:0},
-        'monthly-addition':    {label:'Monthly addition',   min:0},
-        'annual-return':       {label:'Annual return',      min:0, max:30, unit:'%'},
-        'low-expense-ratio':   {label:'Low-cost ratio',     min:0, max:5,  unit:'%'},
-        'high-expense-ratio':  {label:'High-cost ratio',    min:0, max:5,  unit:'%'},
-        'years':               {label:'Years',              min:1, max:60, unit:' years'},
-    });
-    
-    /* Share */
-    window.fpFeeShare = function() {
-        FPShare.open('Investment Fee Impact', [{label:'Low-Fee Value',value:document.getElementById('low-fee-value').textContent},{label:'High-Fee Value',value:document.getElementById('high-fee-value').textContent},{label:'Fees Cost You',value:document.getElementById('total-contributed').textContent}]);
-    };
-    /* Run immediately */
+    window.fpFeeShare=function(){var el=document.getElementById('fee-cost')||document.getElementById('total-contributed');FPShare.open('Investment Fee Impact',[{label:'Low-Fee Value',value:document.getElementById('low-fee-value').textContent},{label:'High-Fee Value',value:document.getElementById('high-fee-value').textContent},{label:'Fees Cost You',value:el?el.textContent:''}]);};
     calc();
 });
 </script>
