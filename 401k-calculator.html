@@ -456,6 +456,20 @@ window.fpZeroEmpty = function(selector) {
   });
 };
 </script>
+<style>
+/* Mobile zoom fix — prevent content from overflowing viewport */
+html, body { max-width: 100%; overflow-x: hidden; }
+input[type="number"] { max-width: 100%; box-sizing: border-box; }
+.calculator-layout { max-width: 100%; overflow: hidden; }
+
+/* Responsive "on the right" / "below" hint */
+.fp-hint-mobile { display: none; }
+.fp-hint-desktop { display: inline; }
+@media (max-width: 768px) {
+    .fp-hint-mobile { display: inline; }
+    .fp-hint-desktop { display: none; }
+}
+</style>
 
 </head>
 <body class="calculator-page">
@@ -556,7 +570,7 @@ window.fpZeroEmpty = function(selector) {
                         <div class="fp-step-panel" id="fp-panel-2">
                             <div style="text-align:center; padding: 32px 0 16px;">
                                 <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
-                                <p style="color: var(--text-secondary); font-size: 15px; margin-bottom: 0;">Your results are shown on the right.<br>Adjust any inputs to see how they change your outcome.</p>
+                                <p class="fp-results-hint" style="color: var(--text-secondary); font-size: 15px; margin-bottom: 0;">Your results are shown <span class="fp-hint-desktop">on the right</span><span class="fp-hint-mobile">below</span>.<br>Adjust any inputs to see how they change your outcome.</p>
                             </div>
                             <div class="fp-step-nav">
                                 <button type="button" class="fp-btn-prev" onclick="FPSteps.prev()">← Back to Settings</button>
