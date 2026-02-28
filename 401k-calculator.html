@@ -682,66 +682,7 @@ input[type="number"] { max-width: 100%; box-sizing: border-box; }
         </div>
     </footer>
 
-    
-
-        document.addEventListener('DOMContentLoaded', function() {
-            function fmt(v){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',minimumFractionDigits:0,maximumFractionDigits:0}).format(v);}
-            function calc() {
-                var bal      = parseFloat(document.getElementById('current-balance').value)    || 0;
-                var salary   = parseFloat(document.getElementById('annual-salary').value)      || 0;
-                var contRate = (parseFloat(document.getElementById('contribution-rate').value) || 0) / 100;
-                var empMatch = (parseFloat(document.getElementById('employer-match').value)    || 0) / 100;
-                var matchLim = (parseFloat(document.getElementById('match-limit').value)       || 0) / 100;
-                var ret      = (parseFloat(document.getElementById('return-rate').value)       || 7) / 100;
-                var years    = parseInt(document.getElementById('years').value)                || 30;
-                var salInc   = (parseFloat(document.getElementById('salary-increase').value)  || 2) / 100;
-                var yourTotal=0, empTotal=0, curSalary=salary;
-                for (var y=0; y<years; y++) {
-                    var yourCont = curSalary * contRate;
-                    var empCont  = curSalary * Math.min(contRate, matchLim) * empMatch / contRate * contRate;
-                    empCont = curSalary * Math.min(contRate, matchLim) * (empMatch / (matchLim > 0 ? matchLim/contRate : 1));
-                    // simpler: employer matches empMatch% of salary up to matchLim% of salary
-                    empCont = Math.min(contRate, matchLim) > 0 ? curSalary * empMatch * Math.min(1, contRate / (matchLim||contRate)) : 0;
-                    // even simpler correct formula:
-                    empCont = curSalary * empMatch * (contRate >= matchLim ? 1 : contRate / (matchLim||1));
-                    bal = (bal + yourCont + empCont) * (1 + ret);
-                    yourTotal += yourCont;
-                    empTotal  += empCont;
-                    curSalary *= (1 + salInc);
-                }
-                var growth = bal - yourTotal - empTotal;
-                var firstYourCont = salary * contRate;
-                var firstEmpCont  = salary * empMatch * (contRate >= matchLim ? 1 : contRate/(matchLim||1));
-                animateValue(document.getElementById('final-balance'),         fmt(bal));
-                animateValue(document.getElementById('your-contributions'),    fmt(yourTotal));
-                animateValue(document.getElementById('employer-contributions'),fmt(empTotal));
-                animateValue(document.getElementById('investment-growth'),     fmt(Math.max(0,growth)));
-                document.getElementById('first-year').textContent = fmt(firstYourCont + firstEmpCont);
-                document.getElementById('breakdown').textContent  = 'You: ' + fmt(firstYourCont) + ' + Employer: ' + fmt(firstEmpCont);
-            }
-            document.querySelectorAll('#four01k-form input').forEach(function(i){i.addEventListener('input',calc);});
-            calc();
-            FPSteps.init(3, ['Your Savings','Growth Settings','Results']);
-            FPValidate.init({
-                'current-balance':   {label:'Current balance',   min:0},
-                'annual-salary':     {label:'Annual salary',      min:1},
-                'contribution-rate': {label:'Contribution rate',  min:0, max:50, unit:'%'},
-                'employer-match':    {label:'Employer match',     min:0, max:20, unit:'%'},
-                'match-limit':       {label:'Match limit',        min:0, max:100,unit:'%'},
-                'return-rate':       {label:'Return rate',        min:0, max:20, unit:'%'},
-                'years':             {label:'Years',              min:1, max:60, unit:' years'},
-                'salary-increase':   {label:'Salary increase',    min:0, max:15, unit:'%'},
-            });
-            window.fp401kShare = function() {
-                FPShare.open('My 401k Projection', [
-                    {label:'Final Balance',   value:document.getElementById('final-balance').textContent},
-                    {label:'Your Contributions',value:document.getElementById('your-contributions').textContent},
-                    {label:'Employer Match',  value:document.getElementById('employer-contributions').textContent},
-                    {label:'Investment Growth',value:document.getElementById('investment-growth').textContent},
-                ]);
-            };
-        });
-        <script src="script.js"></script>
+    <script src="script.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     /* ── Calc ── */
