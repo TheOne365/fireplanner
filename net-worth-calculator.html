@@ -620,22 +620,6 @@ window.fpZeroEmpty = function(selector) {
     <section class="calculator-container">
         <div class="container">
             <div class="nw-layout">
-                <div style="display:flex; align-items:center; gap:0; margin-bottom:28px; position:relative;">
-                    <div style="position:absolute;top:14px;left:14px;right:14px;height:2px;background:var(--border);z-index:0;"></div>
-                    <div style="position:absolute;top:14px;left:14px;height:2px;background:var(--accent-green);z-index:1;width:100%;transition:width 0.4s ease;" id="nw-progress-track"></div>
-                    <div class="fp-step done" style="flex:1;z-index:2;text-align:center;cursor:default;">
-                        <div class="fp-step-dot" style="margin:0 auto 6px;">✓</div>
-                        <div class="fp-step-label">Assets</div>
-                    </div>
-                    <div class="fp-step done" style="flex:1;z-index:2;text-align:center;cursor:default;">
-                        <div class="fp-step-dot" style="margin:0 auto 6px;">✓</div>
-                        <div class="fp-step-label">Liabilities</div>
-                    </div>
-                    <div class="fp-step active" style="flex:1;z-index:2;text-align:center;cursor:default;">
-                        <div class="fp-step-dot" style="margin:0 auto 6px;">3</div>
-                        <div class="fp-step-label">Net Worth</div>
-                    </div>
-                </div>
                 <div class="nw-columns">
                     <!-- ASSETS -->
                     <div class="nw-col">
@@ -675,12 +659,6 @@ window.fpZeroEmpty = function(selector) {
                         </div>
                     </div>
 
-                <div class="fp-share-section" style="margin-top:24px;">
-                    <button class="fp-share-btn" onclick="fpNWShare()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                            Share My Results
-                        </button>
-                </div>
                 </div>
 
                 <!-- NET WORTH RESULT -->
@@ -690,7 +668,15 @@ window.fpZeroEmpty = function(selector) {
                     <div class="nw-bar"><div class="nw-bar-fill positive" id="nw-bar-fill" style="width: 50%"></div></div>
                     <div class="subtext" id="nw-context"></div>
                 </div>
-<div style="background: var(--bg-secondary); padding: 24px 28px; border-radius: var(--radius-lg); margin-top: 24px; border: 1px solid var(--border-light);">
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fpNWShare()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        Share My Results
+                    </button>
+                </div>
+
+                <div style="background: var(--bg-secondary); padding: 24px 28px; border-radius: var(--radius-lg); margin-top: 24px; border: 1px solid var(--border-light);">
                     <h3 style="font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text-primary); margin-bottom: 12px;">Understanding Net Worth</h3>
                     <p style="color: var(--text-secondary); font-size: 14.5px; line-height: 1.7; margin-bottom: 12px;">
                         Your net worth is the single best snapshot of your financial health. It's simply what you own minus what you owe. Tracking it over time shows your progress toward financial independence.
