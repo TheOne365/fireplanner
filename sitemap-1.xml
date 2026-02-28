@@ -3,131 +3,135 @@
   
   <url>
     <loc>https://fireplanner.org/</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/fire-calculator.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/compound-interest.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/401k-calculator.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/roth-vs-traditional.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://fireplanner.org/coast-fire-calculator.html</loc>
+    <lastmod>2026-02-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://fireplanner.org/net-worth-calculator.html</loc>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/fee-calculator.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/debt-calculator.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/savings-goal-calculator.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/retirement-age-calculator.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/resources.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/glossary.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/fire-guide.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/about.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/contact.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/privacy-policy.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/terms-of-service.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   
   <url>
     <loc>https://fireplanner.org/disclaimer.html</loc>
-    <lastmod>2026-02-23</lastmod>
+    <lastmod>2026-02-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-  
-  <url>
-    <loc>https://fireplanner.org/coast-fire-calculator.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://fireplanner.org/net-worth-calculator.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+
 </urlset>
