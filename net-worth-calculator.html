@@ -575,7 +575,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -641,15 +641,15 @@ window.fpZeroEmpty = function(selector) {
                     <div class="nw-col">
                         <h3 class="nw-section-title"><span>📈</span> Assets (What You Own)</h3>
 
-                        <div class="nw-row"><label>Cash & Checking</label><input type="number" class="asset-input" value="5000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Savings Accounts</label><input type="number" class="asset-input" value="10000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>401(k) / 403(b)</label><input type="number" class="asset-input" value="25000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>IRA (Roth/Trad)</label><input type="number" class="asset-input" value="15000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Brokerage Accounts</label><input type="number" class="asset-input" value="10000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>HSA</label><input type="number" class="asset-input" value="3000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Real Estate Value</label><input type="number" class="asset-input" value="0" min="0" step="1000" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Vehicle(s)</label><input type="number" class="asset-input" value="12000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Other Assets</label><input type="number" class="asset-input" value="0" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Cash & Checking</label><input type="number" class="asset-input" value="5000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Savings Accounts</label><input type="number" class="asset-input" value="10000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>401(k) / 403(b)</label><input type="number" class="asset-input" value="25000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>IRA (Roth/Trad)</label><input type="number" class="asset-input" value="15000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Brokerage Accounts</label><input type="number" class="asset-input" value="10000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>HSA</label><input type="number" class="asset-input" value="3000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Real Estate Value</label><input type="number" class="asset-input" value="0" min="0" step="1000" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Vehicle(s)</label><input type="number" class="asset-input" value="12000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Other Assets</label><input type="number" class="asset-input" value="0" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
 
                         <div class="nw-subtotal">
                             <span class="label">Total Assets</span>
@@ -661,19 +661,26 @@ window.fpZeroEmpty = function(selector) {
                     <div class="nw-col">
                         <h3 class="nw-section-title"><span>📉</span> Liabilities (What You Owe)</h3>
 
-                        <div class="nw-row"><label>Credit Card Debt</label><input type="number" class="liability-input" value="2000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Student Loans</label><input type="number" class="liability-input" value="15000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Auto Loan(s)</label><input type="number" class="liability-input" value="8000" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Mortgage</label><input type="number" class="liability-input" value="0" min="0" step="1000" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Personal Loans</label><input type="number" class="liability-input" value="0" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Medical Debt</label><input type="number" class="liability-input" value="0" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
-                        <div class="nw-row"><label>Other Liabilities</label><input type="number" class="liability-input" value="0" min="0" step="100" oninput="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Credit Card Debt</label><input type="number" class="liability-input" value="2000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Student Loans</label><input type="number" class="liability-input" value="15000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Auto Loan(s)</label><input type="number" class="liability-input" value="8000" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Mortgage</label><input type="number" class="liability-input" value="0" min="0" step="1000" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Personal Loans</label><input type="number" class="liability-input" value="0" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Medical Debt</label><input type="number" class="liability-input" value="0" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
+                        <div class="nw-row"><label>Other Liabilities</label><input type="number" class="liability-input" value="0" min="0" step="100" onblur="if(this.value==='')this.value='0'" onblur="if(this.value==='')this.value='0'"></div>
 
                         <div class="nw-subtotal">
                             <span class="label">Total Liabilities</span>
                             <span class="value" id="total-liabilities" style="color: #ef4444;">$0</span>
                         </div>
                     </div>
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fpNWShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
+                </div>
                 </div>
 
                 <!-- NET WORTH RESULT -->
@@ -683,14 +690,7 @@ window.fpZeroEmpty = function(selector) {
                     <div class="nw-bar"><div class="nw-bar-fill positive" id="nw-bar-fill" style="width: 50%"></div></div>
                     <div class="subtext" id="nw-context"></div>
                 </div>
-                    <div class="fp-share-section" style="margin-top:24px;">
-                        <button class="fp-share-btn" onclick="fpNWShare()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                            Share My Results
-                        </button>
-                    </div>
-
-                <div style="background: var(--bg-secondary); padding: 24px 28px; border-radius: var(--radius-lg); margin-top: 24px; border: 1px solid var(--border-light);">
+<div style="background: var(--bg-secondary); padding: 24px 28px; border-radius: var(--radius-lg); margin-top: 24px; border: 1px solid var(--border-light);">
                     <h3 style="font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--text-primary); margin-bottom: 12px;">Understanding Net Worth</h3>
                     <p style="color: var(--text-secondary); font-size: 14.5px; line-height: 1.7; margin-bottom: 12px;">
                         Your net worth is the single best snapshot of your financial health. It's simply what you own minus what you owe. Tracking it over time shows your progress toward financial independence.

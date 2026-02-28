@@ -450,7 +450,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -502,35 +502,35 @@ window.fpZeroEmpty = function(selector) {
                     <form id="ira-form">
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="annual-contribution">Annual Contribution ($)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">2025 IRA limit: $7,000/year ($8,000 if age 50+). Consistent maxing out is one of the most powerful FIRE moves.</span></span></div>
-                            <input type="number" id="annual-contribution" value="6500" min="0" step="500" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="annual-contribution" value="6500" min="0" step="500" onblur="if(this.value==='')this.value='0'">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">2024 IRA limit: $7,000 ($8,000 if 50+)</small>
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Your age today — used to calculate how many years your money will compound before retirement.</span></span></div>
-                            <input type="number" id="current-age" value="30" min="18" max="100" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="current-age" value="30" min="18" max="100" step="1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="retirement-age">Retirement Age</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Age 59½ is when you can withdraw from IRAs penalty-free. Early FIRE withdrawers often use a Roth conversion ladder to access funds earlier.</span></span></div>
-                            <input type="number" id="retirement-age" value="65" min="50" max="80" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="retirement-age" value="65" min="50" max="80" step="1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="current-tax-rate">Current Tax Rate (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Your marginal tax bracket — the rate on your last dollar earned. 2024 brackets: 10%, 12%, 22%, 24%, 32%, 35%, 37%.</span></span></div>
-                            <input type="number" id="current-tax-rate" value="24" min="0" max="50" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="current-tax-rate" value="24" min="0" max="50" step="1" onblur="if(this.value==='')this.value='0'">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Your marginal tax bracket today</small>
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="retirement-tax-rate">Expected Retirement Tax Rate (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Many FIRE retirees are in a lower bracket since they control their income. If you expect to be richer, you might stay high — that favors Roth now.</span></span></div>
-                            <input type="number" id="retirement-tax-rate" value="22" min="0" max="50" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="retirement-tax-rate" value="22" min="0" max="50" step="1" onblur="if(this.value==='')this.value='0'">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Your expected tax bracket in retirement</small>
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="rate-of-return">Expected Annual Return (%)</label><span class="fp-tip" tabindex="0"><span class="fp-tip-bubble">Historical S&P 500 real return (~7% inflation-adjusted). Both accounts grow identically — the difference is only tax treatment.</span></span></div>
-                            <input type="number" id="rate-of-return" value="7" min="0" max="20" step="0.5" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="rate-of-return" value="7" min="0" max="20" step="0.5" onblur="if(this.value==='')this.value='0'">
                         </div>
                     </form>
                 </div>
@@ -564,14 +564,15 @@ window.fpZeroEmpty = function(selector) {
                     <div class="result-card">
                         <div class="result-label">Years Contributing</div>
                         <div class="result-value" id="years-contributing">0</div>
-                    <div class="fp-share-section" style="margin-top:24px;">
-                        <button class="fp-share-btn" onclick="fpIRAShare()">
+<div class="result-subtext" id="total-contributed">Total contributed: $0</div>
+                    </div>
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fpIRAShare()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                             Share My Results
                         </button>
-                    </div>
-                        <div class="result-subtext" id="total-contributed">Total contributed: $0</div>
-                    </div>
+                </div>
                 </div>
 
 

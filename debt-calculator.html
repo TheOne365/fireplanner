@@ -450,7 +450,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -502,18 +502,18 @@ window.fpZeroEmpty = function(selector) {
                     <form id="debt-form">
                         <div class="form-group">
                             <label for="total-debt">Total Debt Amount ($)</label>
-                            <input type="number" id="total-debt" value="25000" min="0" step="100" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="total-debt" value="25000" min="0" step="100" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="avg-interest">Average Interest Rate (%)</label><span class="fp-tip"><span class="fp-tip-bubble">Weighted average APR across your debts. Credit cards: 20–25%. Auto loans: 5–8%. Student loans: 4–7%.</span></span></div>
-                            <input type="number" id="avg-interest" value="18" min="0" max="30" step="0.1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="avg-interest" value="18" min="0" max="30" step="0.1" onblur="if(this.value==='')this.value='0'">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Weighted average of all debts</small>
                         </div>
 
                         <div class="form-group">
                             <label for="monthly-payment">Monthly Payment ($)</label>
-                            <input type="number" id="monthly-payment" value="750" min="0" step="50" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="monthly-payment" value="750" min="0" step="50" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
@@ -526,7 +526,7 @@ window.fpZeroEmpty = function(selector) {
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="extra-payment">Extra Monthly Payment ($)</label><span class="fp-tip"><span class="fp-tip-bubble">Additional money you could throw at debt. Even $50/month extra dramatically cuts payoff time and interest paid.</span></span></div>
-                            <input type="number" id="extra-payment" value="0" min="0" step="25" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="extra-payment" value="0" min="0" step="25" onblur="if(this.value==='')this.value='0'">
                             <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Optional additional payment</small>
                         </div>
                     </form>
@@ -567,14 +567,15 @@ window.fpZeroEmpty = function(selector) {
                     <div class="result-card">
                         <div class="result-label">Monthly Debt Payment</div>
                         <div class="result-value" id="total-monthly">$0</div>
-                    <div class="fp-share-section" style="margin-top:24px;">
-                        <button class="fp-share-btn" onclick="fpDebtShare()">
+                        <div class="result-subtext">Base + extra payments</div>
+                    </div>
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fpDebtShare()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                             Share My Results
                         </button>
-                    </div>
-                        <div class="result-subtext">Base + extra payments</div>
-                    </div>
+                </div>
                 </div>
 
             </div>

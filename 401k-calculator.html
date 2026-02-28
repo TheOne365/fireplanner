@@ -450,7 +450,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -507,20 +507,20 @@ window.fpZeroEmpty = function(selector) {
                         <div class="fp-step-panel active" id="fp-panel-0">
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="current-balance">Current 401k Balance ($)</label><span class="fp-tip"><span class="fp-tip-bubble">Your current 401k/403b balance today. If starting fresh, enter 0.</span></span></div>
-                                <input type="number" id="current-balance" value="25000" min="0" step="1000" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="current-balance" value="25000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                             </div>
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="annual-salary">Annual Salary ($)</label><span class="fp-tip"><span class="fp-tip-bubble">Your gross annual salary before taxes.</span></span></div>
-                                <input type="number" id="annual-salary" value="75000" min="0" step="1000" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="annual-salary" value="75000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                             </div>
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="contribution-rate">Your Contribution Rate (%)</label><span class="fp-tip"><span class="fp-tip-bubble">% of salary you contribute. Always contribute at least enough to get the full employer match.</span></span></div>
-                                <input type="number" id="contribution-rate" value="6" min="0" max="100" step="0.5" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="contribution-rate" value="6" min="0" max="100" step="0.5" onblur="if(this.value==='')this.value='0'">
                                 <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">2025 limit: $23,500/year ($31,000 if 50+)</small>
                             </div>
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="employer-match">Employer Match (%)</label><span class="fp-tip"><span class="fp-tip-bubble">The % your employer matches. This is free money — always maximize it.</span></span></div>
-                                <input type="number" id="employer-match" value="3" min="0" max="20" step="0.5" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="employer-match" value="3" min="0" max="20" step="0.5" onblur="if(this.value==='')this.value='0'">
                                 <small style="color: #64748b; font-size: 13px; display: block; margin-top: 4px;">Typical: 3-6% of salary</small>
                             </div>
                             <div class="fp-step-nav">
@@ -532,19 +532,19 @@ window.fpZeroEmpty = function(selector) {
                         <div class="fp-step-panel" id="fp-panel-1">
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="match-limit">Employer Match Limit (%)</label><span class="fp-tip"><span class="fp-tip-bubble">Max salary % your employer will match. Enter 6 if they match up to 6% of salary.</span></span></div>
-                                <input type="number" id="match-limit" value="6" min="0" max="100" step="0.5" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="match-limit" value="6" min="0" max="100" step="0.5" onblur="if(this.value==='')this.value='0'">
                             </div>
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="return-rate">Expected Annual Return (%)</label><span class="fp-tip"><span class="fp-tip-bubble">A diversified stock index fund historically returns ~7% real.</span></span></div>
-                                <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1" onblur="if(this.value==='')this.value='0'">
                             </div>
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="years">Years Until Retirement</label><span class="fp-tip"><span class="fp-tip-bubble">More time = dramatically more growth due to compounding.</span></span></div>
-                                <input type="number" id="years" value="30" min="1" max="50" step="1" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="years" value="30" min="1" max="50" step="1" onblur="if(this.value==='')this.value='0'">
                             </div>
                             <div class="form-group">
                                 <div class="fp-label-wrap"><label for="salary-increase">Annual Salary Increase (%)</label><span class="fp-tip"><span class="fp-tip-bubble">Expected yearly raises. 2–3% is typical (roughly inflation).</span></span></div>
-                                <input type="number" id="salary-increase" value="2" min="0" max="10" step="0.5" oninput="if(this.value==='')this.value='0'">
+                                <input type="number" id="salary-increase" value="2" min="0" max="10" step="0.5" onblur="if(this.value==='')this.value='0'">
                             </div>
                             <div class="fp-step-nav">
                                 <button type="button" class="fp-btn-prev" onclick="FPSteps.prev()">← Back</button>
@@ -594,14 +594,15 @@ window.fpZeroEmpty = function(selector) {
                     <div class="result-card">
                         <div class="result-label">First Year Contribution</div>
                         <div class="result-value" id="first-year">$0</div>
-                    <div class="fp-share-section" style="margin-top:24px;">
-                        <button class="fp-share-btn" onclick="fp401kShare()">
+<div class="result-subtext" id="breakdown">You + Employer match</div>
+                    </div>
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fp401kShare()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                             Share My Results
                         </button>
-                    </div>
-                        <div class="result-subtext" id="breakdown">You + Employer match</div>
-                    </div>
+                </div>
                 </div>
 
             </div>

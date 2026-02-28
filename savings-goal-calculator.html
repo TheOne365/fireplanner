@@ -435,7 +435,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -485,19 +485,19 @@ window.fpZeroEmpty = function(selector) {
                     <form id="savings-form">
                         <div class="form-group">
                             <label for="goal-amount">Savings Goal Amount ($)</label>
-                            <input type="number" id="goal-amount" value="50000" min="0" step="1000" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="goal-amount" value="50000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                         </div>
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="current-savings">Current Savings ($)</label><span class="fp-tip"><span class="fp-tip-bubble">What you've already saved toward this goal today.</span></span></div>
-                            <input type="number" id="current-savings" value="5000" min="0" step="500" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="current-savings" value="5000" min="0" step="500" onblur="if(this.value==='')this.value='0'">
                         </div>
                         <div class="form-group">
                             <label for="time-frame">Time Frame (Months)</label>
-                            <input type="number" id="time-frame" value="36" min="1" max="600" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="time-frame" value="36" min="1" max="600" onblur="if(this.value==='')this.value='0'">
                         </div>
                         <div class="form-group">
                             <label for="interest-rate">Expected Return (%/year)</label>
-                            <input type="number" id="interest-rate" value="4" min="0" max="20" step="0.1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="interest-rate" value="4" min="0" max="20" step="0.1" onblur="if(this.value==='')this.value='0'">
                         </div>
                     </form>
                 </div>
@@ -519,13 +519,13 @@ window.fpZeroEmpty = function(selector) {
                     <div class="result-card">
                         <div class="result-label">Goal Completion Date</div>
                         <div class="result-value" id="completion-date" style="font-size:20px;">--</div>
+                    </div>
                     <div class="fp-share-section" style="margin-top:24px;">
                         <button class="fp-share-btn" onclick="fpSavingsShare()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                             Share My Results
                         </button>
                     </div>
-</div>
                 </div>
             </div>
         </div>

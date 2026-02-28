@@ -450,7 +450,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -506,22 +506,22 @@ window.fpZeroEmpty = function(selector) {
                     <form id="compound-form">
                         <div class="form-group">
                             <label for="initial">Initial Investment ($)</label>
-                            <input type="number" id="initial" value="10000" min="0" step="100" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="initial" value="10000" min="0" step="100" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="monthly">Monthly Contribution ($)</label>
-                            <input type="number" id="monthly" value="500" min="0" step="50" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="monthly" value="500" min="0" step="50" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="rate">Annual Interest Rate (%)</label>
-                            <input type="number" id="rate" value="7" min="0" max="30" step="0.1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="rate" value="7" min="0" max="30" step="0.1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="years">Time Period (Years)</label>
-                            <input type="number" id="years" value="30" min="1" max="50" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="years" value="30" min="1" max="50" step="1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
@@ -560,14 +560,15 @@ window.fpZeroEmpty = function(selector) {
                     <div class="result-card" style="border-left-color: #d97706;">
                         <div class="result-label">Return on Investment</div>
                         <div class="result-value" id="roi">0%</div>
-                    <div class="fp-share-section" style="margin-top:24px;">
-                        <button class="fp-share-btn" onclick="fpCompoundShare()">
+                        <div class="result-subtext">Percentage gain on your contributions</div>
+                    </div>
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fpCompoundShare()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                             Share My Results
                         </button>
-                    </div>
-                        <div class="result-subtext">Percentage gain on your contributions</div>
-                    </div>
+                </div>
                 </div>
 
             </div>

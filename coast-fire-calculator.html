@@ -450,7 +450,7 @@ window.fpZeroEmpty = function(selector) {
     inp.addEventListener('blur', function() {
       if (this.value === '' || this.value === null) this.value = '0';
     });
-    inp.addEventListener('input', function() {
+    inp.addEventListener('blur', function() {
       if (this.value === '') this.value = '0';
     });
   });
@@ -502,33 +502,33 @@ window.fpZeroEmpty = function(selector) {
                     <form id="coast-fire-form">
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="current-age">Current Age</label><span class="fp-tip"><span class="fp-tip-bubble">Your age today, used to calculate compounding time.</span></span></div>
-                            <input type="number" id="current-age" value="25" min="18" max="80" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="current-age" value="25" min="18" max="80" step="1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="target-retirement-age">Target Retirement Age</label>
-                            <input type="number" id="target-retirement-age" value="65" min="30" max="90" step="1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="target-retirement-age" value="65" min="30" max="90" step="1" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="current-savings">Current Invested Savings ($)</label>
-                            <input type="number" id="current-savings" value="50000" min="0" step="1000" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="current-savings" value="50000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="annual-expenses">Expected Annual Expenses in Retirement ($)</label>
-                            <input type="number" id="annual-expenses" value="40000" min="0" step="1000" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="annual-expenses" value="40000" min="0" step="1000" onblur="if(this.value==='')this.value='0'">
                         </div>
 
                         <div class="form-group">
                             <label for="return-rate">Expected Annual Return (%)</label>
-                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="return-rate" value="7" min="0" max="20" step="0.1" onblur="if(this.value==='')this.value='0'">
                             <small>Historically ~7% for stocks after inflation</small>
                         </div>
 
                         <div class="form-group">
                             <div class="fp-label-wrap"><label for="withdrawal-rate">Safe Withdrawal Rate (%)</label><span class="fp-tip"><span class="fp-tip-bubble">The 4% rule: withdraw 4% of your portfolio in year 1, adjust for inflation. Historically survived 30+ year retirements.</span></span></div>
-                            <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1" oninput="if(this.value==='')this.value='0'">
+                            <input type="number" id="withdrawal-rate" value="4" min="2" max="6" step="0.1" onblur="if(this.value==='')this.value='0'">
                             <small>The 4% rule is commonly used</small>
                         </div>
                     </form>
@@ -559,13 +559,7 @@ window.fpZeroEmpty = function(selector) {
                     <div class="result-card" style="border-left-color: var(--accent-blue);">
                         <div class="result-label">Your Savings Will Grow To</div>
                         <div class="result-value" id="projected-value">$0</div>
-                    <div class="fp-share-section" style="margin-top:24px;">
-                        <button class="fp-share-btn" onclick="fpCoastShare()">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-                            Share My Results
-                        </button>
-                    </div>
-                        <div class="result-subtext" id="projected-detail">By retirement, without additional contributions</div>
+<div class="result-subtext" id="projected-detail">By retirement, without additional contributions</div>
                     </div>
 
                     <div style="background: var(--bg-tertiary); padding: 20px; border-radius: var(--radius-md); margin-top: 20px;">
@@ -573,6 +567,13 @@ window.fpZeroEmpty = function(selector) {
                             <strong style="color: var(--text-primary);">What is Coast FIRE?</strong> Coast FIRE means you've saved enough that compound growth alone will get you to your retirement goal — you no longer need to contribute more. You still work to cover living expenses, but the retirement pressure is off.
                         </p>
                     </div>
+
+                <div class="fp-share-section" style="margin-top:24px;">
+                    <button class="fp-share-btn" onclick="fpCoastShare()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                            Share My Results
+                        </button>
+                </div>
                 </div>
 
             </div>
